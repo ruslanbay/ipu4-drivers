@@ -1736,7 +1736,8 @@ lspci -vvv -k -n
 
 # Extract ACPI Tables
 
-    [!WARNING] ACPI tables can contain sensitive hardware-specific data. Redact or exclude msdm.dat: It contains your unique Windows OEM Product Key. Check for Identifiers: Files like dsdt.dsl may contain your system Serial Number or Asset Tag. tpm2.dat can expose Secure Boot and platform-bound identifiers. Always audit .dsl files for personal information before sharing them.
+> [!WARNING]
+> ACPI tables can contain sensitive hardware-specific data. Redact or exclude msdm.dat - it contains your unique Windows OEM Product Key. Check for Identifiers, files like dsdt.dsl may contain your system Serial Number or Asset Tag. tpm2.dat can expose Secure Boot and platform-bound identifiers. Always audit .dsl files for personal information before sharing them.
 
 Install the ACPICA tools and dump the firmware tables:
 ```bash
