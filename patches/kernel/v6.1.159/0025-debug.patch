@@ -1,0 +1,112 @@
+From bc2817ab222e70925fecd913925f8a64a0cc3ec3 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sun, 21 Dec 2025 15:04:26 +0100
+Subject: [PATCH 25/39] debug
+
+---
+ drivers/media/pci/intel/ipu-isys.c   | 10 +++----
+ drivers/media/v4l2-core/v4l2-ioctl.c | 42 ++++++++++++++++++++++++----
+ 2 files changed, 42 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index f8c17f0c4..497508bfc 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -154,8 +154,8 @@ static int isys_register_ext_subdev(struct ipu_isys *isys,
+ 			 sd_info->csi2->port);
+ 		if (sd_info->csi2->port >= isys->pdata->ipdata->csi2.nports ||
+ 		    !isys->csi2[sd_info->csi2->port].isys) {
+-			dev_warn(&isys->adev->dev, "invalid csi2 port %u\n",
+-				 sd_info->csi2->port);
++			dev_warn(&isys->adev->dev, "isys_register_ext_subdev, %s: invalid csi2 port %u\n",
++				 sd_info->acpiname, sd_info->csi2->port);
+ 			rval = -EINVAL;
+ 			goto skip_put_adapter;
+ 		}
+@@ -246,7 +246,7 @@ static int isys_register_subdevices(struct ipu_isys *isys)
+ 				i = (*sd_info)->csi2->port;
+ 				if (i >= csi2->nports) {
+ 					dev_warn(&isys->adev->dev,
+-						 "invalid csi2 port %u\n", i);
++						 "isys_register_subdevices, %s: invalid csi2 port %u\n", (*sd_info)->acpiname, i);
+ 					continue;
+ 				}
+ 				bitmap_set(csi2_enable, i, 1);
+@@ -407,8 +407,8 @@ static int isys_notifier_bound(struct v4l2_async_notifier *notifier,
+ 	int ret;
+ 
+ 	if (s_asd->csi2.port >= isys->pdata->ipdata->csi2.nports) {
+-		dev_err(&isys->adev->dev, "invalid csi2 port %u\n",
+-			s_asd->csi2.port);
++		dev_err(&isys->adev->dev, "isys_notifier_bound: s_asd->csi2.port >= isys->pdata->ipdata->csi2.nports\n  s_asd->csi2.port = %u\n  isys->pdata->ipdata->csi2.nports = %u\n",
++			s_asd->csi2.port, isys->pdata->ipdata->csi2.nports);
+ 		return -EINVAL;
+ 	}
+ 
+diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
+index d22976b51..8b3c0d8f0 100644
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -1107,14 +1107,45 @@ static int v4l_querycap(const struct v4l2_ioctl_ops *ops,
+ 	 * Drivers must not change device_caps, so check for this and
+ 	 * warn if this happened.
+ 	 */
+-	WARN_ON(cap->device_caps != vfd->device_caps);
++
++	u32 missing = vfd->device_caps & ~cap->device_caps;
++	u32 extra = cap->device_caps & ~vfd->device_caps;
++	
++	if (vfd->device_caps != cap->device_caps) {
++		pr_warn("v4l2-ioctl mismatch! Expected: 0x%08x, Got: 0x%08x\n", 
++				vfd->device_caps, cap->device_caps);
++		
++		if (missing)
++			pr_warn("  -> Missing flags: 0x%08x\n", missing);
++		if (extra)
++			pr_warn("  -> Unexpected extra flags: 0x%08x\n", extra);
++	}
++	
++	WARN(cap->device_caps != vfd->device_caps,
++		"v4l2-ioctl: device_caps mismatch! cap: 0x%08x, vfd: 0x%08x\n",
++		cap->device_caps, vfd->device_caps);
+ 	/*
+ 	 * Check that capabilities is a superset of
+ 	 * vfd->device_caps | V4L2_CAP_DEVICE_CAPS
+ 	 */
+-	WARN_ON((cap->capabilities &
+-		 (vfd->device_caps | V4L2_CAP_DEVICE_CAPS)) !=
+-		(vfd->device_caps | V4L2_CAP_DEVICE_CAPS));
++	u32 expected = vfd->device_caps | V4L2_CAP_DEVICE_CAPS;
++	u32 capabilities_masked = cap->capabilities & expected;
++
++	if (capabilities_masked != expected) {
++		u32 missing = expected & ~cap->capabilities;
++	
++		pr_warn("v4l2-ioctl capabilities mismatch! Expected flags: 0x%08x, Got: 0x%08x\n",
++				expected, capabilities_masked);
++		
++		if (missing)
++			pr_warn("  -> Missing flags in cap->capabilities: 0x%08x\n", missing);
++		
++		/* Trigger the stack trace after printing details */
++		// WARN_ON(1);
++	}
++	// WARN_ON((cap->capabilities &
++	// 	 (vfd->device_caps | V4L2_CAP_DEVICE_CAPS)) !=
++	// 	(vfd->device_caps | V4L2_CAP_DEVICE_CAPS));
+ 	cap->capabilities |= V4L2_CAP_EXT_PIX_FORMAT;
+ 	cap->device_caps |= V4L2_CAP_EXT_PIX_FORMAT;
+ 
+@@ -1524,7 +1555,8 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
+ 		default:
+ 			if (fmt->description[0])
+ 				return;
+-			WARN(1, "Unknown pixelformat 0x%08x\n", fmt->pixelformat);
++			// WARN(1, "Unknown pixelformat 0x%08x\n", fmt->pixelformat);
++			pr_warn("Unknown pixelformat 0x%08x\n", fmt->pixelformat);
+ 			flags = 0;
+ 			snprintf(fmt->description, sz, "%p4cc",
+ 				 &fmt->pixelformat);
+-- 
+2.48.1
+

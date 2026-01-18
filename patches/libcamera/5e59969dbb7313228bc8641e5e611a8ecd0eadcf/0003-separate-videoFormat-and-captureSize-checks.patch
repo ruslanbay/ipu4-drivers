@@ -1,0 +1,34 @@
+From 9544e430a215be4aea1c8a1b0072465be7a5faa7 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 13 Jan 2026 15:57:46 +0100
+Subject: [PATCH 3/4] separate videoFormat and captureSize checks
+
+---
+ src/libcamera/pipeline/simple/simple.cpp | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/src/libcamera/pipeline/simple/simple.cpp b/src/libcamera/pipeline/simple/simple.cpp
+index 75505f08..f994aae8 100644
+--- a/src/libcamera/pipeline/simple/simple.cpp
++++ b/src/libcamera/pipeline/simple/simple.cpp
+@@ -1553,8 +1553,15 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (captureFormat.fourcc != videoFormat ||
+-	    captureFormat.size != pipeConfig->captureSize) {
++	if (captureFormat.fourcc != videoFormat) {
++		LOG(SimplePipeline, Error)
++			<< "captureFormat.fourcc != videoFormat, "
++			<< "captureFormat.fourcc = " << captureFormat.fourcc
++			<< "videoFormat = " << videoFormat;
++		return -EINVAL;
++	}
++
++	if (captureFormat.size != pipeConfig->captureSize) {
+ 		LOG(SimplePipeline, Error)
+ 			<< "Unable to configure capture in "
+ 			<< pipeConfig->captureSize << "-" << videoFormat
+-- 
+2.51.0
+

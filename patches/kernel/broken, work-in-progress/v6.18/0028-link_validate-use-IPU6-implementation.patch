@@ -1,0 +1,318 @@
+From 700fe8e8f8b83d8dcf6677ed2cc00ea5819c81f4 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sun, 21 Dec 2025 20:12:11 +0100
+Subject: [PATCH 28/31] link_validate: use IPU6 implementation
+
+---
+ drivers/media/pci/intel/ipu-isys-subdev.c |  24 ++++
+ drivers/media/pci/intel/ipu-isys-subdev.h |   1 +
+ drivers/media/pci/intel/ipu-isys-video.c  | 155 +++++++++++++++++-----
+ drivers/media/pci/intel/ipu-isys-video.h  |  29 ++++
+ 4 files changed, 179 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-subdev.c b/drivers/media/pci/intel/ipu-isys-subdev.c
+index c67124bcd684..886ceb4e658e 100644
+--- a/drivers/media/pci/intel/ipu-isys-subdev.c
++++ b/drivers/media/pci/intel/ipu-isys-subdev.c
+@@ -497,6 +497,30 @@ int ipu_isys_subdev_get_frame_desc(struct v4l2_subdev *sd,
+ 	return rval;
+ }
+ 
++u32 ipu_isys_get_src_stream_by_src_pad(struct v4l2_subdev *sd, u32 pad)
++{
++	struct v4l2_subdev_state *state;
++	struct v4l2_subdev_route *routes;
++	unsigned int i;
++	u32 source_stream = 0;
++
++	state = v4l2_subdev_lock_and_get_active_state(sd);
++	if (!state)
++		return 0;
++
++	routes = state->routing.routes;
++	for (i = 0; i < state->routing.num_routes; i++) {
++		if (routes[i].source_pad == pad) {
++			source_stream = routes[i].source_stream;
++			break;
++		}
++	}
++
++	v4l2_subdev_unlock_state(state);
++
++	return source_stream;
++}
++
+ bool ipu_isys_subdev_has_route(struct media_entity *entity,
+ 			       unsigned int pad0, unsigned int pad1, int *stream)
+ {
+diff --git a/drivers/media/pci/intel/ipu-isys-subdev.h b/drivers/media/pci/intel/ipu-isys-subdev.h
+index 1cbf82858bf5..ab225db113f2 100644
+--- a/drivers/media/pci/intel/ipu-isys-subdev.h
++++ b/drivers/media/pci/intel/ipu-isys-subdev.h
+@@ -164,6 +164,7 @@ int ipu_isys_subdev_init(struct ipu_isys_subdev *asd,
+ void ipu_isys_subdev_cleanup(struct ipu_isys_subdev *asd);
+ int ipu_isys_subdev_get_frame_desc(struct v4l2_subdev *sd,
+ 				   struct v4l2_mbus_frame_desc *desc);
++u32 ipu_isys_get_src_stream_by_src_pad(struct v4l2_subdev *sd, u32 pad);
+ int ipu_isys_subdev_set_routing(struct v4l2_subdev *sd,
+ 			   struct v4l2_subdev_state *state,
+ 			   enum v4l2_subdev_format_whence which,
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index f523a295d748..2b75f093f57d 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -310,6 +310,33 @@ static int video_open(struct file *file)
+ 	return rval;
+ }
+ 
++const struct ipu_isys_pixelformat *
++ipu_isys_get_isys_format(u32 pixelformat, u32 type)
++{
++	const struct ipu_isys_pixelformat *default_pfmt = NULL;
++	unsigned int i;
++
++	for (i = 0; i < ARRAY_SIZE(ipu_isys_pfmts); i++) {
++		const struct ipu_isys_pixelformat *pfmt = &ipu_isys_pfmts[i];
++
++		if (type && ((!pfmt->is_meta &&
++			      type != V4L2_BUF_TYPE_VIDEO_CAPTURE) ||
++			     (pfmt->is_meta &&
++			      type != V4L2_BUF_TYPE_META_CAPTURE)))
++			continue;
++
++		if (!default_pfmt)
++			default_pfmt = pfmt;
++
++		if (pfmt->pixelformat != pixelformat)
++			continue;
++
++		return pfmt;
++	}
++
++	return default_pfmt;
++}
++
+ static int video_release(struct file *file)
+ {
+ 	struct ipu_isys_video *av = video_drvdata(file);
+@@ -712,47 +739,60 @@ static int vidioc_s_input(struct file *file, void *fh, unsigned int input)
+ 	return input == 0 ? 0 : -EINVAL;
+ }
+ 
+-/*
+- * Return true if an entity directly connected to an Iunit entity is
+- * an image source for the ISP. This can be any external directly
+- * connected entity or any of the test pattern generators in the
+- * Iunit.
+- */
+-static bool is_external(struct ipu_isys_video *av, struct media_entity *entity)
+-{
+-	struct v4l2_subdev *sd;
+-
+-	/* All video nodes are ours. */
+-	if (!is_media_entity_v4l2_subdev(entity))
+-		return false;
+-
+-	sd = media_entity_to_v4l2_subdev(entity);
+-	if (strncmp(sd->name, IPU_ISYS_ENTITY_PREFIX,
+-		strlen(IPU_ISYS_ENTITY_PREFIX)) != 0)
+-		return true;
+-
+-	return false;
+-}
+-
+ static int link_validate(struct media_link *link)
+ {
+ 	struct ipu_isys_video *av =
+ 		container_of(link->sink, struct ipu_isys_video, pad);
+-	struct ipu_isys_pipeline *ip = &av->ip;
+-	struct v4l2_subdev *sd;
++	struct device *dev = &av->isys->adev->dev;
++	struct v4l2_subdev_state *s_state;
++	struct v4l2_subdev *s_sd;
++	struct v4l2_mbus_framefmt *s_fmt;
++	struct media_pad *s_pad;
++	u32 s_stream, code;
++	int ret = -EPIPE;
+ 
+ 	if (!link->source->entity)
+-		return -EINVAL;
++		return ret;
++
++	s_sd = media_entity_to_v4l2_subdev(link->source->entity);
++	s_state = v4l2_subdev_get_unlocked_active_state(s_sd);
++	if (!s_state)
++		return ret;
++
++	dev_dbg(dev, "validating link \"%s\":%u -> \"%s\"\n",
++		link->source->entity->name, link->source->index,
++		link->sink->entity->name);
++
++	s_pad = media_pad_remote_pad_first(&av->pad);
++	s_stream = ipu_isys_get_src_stream_by_src_pad(s_sd, s_pad->index);
++
++	v4l2_subdev_lock_state(s_state);
+ 
+-	sd = media_entity_to_v4l2_subdev(link->source->entity);
+-	if (is_external(av, link->source->entity)) {
+-		ip->external = media_pad_remote_pad_first(av->vdev.entity.pads);
+-		ip->source = to_ipu_isys_subdev(sd)->source;
++	s_fmt = v4l2_subdev_state_get_format(s_state, s_pad->index, s_stream);
++	if (!s_fmt) {
++		dev_err(dev, "failed to get source pad format\n");
++		goto unlock;
+ 	}
+ 
+-	ip->nr_queues++;
++	code = ipu_isys_get_isys_format(ipu_isys_get_format(av), 0)->code;
++
++	if (s_fmt->width != ipu_isys_get_frame_width(av) ||
++	    s_fmt->height != ipu_isys_get_frame_height(av) ||
++	    s_fmt->code != code) {
++		dev_dbg(dev, "format mismatch %dx%d,%x != %dx%d,%x\n",
++			s_fmt->width, s_fmt->height, s_fmt->code,
++			ipu_isys_get_frame_width(av),
++			ipu_isys_get_frame_height(av), code);
++		goto unlock;
++	}
++
++	v4l2_subdev_unlock_state(s_state);
+ 
+ 	return 0;
++unlock:
++	v4l2_subdev_unlock_state(s_state);
++
++	return ret;
+ }
+ 
+ static void get_stream_opened(struct ipu_isys_video *av)
+@@ -2251,3 +2291,58 @@ void ipu_isys_video_cleanup(struct ipu_isys_video *av)
+ 	mutex_destroy(&av->mutex);
+ 	ipu_isys_queue_cleanup(&av->aq);
+ }
++
++u32 ipu_isys_get_format(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.pixelformat;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.dataformat;
++
++	return 0;
++}
++
++u32 ipu_isys_get_data_size(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.sizeimage;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.buffersize;
++
++	return 0;
++}
++
++u32 ipu_isys_get_bytes_per_line(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.bytesperline;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.bytesperline;
++
++	return 0;
++}
++
++u32 ipu_isys_get_frame_width(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.width;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.width;
++
++	return 0;
++}
++
++u32 ipu_isys_get_frame_height(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.height;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.height;
++
++	return 0;
++}
+diff --git a/drivers/media/pci/intel/ipu-isys-video.h b/drivers/media/pci/intel/ipu-isys-video.h
+index a0612f7eb512..97630126e47a 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.h
++++ b/drivers/media/pci/intel/ipu-isys-video.h
+@@ -123,6 +123,18 @@ struct ipu_isys_pipeline {
+ #define to_ipu_isys_pipeline(__pipe)				\
+ 	container_of((__pipe), struct ipu_isys_pipeline, pipe)
+ 
++struct video_stream_watermark {
++	u32 width;
++	u32 height;
++	u32 hblank;
++	u32 frame_rate;
++	u64 pixel_rate;
++	u64 stream_data_rate;
++	u16 sram_gran_shift;
++	u16 sram_gran_size;
++	struct list_head stream_node;
++};
++
+ struct ipu_isys_video {
+ 	/* Serialise access to other fields in the struct. */
+ 	struct mutex mutex;
+@@ -132,8 +144,12 @@ struct ipu_isys_video {
+ 	const struct ipu_isys_pixelformat *pfmts;
+ 	const struct ipu_isys_pixelformat *pfmt;
+ 	struct ipu_isys_queue aq;
++	struct v4l2_pix_format pix_fmt;
++	struct v4l2_meta_format meta_fmt;
+ 	struct ipu_isys *isys;
+ 	struct ipu_isys_pipeline ip;
++	struct ipu_isys_csi2 *csi2;
++	struct ipu_isys_stream *stream;
+ 	unsigned int streaming;
+ 	bool packed;
+ 	unsigned int line_header_length;	/* bits */
+@@ -143,6 +159,10 @@ struct ipu_isys_video {
+ 		struct v4l2_pix_format_mplane *mpix);
+ 	void (*prepare_firmware_stream_cfg)(struct ipu_isys_video *av,
+ 		struct ipu_fw_isys_stream_cfg_data_abi *cfg);
++	struct video_stream_watermark watermark;
++	u32 source_stream;
++	u8 vc;
++	u8 dt;
+ };
+ 
+ #define ipu_isys_queue_to_video(__aq) \
+@@ -152,6 +172,9 @@ extern const struct ipu_isys_pixelformat ipu_isys_pfmts[];
+ extern const struct ipu_isys_pixelformat ipu_isys_pfmts_be_soc[];
+ extern const struct ipu_isys_pixelformat ipu_isys_pfmts_packed[];
+ 
++const struct ipu_isys_pixelformat *
++ipu_isys_get_isys_format(u32 pixelformat, u32 code);
++
+ const struct ipu_isys_pixelformat *
+ ipu_isys_get_pixelformat(struct ipu_isys_video *av, u32 pixelformat);
+ 
+@@ -186,4 +209,10 @@ void ipu_isys_video_add_capture_done(struct ipu_isys_pipeline *ip,
+ 				      (struct ipu_isys_pipeline *ip,
+ 				       struct ipu_fw_isys_resp_info_abi *resp));
+ 
++u32 ipu_isys_get_format(struct ipu_isys_video *av);
++u32 ipu_isys_get_data_size(struct ipu_isys_video *av);
++u32 ipu_isys_get_bytes_per_line(struct ipu_isys_video *av);
++u32 ipu_isys_get_frame_width(struct ipu_isys_video *av);
++u32 ipu_isys_get_frame_height(struct ipu_isys_video *av);
++
+ #endif /* IPU_ISYS_VIDEO_H */
+-- 
+2.51.0
+

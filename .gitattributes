@@ -1,0 +1,5 @@
+firmware/*.bin filter=lfs diff=lfs merge=lfs -text
+packages/v5.15.197/*.deb filter=lfs diff=lfs merge=lfs -text
+packages/v6.1.159/*.deb filter=lfs diff=lfs merge=lfs -text
+packages/v6.6.119/*.deb filter=lfs diff=lfs merge=lfs -text
+packages/v6.18.4/*.deb filter=lfs diff=lfs merge=lfs -text

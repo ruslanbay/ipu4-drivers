@@ -1,0 +1,61 @@
+From e22e42793871afaf09041e9f50840f8013bf9a75 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 7 Jan 2026 18:21:15 +0100
+Subject: [PATCH 05/39] media_entity_has_pad_interdep: mimic Intel's
+ media_entity_has_route implementation
+
+---
+ drivers/media/mc/mc-entity.c | 5 +++--
+ include/media/media-entity.h | 5 ++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
+index 9b707183c..8b7194c86 100644
+--- a/drivers/media/mc/mc-entity.c
++++ b/drivers/media/mc/mc-entity.c
+@@ -237,7 +237,7 @@ EXPORT_SYMBOL_GPL(media_entity_pads_init);
+  * has_pad_interdep operation is not implemented, all pads of the entity are
+  * considered to be interdependent.
+  */
+-static bool media_entity_has_pad_interdep(struct media_entity *entity,
++bool media_entity_has_pad_interdep(struct media_entity *entity,
+ 					  unsigned int pad0, unsigned int pad1)
+ {
+ 	if (pad0 >= entity->num_pads || pad1 >= entity->num_pads)
+@@ -250,8 +250,9 @@ static bool media_entity_has_pad_interdep(struct media_entity *entity,
+ 	if (!entity->ops || !entity->ops->has_pad_interdep)
+ 		return true;
+ 
+-	return entity->ops->has_pad_interdep(entity, pad0, pad1);
++	return entity->ops->has_pad_interdep(entity, pad0, pad1, NULL);
+ }
++EXPORT_SYMBOL_GPL(media_entity_has_pad_interdep);
+ 
+ static struct media_entity *
+ media_entity_other(struct media_entity *entity, struct media_link *link)
+diff --git a/include/media/media-entity.h b/include/media/media-entity.h
+index 03bb09639..6752818aa 100644
+--- a/include/media/media-entity.h
++++ b/include/media/media-entity.h
+@@ -261,7 +261,7 @@ struct media_entity_operations {
+ 			  const struct media_pad *remote, u32 flags);
+ 	int (*link_validate)(struct media_link *link);
+ 	bool (*has_pad_interdep)(struct media_entity *entity, unsigned int pad0,
+-				 unsigned int pad1);
++				 unsigned int pad1, int *stream);
+ };
+ 
+ /**
+@@ -1083,6 +1083,9 @@ __must_check int media_graph_walk_init(
+  */
+ void media_graph_walk_cleanup(struct media_graph *graph);
+ 
++bool media_entity_has_pad_interdep(struct media_entity *entity,
++					  unsigned int pad0, unsigned int pad1);
++
+ /**
+  * media_graph_walk_start - Start walking the media graph at a
+  *	given entity
+-- 
+2.48.1
+

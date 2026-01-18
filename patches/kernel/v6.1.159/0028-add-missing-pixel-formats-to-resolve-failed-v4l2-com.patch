@@ -1,0 +1,36 @@
+From 3e91cf9501b14ac5221dc3a21dc146dcba72d751 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 7 Jan 2026 18:47:39 +0100
+Subject: [PATCH 28/39] add missing pixel formats to resolve failed
+ v4l2-compliance checks:
+
+Format ioctls (Input 0):
+	test VIDIOC_ENUM_FMT/FRAMESIZES/FRAMEINTERVALS: OK
+	test VIDIOC_G/S_PARM: OK (Not Supported)
+	test VIDIOC_G_FBUF: OK (Not Supported)
+		fail: v4l2-test-formats.cpp(488): pixelformat 20303159 (Y10 ) for buftype 9 not reported by ENUM_FMT
+	test VIDIOC_G_FMT: FAIL
+		fail: v4l2-test-formats.cpp(488): pixelformat 20303159 (Y10 ) for buftype 9 not reported by ENUM_FMT
+	test VIDIOC_TRY_FMT: FAIL
+		fail: v4l2-test-formats.cpp(488): pixelformat 20303159 (Y10 ) for buftype 9 not reported by ENUM_FMT
+	test VIDIOC_S_FMT: FAIL
+---
+ drivers/media/pci/intel/ipu-isys-video.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index ae442a832..550e344f7 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -38,6 +38,8 @@ module_param(use_stream_stop, bool, 0660);
+ MODULE_PARM_DESC(use_stream_stop, "Use STOP command if running in CSI capture mode");
+ 
+ const struct ipu_isys_pixelformat ipu_isys_pfmts[] = {
++	{V4L2_PIX_FMT_Y10, 10, 10, 0, MEDIA_BUS_FMT_Y10_1X10,
++	 IPU_FW_ISYS_FRAME_FORMAT_RAW10},
+ 	/* YUV vector format */
+ 	{V4L2_PIX_FMT_YUYV420_V32, 24, 24, 0, MEDIA_BUS_FMT_YUYV12_1X24,
+ 	 IPU_FW_ISYS_FRAME_FORMAT_YUV420_16},
+-- 
+2.48.1
+

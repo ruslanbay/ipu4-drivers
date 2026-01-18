@@ -1,0 +1,25 @@
+From 6bce66259e52a2ec85f5332d8332001495716a9b Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sun, 21 Dec 2025 18:22:50 +0100
+Subject: [PATCH 22/29] rename try_to_del_timer_sync to timer_delete_sync_try
+
+---
+ drivers/media/pci/intel/ipu4/ipu4-psys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu4/ipu4-psys.c b/drivers/media/pci/intel/ipu4/ipu4-psys.c
+index 74309962b152..06312ac5bcf9 100644
+--- a/drivers/media/pci/intel/ipu4/ipu4-psys.c
++++ b/drivers/media/pci/intel/ipu4/ipu4-psys.c
+@@ -374,7 +374,7 @@ void ipu_psys_kcmd_complete(struct ipu_psys *psys,
+ 
+ 	switch (kcmd->state) {
+ 	case KCMD_STATE_RUNNING:
+-		if (try_to_del_timer_sync(&kcmd->watchdog) < 0) {
++		if (timer_delete_sync_try(&kcmd->watchdog) < 0) {
+ 			dev_err(&psys->adev->dev,
+ 				"could not cancel kcmd timer\n");
+ 			return;
+-- 
+2.51.0
+

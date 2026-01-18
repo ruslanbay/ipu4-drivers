@@ -1,0 +1,30 @@
+From 2c399579e3363959c066af7a268d6b2cb10bb8bb Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 13 Jan 2026 15:58:22 +0100
+Subject: [PATCH 4/4] hack: treat failed videoFormat check as warning
+
+---
+ src/libcamera/pipeline/simple/simple.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/libcamera/pipeline/simple/simple.cpp b/src/libcamera/pipeline/simple/simple.cpp
+index f994aae8..3a565e72 100644
+--- a/src/libcamera/pipeline/simple/simple.cpp
++++ b/src/libcamera/pipeline/simple/simple.cpp
+@@ -1554,11 +1554,11 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 	}
+ 
+ 	if (captureFormat.fourcc != videoFormat) {
+-		LOG(SimplePipeline, Error)
++		LOG(SimplePipeline, Warning)
+ 			<< "captureFormat.fourcc != videoFormat, "
+ 			<< "captureFormat.fourcc = " << captureFormat.fourcc
+ 			<< "videoFormat = " << videoFormat;
+-		return -EINVAL;
++		// return -EINVAL;
+ 	}
+ 
+ 	if (captureFormat.size != pipeConfig->captureSize) {
+-- 
+2.51.0
+

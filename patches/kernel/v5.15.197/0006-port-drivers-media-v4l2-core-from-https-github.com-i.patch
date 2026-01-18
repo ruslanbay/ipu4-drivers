@@ -1,0 +1,970 @@
+From effaab8f71fb0cce6078bb7cbaa528235c769029 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 30 Dec 2025 14:34:45 +0100
+Subject: [PATCH 06/16] port drivers/media/v4l2-core from
+ https://github.com/intel/linux-intel-lts/tree/lts-v5.15.195-android_t-251103T063840Z/drivers/media/
+
+---
+ drivers/media/v4l2-core/v4l2-common.c         |  86 +++++
+ drivers/media/v4l2-core/v4l2-compat-ioctl32.c |  93 ++++-
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     |   6 +-
+ drivers/media/v4l2-core/v4l2-ioctl.c          |  21 +-
+ drivers/media/v4l2-core/v4l2-subdev.c         | 179 ++++++++-
+ include/media/v4l2-common.h                   |   4 +
+ include/media/v4l2-uvc.h                      | 359 ++++++++++++++++++
+ 7 files changed, 733 insertions(+), 15 deletions(-)
+ create mode 100644 include/media/v4l2-uvc.h
+
+diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
+index 90f76a7ff447..23d04dae6926 100644
+--- a/drivers/media/v4l2-core/v4l2-common.c
++++ b/drivers/media/v4l2-core/v4l2-common.c
+@@ -479,3 +479,89 @@ s64 v4l2_get_link_freq(struct v4l2_ctrl_handler *handler, unsigned int mul,
+ 	return freq > 0 ? freq : -EINVAL;
+ }
+ EXPORT_SYMBOL_GPL(v4l2_get_link_freq);
++
++/*
++ * Simplify a fraction using a simple continued fraction decomposition. The
++ * idea here is to convert fractions such as 333333/10000000 to 1/30 using
++ * 32 bit arithmetic only. The algorithm is not perfect and relies upon two
++ * arbitrary parameters to remove non-significative terms from the simple
++ * continued fraction decomposition. Using 8 and 333 for n_terms and threshold
++ * respectively seems to give nice results.
++ */
++void v4l2_simplify_fraction(u32 *numerator, u32 *denominator,
++		unsigned int n_terms, unsigned int threshold)
++{
++	u32 *an;
++	u32 x, y, r;
++	unsigned int i, n;
++
++	an = kmalloc_array(n_terms, sizeof(*an), GFP_KERNEL);
++	if (an == NULL)
++		return;
++
++	/*
++	 * Convert the fraction to a simple continued fraction. See
++	 * https://en.wikipedia.org/wiki/Continued_fraction
++	 * Stop if the current term is bigger than or equal to the given
++	 * threshold.
++	 */
++	x = *numerator;
++	y = *denominator;
++
++	for (n = 0; n < n_terms && y != 0; ++n) {
++		an[n] = x / y;
++		if (an[n] >= threshold) {
++			if (n < 2)
++				n++;
++			break;
++		}
++
++		r = x - an[n] * y;
++		x = y;
++		y = r;
++	}
++
++	/* Expand the simple continued fraction back to an integer fraction. */
++	x = 0;
++	y = 1;
++
++	for (i = n; i > 0; --i) {
++		r = y;
++		y = an[i-1] * y + x;
++		x = r;
++	}
++
++	*numerator = y;
++	*denominator = x;
++	kfree(an);
++}
++EXPORT_SYMBOL_GPL(v4l2_simplify_fraction);
++
++/*
++ * Convert a fraction to a frame interval in 100ns multiples. The idea here is
++ * to compute numerator / denominator * 10000000 using 32 bit fixed point
++ * arithmetic only.
++ */
++u32 v4l2_fraction_to_interval(u32 numerator, u32 denominator)
++{
++	u32 multiplier;
++
++	/* Saturate the result if the operation would overflow. */
++	if (denominator == 0 ||
++	    numerator/denominator >= ((u32)-1)/10000000)
++		return (u32)-1;
++
++	/*
++	 * Divide both the denominator and the multiplier by two until
++	 * numerator * multiplier doesn't overflow. If anyone knows a better
++	 * algorithm please let me know.
++	 */
++	multiplier = 10000000;
++	while (numerator > ((u32)-1)/multiplier) {
++		multiplier /= 2;
++		denominator /= 2;
++	}
++
++	return denominator ? numerator * multiplier / denominator : 0;
++}
++EXPORT_SYMBOL_GPL(v4l2_fraction_to_interval);
+diff --git a/drivers/media/v4l2-core/v4l2-compat-ioctl32.c b/drivers/media/v4l2-core/v4l2-compat-ioctl32.c
+index 94037af1af2d..5cd0817c15a5 100644
+--- a/drivers/media/v4l2-core/v4l2-compat-ioctl32.c
++++ b/drivers/media/v4l2-core/v4l2-compat-ioctl32.c
+@@ -808,6 +808,54 @@ static int put_v4l2_event32_time32(struct v4l2_event *p64,
+ }
+ #endif
+ 
++struct v4l2_subdev_routing32 {
++	compat_caddr_t routes;
++	__u32 num_routes;
++	__u32 reserved[5];
++};
++
++static int get_v4l2_subdev_routing(struct v4l2_subdev_routing *kp,
++				   struct v4l2_subdev_routing32 __user *up)
++{
++	compat_caddr_t p;
++
++	if (!access_ok(up, sizeof(*up)) ||
++	    get_user(p, &up->routes) ||
++	    get_user(kp->num_routes, &up->num_routes) ||
++	    !access_ok(up->reserved, sizeof(*up->reserved)) ||
++	    kp->num_routes > U32_MAX / sizeof(*kp->routes))
++		return -EFAULT;
++
++	kp->routes = compat_ptr(p);
++
++	if (!access_ok(kp->routes,
++		       kp->num_routes * (u32)sizeof(*kp->routes)))
++		return -EFAULT;
++
++	return 0;
++}
++
++static int put_v4l2_subdev_routing(struct v4l2_subdev_routing *kp,
++				   struct v4l2_subdev_routing32 __user *up)
++{
++	struct v4l2_subdev_route __user *uroutes;
++	compat_caddr_t p;
++
++	if (!access_ok(up, sizeof(*up)) ||
++	    get_user(p, &up->routes) ||
++	    put_user(kp->num_routes, &up->num_routes) ||
++	    !access_ok(up->reserved, sizeof(*up->reserved)))
++		return -EFAULT;
++
++	uroutes = compat_ptr(p);
++
++	if (!access_ok(uroutes,
++		       kp->num_routes * sizeof(*kp->routes)))
++		return -EFAULT;
++
++	return 0;
++}
++
+ struct v4l2_edid32 {
+ 	__u32 pad;
+ 	__u32 start_block;
+@@ -848,8 +896,8 @@ static int put_v4l2_edid32(struct v4l2_edid *p64,
+ #define VIDIOC_G_FMT32		_IOWR('V',  4, struct v4l2_format32)
+ #define VIDIOC_S_FMT32		_IOWR('V',  5, struct v4l2_format32)
+ #define VIDIOC_QUERYBUF32	_IOWR('V',  9, struct v4l2_buffer32)
+-#define VIDIOC_G_FBUF32		_IOR ('V', 10, struct v4l2_framebuffer32)
+-#define VIDIOC_S_FBUF32		_IOW ('V', 11, struct v4l2_framebuffer32)
++#define VIDIOC_G_FBUF32		_IOR('V', 10, struct v4l2_framebuffer32)
++#define VIDIOC_S_FBUF32		_IOW('V', 11, struct v4l2_framebuffer32)
+ #define VIDIOC_QBUF32		_IOWR('V', 15, struct v4l2_buffer32)
+ #define VIDIOC_DQBUF32		_IOWR('V', 17, struct v4l2_buffer32)
+ #define VIDIOC_ENUMSTD32	_IOWR('V', 25, struct v4l2_standard32)
+@@ -860,17 +908,26 @@ static int put_v4l2_edid32(struct v4l2_edid *p64,
+ #define VIDIOC_G_EXT_CTRLS32    _IOWR('V', 71, struct v4l2_ext_controls32)
+ #define VIDIOC_S_EXT_CTRLS32    _IOWR('V', 72, struct v4l2_ext_controls32)
+ #define VIDIOC_TRY_EXT_CTRLS32  _IOWR('V', 73, struct v4l2_ext_controls32)
+-#define	VIDIOC_DQEVENT32	_IOR ('V', 89, struct v4l2_event32)
++#define	VIDIOC_DQEVENT32	_IOR('V', 89, struct v4l2_event32)
+ #define VIDIOC_CREATE_BUFS32	_IOWR('V', 92, struct v4l2_create_buffers32)
+ #define VIDIOC_PREPARE_BUF32	_IOWR('V', 93, struct v4l2_buffer32)
++#define VIDIOC_SUBDEV_G_ROUTING32 _IOWR('V', 38, struct v4l2_subdev_routing32)
++#define VIDIOC_SUBDEV_S_ROUTING32 _IOWR('V', 39, struct v4l2_subdev_routing32)
+ 
+ #ifdef CONFIG_COMPAT_32BIT_TIME
+ #define VIDIOC_QUERYBUF32_TIME32	_IOWR('V',  9, struct v4l2_buffer32_time32)
+ #define VIDIOC_QBUF32_TIME32		_IOWR('V', 15, struct v4l2_buffer32_time32)
+ #define VIDIOC_DQBUF32_TIME32		_IOWR('V', 17, struct v4l2_buffer32_time32)
+-#define	VIDIOC_DQEVENT32_TIME32		_IOR ('V', 89, struct v4l2_event32_time32)
++#define	VIDIOC_DQEVENT32_TIME32		_IOR('V', 89, struct v4l2_event32_time32)
+ #define VIDIOC_PREPARE_BUF32_TIME32	_IOWR('V', 93, struct v4l2_buffer32_time32)
+ #endif
++#define VIDIOC_OVERLAY32	_IOW('V', 14, s32)
++#define VIDIOC_STREAMON32	_IOW('V', 18, s32)
++#define VIDIOC_STREAMOFF32	_IOW('V', 19, s32)
++#define VIDIOC_G_INPUT32	_IOR('V', 38, s32)
++#define VIDIOC_S_INPUT32	_IOWR('V', 39, s32)
++#define VIDIOC_G_OUTPUT32	_IOR('V', 46, s32)
++#define VIDIOC_S_OUTPUT32	_IOWR('V', 47, s32)
+ 
+ unsigned int v4l2_compat_translate_cmd(unsigned int cmd)
+ {
+@@ -895,6 +952,20 @@ unsigned int v4l2_compat_translate_cmd(unsigned int cmd)
+ 	case VIDIOC_PREPARE_BUF32_TIME32:
+ 		return VIDIOC_PREPARE_BUF;
+ #endif
++    case VIDIOC_G_INPUT32:
++	return VIDIOC_G_INPUT;
++    case VIDIOC_S_INPUT32:
++	return VIDIOC_S_INPUT;
++    case VIDIOC_G_OUTPUT32:
++	return VIDIOC_G_OUTPUT;
++    case VIDIOC_S_OUTPUT32:
++	return VIDIOC_S_OUTPUT;
++    case VIDIOC_OVERLAY32:
++	return VIDIOC_OVERLAY;
++    case VIDIOC_STREAMON32:
++	return VIDIOC_STREAMON;
++    case VIDIOC_STREAMOFF32:
++	return VIDIOC_STREAMOFF;
+ 	case VIDIOC_QUERYBUF32:
+ 		return VIDIOC_QUERYBUF;
+ 	case VIDIOC_QBUF32:
+@@ -927,6 +998,10 @@ unsigned int v4l2_compat_translate_cmd(unsigned int cmd)
+ 	case VIDIOC_DQEVENT32_TIME32:
+ 		return VIDIOC_DQEVENT;
+ #endif
++	case VIDIOC_SUBDEV_G_ROUTING32:
++		return VIDIOC_SUBDEV_G_ROUTING;
++	case VIDIOC_SUBDEV_S_ROUTING32:
++		return VIDIOC_SUBDEV_S_ROUTING;
+ 	}
+ 	return cmd;
+ }
+@@ -971,6 +1046,9 @@ int v4l2_compat_get_user(void __user *arg, void *parg, unsigned int cmd)
+ 	case VIDIOC_G_EDID32:
+ 	case VIDIOC_S_EDID32:
+ 		return get_v4l2_edid32(parg, arg);
++	case VIDIOC_SUBDEV_G_ROUTING32:
++	case VIDIOC_SUBDEV_S_ROUTING32:
++		return get_v4l2_subdev_routing(parg, arg);
+ 	}
+ 	return 0;
+ }
+@@ -1023,6 +1101,9 @@ int v4l2_compat_put_user(void __user *arg, void *parg, unsigned int cmd)
+ 	case VIDIOC_DQEVENT32_TIME32:
+ 		return put_v4l2_event32_time32(parg, arg);
+ #endif
++	case VIDIOC_SUBDEV_G_ROUTING32:
++	case VIDIOC_SUBDEV_S_ROUTING32:
++		return put_v4l2_subdev_routing(parg, arg);
+ 	}
+ 	return 0;
+ }
+@@ -1056,9 +1137,9 @@ int v4l2_compat_get_array_args(struct file *file, void *mbuf,
+ 			c64->next = NULL;
+ 			c64++;
+ 			c32++;
+-		}
+-		break;
+ 	}
++	break;
++    }
+ #ifdef CONFIG_COMPAT_32BIT_TIME
+ 	case VIDIOC_QUERYBUF32_TIME32:
+ 	case VIDIOC_QBUF32_TIME32:
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+index 421300e13a41..265bdc40b203 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+@@ -785,6 +785,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+ 	case V4L2_CID_MIN_BUFFERS_FOR_OUTPUT:	return "Min Number of Output Buffers";
+ 	case V4L2_CID_ALPHA_COMPONENT:		return "Alpha Component";
+ 	case V4L2_CID_COLORFX_CBCR:		return "Color Effects, CbCr";
++	case V4L2_CID_COLORFX_RGB:              return "Color Effects, RGB";
+ 
+ 	/*
+ 	 * Codec controls
+@@ -1392,11 +1393,12 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+ 		*min = *max = *step = *def = 0;
+ 		break;
+ 	case V4L2_CID_BG_COLOR:
++	case V4L2_CID_COLORFX_RGB:
+ 		*type = V4L2_CTRL_TYPE_INTEGER;
+ 		*step = 1;
+ 		*min = 0;
+-		/* Max is calculated as RGB888 that is 2^24 */
+-		*max = 0xFFFFFF;
++		/* Max is calculated as RGB888 that is 2^24 - 1 */
++		*max = 0xffffff;
+ 		break;
+ 	case V4L2_CID_FLASH_FAULT:
+ 	case V4L2_CID_JPEG_ACTIVE_MARKER:
+diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
+index 7c596a85f34f..2c48abc69609 100644
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -16,6 +16,7 @@
+ #include <linux/kernel.h>
+ #include <linux/version.h>
+ 
++#include <linux/v4l2-subdev.h>
+ #include <linux/videodev2.h>
+ 
+ #include <media/v4l2-common.h>
+@@ -282,7 +283,7 @@ static void v4l_print_format(const void *arg, bool write_only)
+ 	const struct v4l2_meta_format *meta;
+ 	u32 pixelformat;
+ 	u32 planes;
+-	unsigned i;
++	unsigned int i;
+ 
+ 	pr_cont("type=%s", prt_names(p->type, v4l2_type_names));
+ 	switch (p->type) {
+@@ -1204,7 +1205,7 @@ static int v4l_enumoutput(const struct v4l2_ioctl_ops *ops,
+ 
+ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
+ {
+-	const unsigned sz = sizeof(fmt->description);
++	const unsigned int sz = sizeof(fmt->description);
+ 	const char *descr = NULL;
+ 	u32 flags = 0;
+ 
+@@ -3090,6 +3091,22 @@ static int check_array_args(unsigned int cmd, void *parg, size_t *array_size,
+ 		ret = 1;
+ 		break;
+ 	}
++	case VIDIOC_SUBDEV_G_ROUTING:
++	case VIDIOC_SUBDEV_S_ROUTING: {
++		struct v4l2_subdev_routing *route = parg;
++
++		if (route->num_routes > 0) {
++			if (route->num_routes > 256)
++				return -EINVAL;
++
++			*user_ptr = (void __user *)route->routes;
++			*kernel_ptr = (void *)&route->routes;
++			*array_size = sizeof(struct v4l2_subdev_route)
++				    * route->num_routes;
++			ret = 1;
++		}
++		break;
++	}
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index 6f2267625c7e..7b532a12d210 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -636,6 +636,40 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
+ 
+ 		return v4l2_subdev_call(sd, video, s_dv_timings, arg);
+ 
++	case VIDIOC_SUBDEV_G_ROUTING:
++		return v4l2_subdev_call(sd, pad, get_routing, arg);
++
++	case VIDIOC_SUBDEV_S_ROUTING: {
++		struct v4l2_subdev_routing *route = arg;
++		unsigned int i;
++		int rval;
++
++		if (route->num_routes > sd->entity.num_pads)
++			return -EINVAL;
++
++		for (i = 0; i < route->num_routes; ++i) {
++			unsigned int sink = route->routes[i].sink_pad;
++			unsigned int source = route->routes[i].source_pad;
++			struct media_pad *pads = sd->entity.pads;
++
++			if (sink >= sd->entity.num_pads ||
++			   source >= sd->entity.num_pads)
++				return -EINVAL;
++
++			if ((!(route->routes[i].flags &
++				V4L2_SUBDEV_ROUTE_FL_SOURCE) &&
++			   !(pads[sink].flags & MEDIA_PAD_FL_SINK)) ||
++			   !(pads[source].flags & MEDIA_PAD_FL_SOURCE))
++				return -EINVAL;
++		}
++
++		mutex_lock(&sd->entity.graph_obj.mdev->graph_mutex);
++		rval = v4l2_subdev_call(sd, pad, set_routing, route);
++		mutex_unlock(&sd->entity.graph_obj.mdev->graph_mutex);
++
++		return rval;
++	}
++
+ 	case VIDIOC_SUBDEV_G_STD:
+ 		return v4l2_subdev_call(sd, video, g_std, arg);
+ 
+@@ -661,6 +695,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
+ 	case VIDIOC_SUBDEV_QUERYSTD:
+ 		return v4l2_subdev_call(sd, video, querystd, arg);
+ 
++#endif
+ 	default:
+ 		return v4l2_subdev_call(sd, core, ioctl, cmd, arg);
+ 	}
+@@ -683,6 +718,7 @@ static long subdev_do_ioctl_lock(struct file *file, unsigned int cmd, void *arg)
+ 	return ret;
+ }
+ 
++#if defined(CONFIG_VIDEO_V4L2_SUBDEV_API)
+ static long subdev_ioctl(struct file *file, unsigned int cmd,
+ 	unsigned long arg)
+ {
+@@ -812,6 +848,14 @@ int v4l2_subdev_link_validate_default(struct v4l2_subdev *sd,
+ 		pass = false;
+ 	}
+ 
++	if (source_fmt->stream != sink_fmt->stream) {
++		dev_dbg(sd->entity.graph_obj.mdev->dev,
++			"%s: stream does not match (source %u, sink %u)\n",
++			__func__,
++			source_fmt->stream, sink_fmt->stream);
++		pass = false;
++	}
++
+ 	if (pass)
+ 		return 0;
+ 
+@@ -844,19 +888,21 @@ v4l2_subdev_link_validate_get_format(struct media_pad *pad,
+ 	return -EINVAL;
+ }
+ 
+-int v4l2_subdev_link_validate(struct media_link *link)
++static int v4l2_subdev_link_validate_one(struct media_link *link,
++		struct media_pad *source_pad, unsigned int source_stream,
++		struct media_pad *sink_pad, unsigned int sink_stream)
+ {
+ 	struct v4l2_subdev *sink;
+ 	struct v4l2_subdev_format sink_fmt, source_fmt;
+ 	int rval;
+ 
+-	rval = v4l2_subdev_link_validate_get_format(
+-		link->source, &source_fmt);
++	source_fmt.stream = source_stream;
++	rval = v4l2_subdev_link_validate_get_format(source_pad, &source_fmt);
+ 	if (rval < 0)
+ 		return 0;
+ 
+-	rval = v4l2_subdev_link_validate_get_format(
+-		link->sink, &sink_fmt);
++	sink_fmt.stream = sink_stream;
++	rval = v4l2_subdev_link_validate_get_format(sink_pad, &sink_fmt);
+ 	if (rval < 0)
+ 		return 0;
+ 
+@@ -870,6 +916,129 @@ int v4l2_subdev_link_validate(struct media_link *link)
+ 	return v4l2_subdev_link_validate_default(
+ 		sink, link, &source_fmt, &sink_fmt);
+ }
++
++/* How many routes to assume there can be per a sub-device? */
++#define LINK_VALIDATE_ROUTES	8
++
++int v4l2_subdev_link_validate(struct media_link *link)
++{
++	struct v4l2_subdev *sink;
++	struct v4l2_subdev_route sink_routes[LINK_VALIDATE_ROUTES];
++	struct v4l2_subdev_routing sink_routing = {
++		.routes = sink_routes,
++		.num_routes = ARRAY_SIZE(sink_routes),
++	};
++	struct v4l2_subdev_route src_routes[LINK_VALIDATE_ROUTES];
++	struct v4l2_subdev_routing src_routing = {
++		.routes = src_routes,
++		.num_routes = ARRAY_SIZE(src_routes),
++	};
++	unsigned int i, j;
++	int rval;
++
++	sink = media_entity_to_v4l2_subdev(link->sink->entity);
++
++	if (!(link->sink->flags & MEDIA_PAD_FL_MULTIPLEX &&
++		link->source->flags & MEDIA_PAD_FL_MULTIPLEX))
++		return v4l2_subdev_link_validate_one(link, link->source, 0,
++						     link->sink, 0);
++	/*
++	 * multiplex link cannot proceed without route information.
++	 */
++	rval = v4l2_subdev_call(sink, pad, get_routing, &sink_routing);
++
++	if (rval) {
++		dev_err(sink->entity.graph_obj.mdev->dev,
++			"error %d in get_routing() on %s, sink pad %u\n", rval,
++			sink->entity.name, link->sink->index);
++
++		return rval;
++	}
++
++	rval = v4l2_subdev_call(media_entity_to_v4l2_subdev(
++					link->source->entity),
++				pad, get_routing, &src_routing);
++	if (rval) {
++		dev_dbg(sink->entity.graph_obj.mdev->dev,
++			"error %d in get_routing() on %s, source pad %u\n",
++			rval, sink->entity.name, link->source->index);
++
++		return rval;
++	}
++
++	dev_dbg(sink->entity.graph_obj.mdev->dev,
++		"validating multiplexed link \"%s\":%u -> \"%s\":%u; %u/%u routes\n",
++		link->source->entity->name, link->source->index,
++		sink->entity.name, link->sink->index,
++		src_routing.num_routes, sink_routing.num_routes);
++
++	for (i = 0; i < sink_routing.num_routes; i++) {
++		/* Get the first active route for the sink pad. */
++		if (sink_routes[i].sink_pad != link->sink->index ||
++		    !(sink_routes[i].flags & V4L2_SUBDEV_ROUTE_FL_ACTIVE)) {
++			dev_dbg(sink->entity.graph_obj.mdev->dev,
++				"skipping sink route %u/%u -> %u/%u[%u]\n",
++				sink_routes[i].sink_pad,
++				sink_routes[i].sink_stream,
++				sink_routes[i].source_pad,
++				sink_routes[i].source_stream,
++				(bool)(sink_routes[i].flags
++				       & V4L2_SUBDEV_ROUTE_FL_ACTIVE));
++			continue;
++		}
++
++		/*
++		 * Get the corresponding route for the source pad.
++		 * It's ok for the source pad to have routes active
++		 * where the sink pad does not, but the routes that
++		 * are active on the source pad have to be active on
++		 * the sink pad as well.
++		 */
++
++		for (j = 0; j < src_routing.num_routes; j++) {
++			if (src_routes[j].source_pad == link->source->index &&
++			    src_routes[j].source_stream
++			    == sink_routes[i].sink_stream)
++				break;
++		}
++
++		if (j == src_routing.num_routes) {
++			dev_err(sink->entity.graph_obj.mdev->dev,
++				"no corresponding source found.\n");
++			return -EINVAL;
++		}
++
++		/* The source route must be active. */
++		if (!(src_routes[j].flags & V4L2_SUBDEV_ROUTE_FL_ACTIVE)) {
++			dev_dbg(sink->entity.graph_obj.mdev->dev,
++				"source route not active\n");
++			return -EINVAL;
++		}
++
++		dev_dbg(sink->entity.graph_obj.mdev->dev,
++			"validating link \"%s\": %u/%u => \"%s\" %u/%u\n",
++			link->source->entity->name, src_routes[j].source_pad,
++			src_routes[j].source_stream, sink->entity.name,
++			sink_routes[i].sink_pad, sink_routes[i].sink_stream);
++
++		rval = v4l2_subdev_link_validate_one(
++			link, link->source, src_routes[j].source_stream,
++			link->sink, sink_routes[j].sink_stream);
++		if (rval) {
++			dev_dbg(sink->entity.graph_obj.mdev->dev,
++				"error %d in link validation\n", rval);
++			return rval;
++		}
++	}
++
++	if (i < sink_routing.num_routes) {
++		dev_dbg(sink->entity.graph_obj.mdev->dev,
++			"not all sink routes verified; out of source routes\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
+ EXPORT_SYMBOL_GPL(v4l2_subdev_link_validate);
+ 
+ struct v4l2_subdev_state *v4l2_subdev_alloc_state(struct v4l2_subdev *sd)
+diff --git a/include/media/v4l2-common.h b/include/media/v4l2-common.h
+index 5e25a098e8ce..40cd99549113 100644
+--- a/include/media/v4l2-common.h
++++ b/include/media/v4l2-common.h
+@@ -541,6 +541,10 @@ int v4l2_fill_pixfmt_mp(struct v4l2_pix_format_mplane *pixfmt, u32 pixelformat,
+ s64 v4l2_get_link_freq(struct v4l2_ctrl_handler *handler, unsigned int mul,
+ 		       unsigned int div);
+ 
++void v4l2_simplify_fraction(u32 *numerator, u32 *denominator,
++		unsigned int n_terms, unsigned int threshold);
++u32 v4l2_fraction_to_interval(u32 numerator, u32 denominator);
++
+ static inline u64 v4l2_buffer_get_timestamp(const struct v4l2_buffer *buf)
+ {
+ 	/*
+diff --git a/include/media/v4l2-uvc.h b/include/media/v4l2-uvc.h
+new file mode 100644
+index 000000000000..f83e31661333
+--- /dev/null
++++ b/include/media/v4l2-uvc.h
+@@ -0,0 +1,359 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ *  v4l2 uvc internal API header
++ *
++ *  Some commonly needed functions for uvc drivers
++ */
++
++#ifndef __LINUX_V4L2_UVC_H
++#define __LINUX_V4L2_UVC_H
++
++/* ------------------------------------------------------------------------
++ * GUIDs
++ */
++#define UVC_GUID_UVC_CAMERA \
++	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
++	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}
++#define UVC_GUID_UVC_OUTPUT \
++	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
++	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02}
++#define UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT \
++	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
++	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03}
++#define UVC_GUID_UVC_PROCESSING \
++	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
++	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01}
++#define UVC_GUID_UVC_SELECTOR \
++	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
++	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02}
++#define UVC_GUID_EXT_GPIO_CONTROLLER \
++	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
++	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03}
++
++#define UVC_GUID_FORMAT_MJPEG \
++	{ 'M',  'J',  'P',  'G', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_YUY2 \
++	{ 'Y',  'U',  'Y',  '2', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_YUY2_ISIGHT \
++	{ 'Y',  'U',  'Y',  '2', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0x00, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_NV12 \
++	{ 'N',  'V',  '1',  '2', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_YV12 \
++	{ 'Y',  'V',  '1',  '2', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_I420 \
++	{ 'I',  '4',  '2',  '0', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_UYVY \
++	{ 'U',  'Y',  'V',  'Y', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y800 \
++	{ 'Y',  '8',  '0',  '0', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y8 \
++	{ 'Y',  '8',  ' ',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y10 \
++	{ 'Y',  '1',  '0',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y12 \
++	{ 'Y',  '1',  '2',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y16 \
++	{ 'Y',  '1',  '6',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_BY8 \
++	{ 'B',  'Y',  '8',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_BA81 \
++	{ 'B',  'A',  '8',  '1', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_GBRG \
++	{ 'G',  'B',  'R',  'G', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_GRBG \
++	{ 'G',  'R',  'B',  'G', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_RGGB \
++	{ 'R',  'G',  'G',  'B', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_BG16 \
++	{ 'B',  'G',  '1',  '6', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_GB16 \
++	{ 'G',  'B',  '1',  '6', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_RG16 \
++	{ 'R',  'G',  '1',  '6', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_GR16 \
++	{ 'G',  'R',  '1',  '6', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_RGBP \
++	{ 'R',  'G',  'B',  'P', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_BGR3 \
++	{ 0x7d, 0xeb, 0x36, 0xe4, 0x4f, 0x52, 0xce, 0x11, \
++	 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70}
++#define UVC_GUID_FORMAT_M420 \
++	{ 'M',  '4',  '2',  '0', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++
++#define UVC_GUID_FORMAT_H264 \
++	{ 'H',  '2',  '6',  '4', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_H265 \
++	{ 'H',  '2',  '6',  '5', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y8I \
++	{ 'Y',  '8',  'I',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Y12I \
++	{ 'Y',  '1',  '2',  'I', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_Z16 \
++	{ 'Z',  '1',  '6',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_RW10 \
++	{ 'R',  'W',  '1',  '0', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_INVZ \
++	{ 'I',  'N',  'V',  'Z', 0x90, 0x2d, 0x58, 0x4a, \
++	 0x92, 0x0b, 0x77, 0x3f, 0x1f, 0x2c, 0x55, 0x6b}
++#define UVC_GUID_FORMAT_INZI \
++	{ 'I',  'N',  'Z',  'I', 0x66, 0x1a, 0x42, 0xa2, \
++	 0x90, 0x65, 0xd0, 0x18, 0x14, 0xa8, 0xef, 0x8a}
++#define UVC_GUID_FORMAT_INVI \
++	{ 'I',  'N',  'V',  'I', 0xdb, 0x57, 0x49, 0x5e, \
++	 0x8e, 0x3f, 0xf4, 0x79, 0x53, 0x2b, 0x94, 0x6f}
++#define UVC_GUID_FORMAT_CNF4 \
++	{ 'C',  ' ',  ' ',  ' ', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++
++#define UVC_GUID_FORMAT_D3DFMT_L8 \
++	{0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++#define UVC_GUID_FORMAT_KSMEDIA_L8_IR \
++	{0x32, 0x00, 0x00, 0x00, 0x02, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++
++#define UVC_GUID_FORMAT_HEVC \
++	{ 'H',  'E',  'V',  'C', 0x00, 0x00, 0x10, 0x00, \
++	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
++
++/* ------------------------------------------------------------------------
++ * Video formats
++ */
++
++struct uvc_format_desc {
++	char *name;
++	u8 guid[16];
++	u32 fcc;
++};
++
++static struct uvc_format_desc uvc_fmts[] = {
++	{
++		.name		= "YUV 4:2:2 (YUYV)",
++		.guid		= UVC_GUID_FORMAT_YUY2,
++		.fcc		= V4L2_PIX_FMT_YUYV,
++	},
++	{
++		.name		= "YUV 4:2:2 (YUYV)",
++		.guid		= UVC_GUID_FORMAT_YUY2_ISIGHT,
++		.fcc		= V4L2_PIX_FMT_YUYV,
++	},
++	{
++		.name		= "YUV 4:2:0 (NV12)",
++		.guid		= UVC_GUID_FORMAT_NV12,
++		.fcc		= V4L2_PIX_FMT_NV12,
++	},
++	{
++		.name		= "MJPEG",
++		.guid		= UVC_GUID_FORMAT_MJPEG,
++		.fcc		= V4L2_PIX_FMT_MJPEG,
++	},
++	{
++		.name		= "YVU 4:2:0 (YV12)",
++		.guid		= UVC_GUID_FORMAT_YV12,
++		.fcc		= V4L2_PIX_FMT_YVU420,
++	},
++	{
++		.name		= "YUV 4:2:0 (I420)",
++		.guid		= UVC_GUID_FORMAT_I420,
++		.fcc		= V4L2_PIX_FMT_YUV420,
++	},
++	{
++		.name		= "YUV 4:2:0 (M420)",
++		.guid		= UVC_GUID_FORMAT_M420,
++		.fcc		= V4L2_PIX_FMT_M420,
++	},
++	{
++		.name		= "YUV 4:2:2 (UYVY)",
++		.guid		= UVC_GUID_FORMAT_UYVY,
++		.fcc		= V4L2_PIX_FMT_UYVY,
++	},
++	{
++		.name		= "Greyscale 8-bit (Y800)",
++		.guid		= UVC_GUID_FORMAT_Y800,
++		.fcc		= V4L2_PIX_FMT_GREY,
++	},
++	{
++		.name		= "Greyscale 8-bit (Y8  )",
++		.guid		= UVC_GUID_FORMAT_Y8,
++		.fcc		= V4L2_PIX_FMT_GREY,
++	},
++	{
++		.name		= "Greyscale 8-bit (D3DFMT_L8)",
++		.guid		= UVC_GUID_FORMAT_D3DFMT_L8,
++		.fcc		= V4L2_PIX_FMT_GREY,
++	},
++	{
++		.name		= "IR 8-bit (L8_IR)",
++		.guid		= UVC_GUID_FORMAT_KSMEDIA_L8_IR,
++		.fcc		= V4L2_PIX_FMT_GREY,
++	},
++	{
++		.name		= "Greyscale 10-bit (Y10 )",
++		.guid		= UVC_GUID_FORMAT_Y10,
++		.fcc		= V4L2_PIX_FMT_Y10,
++	},
++	{
++		.name		= "Greyscale 12-bit (Y12 )",
++		.guid		= UVC_GUID_FORMAT_Y12,
++		.fcc		= V4L2_PIX_FMT_Y12,
++	},
++	{
++		.name		= "Greyscale 16-bit (Y16 )",
++		.guid		= UVC_GUID_FORMAT_Y16,
++		.fcc		= V4L2_PIX_FMT_Y16,
++	},
++	{
++		.name		= "BGGR Bayer (BY8 )",
++		.guid		= UVC_GUID_FORMAT_BY8,
++		.fcc		= V4L2_PIX_FMT_SBGGR8,
++	},
++	{
++		.name		= "BGGR Bayer (BA81)",
++		.guid		= UVC_GUID_FORMAT_BA81,
++		.fcc		= V4L2_PIX_FMT_SBGGR8,
++	},
++	{
++		.name		= "GBRG Bayer (GBRG)",
++		.guid		= UVC_GUID_FORMAT_GBRG,
++		.fcc		= V4L2_PIX_FMT_SGBRG8,
++	},
++	{
++		.name		= "GRBG Bayer (GRBG)",
++		.guid		= UVC_GUID_FORMAT_GRBG,
++		.fcc		= V4L2_PIX_FMT_SGRBG8,
++	},
++	{
++		.name		= "RGGB Bayer (RGGB)",
++		.guid		= UVC_GUID_FORMAT_RGGB,
++		.fcc		= V4L2_PIX_FMT_SRGGB8,
++	},
++	{
++		.name		= "RGB565",
++		.guid		= UVC_GUID_FORMAT_RGBP,
++		.fcc		= V4L2_PIX_FMT_RGB565,
++	},
++	{
++		.name		= "BGR 8:8:8 (BGR3)",
++		.guid		= UVC_GUID_FORMAT_BGR3,
++		.fcc		= V4L2_PIX_FMT_BGR24,
++	},
++	{
++		.name		= "H.264",
++		.guid		= UVC_GUID_FORMAT_H264,
++		.fcc		= V4L2_PIX_FMT_H264,
++	},
++	{
++		.name		= "H.265",
++		.guid		= UVC_GUID_FORMAT_H265,
++		.fcc		= V4L2_PIX_FMT_HEVC,
++	},
++	{
++		.name		= "Greyscale 8 L/R (Y8I)",
++		.guid		= UVC_GUID_FORMAT_Y8I,
++		.fcc		= V4L2_PIX_FMT_Y8I,
++	},
++	{
++		.name		= "Greyscale 12 L/R (Y12I)",
++		.guid		= UVC_GUID_FORMAT_Y12I,
++		.fcc		= V4L2_PIX_FMT_Y12I,
++	},
++	{
++		.name		= "Depth data 16-bit (Z16)",
++		.guid		= UVC_GUID_FORMAT_Z16,
++		.fcc		= V4L2_PIX_FMT_Z16,
++	},
++	{
++		.name		= "Bayer 10-bit (SRGGB10P)",
++		.guid		= UVC_GUID_FORMAT_RW10,
++		.fcc		= V4L2_PIX_FMT_SRGGB10P,
++	},
++	{
++		.name		= "Bayer 16-bit (SBGGR16)",
++		.guid		= UVC_GUID_FORMAT_BG16,
++		.fcc		= V4L2_PIX_FMT_SBGGR16,
++	},
++	{
++		.name		= "Bayer 16-bit (SGBRG16)",
++		.guid		= UVC_GUID_FORMAT_GB16,
++		.fcc		= V4L2_PIX_FMT_SGBRG16,
++	},
++	{
++		.name		= "Bayer 16-bit (SRGGB16)",
++		.guid		= UVC_GUID_FORMAT_RG16,
++		.fcc		= V4L2_PIX_FMT_SRGGB16,
++	},
++	{
++		.name		= "Bayer 16-bit (SGRBG16)",
++		.guid		= UVC_GUID_FORMAT_GR16,
++		.fcc		= V4L2_PIX_FMT_SGRBG16,
++	},
++	{
++		.name		= "Depth data 16-bit (Z16)",
++		.guid		= UVC_GUID_FORMAT_INVZ,
++		.fcc		= V4L2_PIX_FMT_Z16,
++	},
++	{
++		.name		= "Greyscale 10-bit (Y10 )",
++		.guid		= UVC_GUID_FORMAT_INVI,
++		.fcc		= V4L2_PIX_FMT_Y10,
++	},
++	{
++		.name		= "IR:Depth 26-bit (INZI)",
++		.guid		= UVC_GUID_FORMAT_INZI,
++		.fcc		= V4L2_PIX_FMT_INZI,
++	},
++	{
++		.name		= "4-bit Depth Confidence (Packed)",
++		.guid		= UVC_GUID_FORMAT_CNF4,
++		.fcc		= V4L2_PIX_FMT_CNF4,
++	},
++	{
++		.name		= "HEVC",
++		.guid		= UVC_GUID_FORMAT_HEVC,
++		.fcc		= V4L2_PIX_FMT_HEVC,
++	},
++};
++
++static inline struct uvc_format_desc *uvc_format_by_guid(const u8 guid[16])
++{
++	unsigned int len = ARRAY_SIZE(uvc_fmts);
++	unsigned int i;
++
++	for (i = 0; i < len; ++i) {
++		if (memcmp(guid, uvc_fmts[i].guid, 16) == 0)
++			return &uvc_fmts[i];
++	}
++
++	return NULL;
++}
++
++#endif /* __LINUX_V4L2_UVC_H */
+-- 
+2.43.0
+

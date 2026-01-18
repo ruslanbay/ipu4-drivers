@@ -1,0 +1,119 @@
+From f15a63e4a4aa608570cc8126f8199fb477e7cac5 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 14 Jan 2026 13:27:07 +0100
+Subject: [PATCH 36/39] isys_isr_one: use IPU6 implementation:
+ https://github.com/intel/ipu6-drivers/blob/master/drivers/media/pci/intel/ipu-isys.c#L1512
+
+---
+ drivers/media/pci/intel/ipu-isys-video.c | 15 +++++++++++++++
+ drivers/media/pci/intel/ipu-isys-video.h |  5 +++++
+ drivers/media/pci/intel/ipu-isys.c       | 19 +++++++++++++++++--
+ 3 files changed, 37 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index 550e344f7..3ccb4a0f9 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -2321,3 +2321,18 @@ void ipu_isys_video_cleanup(struct ipu_isys_video *av)
+ 	mutex_destroy(&av->mutex);
+ 	ipu_isys_queue_cleanup(&av->aq);
+ }
++
++void ipu_put_fw_msg_buf(struct ipu_isys_pipeline *ip, u64 data)
++{
++	struct isys_fw_msgs *msg;
++	unsigned long flags;
++	u64 *ptr = (u64 *)(unsigned long)data;
++
++	if (!ptr)
++		return;
++
++	spin_lock_irqsave(&ip->listlock, flags);
++	msg = container_of(ptr, struct isys_fw_msgs, fw_msg.dummy);
++	list_move(&msg->head, &ip->framebuflist);
++	spin_unlock_irqrestore(&ip->listlock, flags);
++}
+diff --git a/drivers/media/pci/intel/ipu-isys-video.h b/drivers/media/pci/intel/ipu-isys-video.h
+index a0612f7eb..c2f7a3c28 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.h
++++ b/drivers/media/pci/intel/ipu-isys-video.h
+@@ -95,6 +95,10 @@ struct ipu_isys_pipeline {
+ 	struct completion capture_ack_completion;
+ 	struct ipu_isys *isys;
+ 
++	spinlock_t listlock;	/* Protect framebuflist */
++	struct list_head framebuflist;
++	struct list_head framebuflist_fw;
++
+ 	void (*capture_done[IPU_NUM_CAPTURE_DONE])
+ 	 (struct ipu_isys_pipeline *ip,
+ 	  struct ipu_fw_isys_resp_info_abi *resp);
+@@ -173,6 +177,7 @@ ipu_isys_video_try_fmt_vid_mplane(struct ipu_isys_video *av,
+ void ipu_isys_prepare_firmware_stream_cfg_default(
+ 	struct ipu_isys_video *av,
+ 	struct ipu_fw_isys_stream_cfg_data_abi *cfg);
++void ipu_put_fw_msg_buf(struct ipu_isys_pipeline *ip, u64 data);
+ int ipu_isys_video_prepare_streaming(struct ipu_isys_video *av,
+ 				     unsigned int state);
+ int ipu_isys_video_set_streaming(struct ipu_isys_video *av, unsigned int state,
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index 88f6f8b8d..5e65d7dce 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -1029,7 +1029,7 @@ int isys_isr_one(struct ipu_bus_device *adev)
+ 	if (!resp)
+ 		return 1;
+ 
+-	ts = (u64) resp->timestamp[1] << 32 | resp->timestamp[0];
++	ts = (u64)resp->timestamp[1] << 32 | resp->timestamp[0];
+ 
+ 	if (resp->error_info.error == IPU_FW_ISYS_ERROR_STREAM_IN_SUSPENSION)
+ 		/* Suspension is kind of special case: not enough buffers */
+@@ -1095,6 +1095,11 @@ int isys_isr_one(struct ipu_bus_device *adev)
+ 		complete(&pipe->stream_stop_completion);
+ 		break;
+ 	case IPU_FW_ISYS_RESP_TYPE_PIN_DATA_READY:
++		/*
++		 * firmware only release the capture msg until software
++		 * get pin_data_ready event
++		 */
++		ipu_put_fw_msg_buf(pipe, resp->buf_id);
+ 		if (resp->pin_id < IPU_ISYS_OUTPUT_PINS &&
+ 		    pipe->output_pins[resp->pin_id].pin_ready)
+ 			pipe->output_pins[resp->pin_id].pin_ready(pipe, resp);
+@@ -1102,6 +1107,10 @@ int isys_isr_one(struct ipu_bus_device *adev)
+ 			dev_err(&adev->dev,
+ 				"%d:No data pin ready handler for pin id %d\n",
+ 				resp->stream_handle, resp->pin_id);
++		
++		if (pipe->csi2)
++			ipu_isys_csi2_error(pipe->csi2);
++
+ 		break;
+ 	case IPU_FW_ISYS_RESP_TYPE_STREAM_CAPTURE_ACK:
+ 		ipu_put_fw_mgs_buffer(ipu_bus_get_drvdata(adev), resp->buf_id);
+@@ -1149,6 +1158,9 @@ int isys_isr_one(struct ipu_bus_device *adev)
+ 
+ 		break;
+ 	case IPU_FW_ISYS_RESP_TYPE_FRAME_SOF:
++		if (pipe->csi2)
++			ipu_isys_csi2_error(pipe->csi2);
++
+ 		pipe->seq[pipe->seq_index].sequence =
+ 		    atomic_read(&pipe->sequence) - 1;
+ 		pipe->seq[pipe->seq_index].timestamp = ts;
+@@ -1160,7 +1172,10 @@ int isys_isr_one(struct ipu_bus_device *adev)
+ 		    % IPU_ISYS_MAX_PARALLEL_SOF;
+ 		break;
+ 	case IPU_FW_ISYS_RESP_TYPE_FRAME_EOF:
+-
++		for (i = 0; i < NR_OF_CSI2_VC; i++) {
++			if (pipe->csi2)
++				ipu_isys_csi2_eof_event(pipe->csi2, i);
++		}
+ 
+ 		dev_dbg(&adev->dev,
+ 			"eof: handle %d: (index %u), timestamp 0x%16.16llx\n",
+-- 
+2.48.1
+

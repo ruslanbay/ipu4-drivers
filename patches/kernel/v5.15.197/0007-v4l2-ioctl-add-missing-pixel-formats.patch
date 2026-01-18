@@ -1,0 +1,50 @@
+From 2143eddaa22c8f3b88ad23c9de347e25638980e6 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 30 Dec 2025 04:05:48 +0100
+Subject: [PATCH 07/16] v4l2-ioctl: add missing pixel formats
+
+---
+ drivers/media/v4l2-core/v4l2-ioctl.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
+index 2c48abc69609..e7ff60274bdf 100644
+--- a/drivers/media/v4l2-core/v4l2-ioctl.c
++++ b/drivers/media/v4l2-core/v4l2-ioctl.c
+@@ -1388,6 +1388,33 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
+ 	case V4L2_META_FMT_VIVID:       descr = "Vivid Metadata"; break;
+ 	case V4L2_META_FMT_RK_ISP1_PARAMS:	descr = "Rockchip ISP1 3A Parameters"; break;
+ 	case V4L2_META_FMT_RK_ISP1_STAT_3A:	descr = "Rockchip ISP1 3A Statistics"; break;
++	/* Raw bayer vector formats. */
++	case V4L2_PIX_FMT_SBGGR8V32: descr = "8-bit Bayer BGBG/GRGR Vector"; break;
++	case V4L2_PIX_FMT_SGBRG8V32: descr = "8-bit Bayer GBGB/RGRG Vector"; break;
++	case V4L2_PIX_FMT_SGRBG8V32: descr = "8-bit Bayer GRGR/BGBG Vector"; break;
++	case V4L2_PIX_FMT_SRGGB8V32: descr = "8-bit Bayer RGRG/GBGB Vector"; break;
++	// case V4L2_PIX_FMT_SBGGR8_16V32: descr = "8-bit Bayer BGBG/GRGR Vector"; break;
++	// case V4L2_PIX_FMT_SGBRG8_16V32: descr = "8-bit Bayer GBGB/RGRG Vector"; break;
++	// case V4L2_PIX_FMT_SGRBG8_16V32: descr = "8-bit Bayer GRGR/BGBG Vector"; break;
++	// case V4L2_PIX_FMT_SRGGB8_16V32: descr = "8-bit Bayer RGRG/GBGB Vector"; break;
++	case V4L2_PIX_FMT_SBGGR10V32: descr = "10-bit Bayer BGBG/GRGR Vector"; break;
++	case V4L2_PIX_FMT_SGBRG10V32: descr = "10-bit Bayer GBGB/RGRG Vector"; break;
++	case V4L2_PIX_FMT_SGRBG10V32: descr = "10-bit Bayer GRGR/BGBG Vector"; break;
++	case V4L2_PIX_FMT_SRGGB10V32: descr = "10-bit Bayer RGRG/GBGB Vector"; break;
++	case V4L2_PIX_FMT_SBGGR12V32: descr = "12-bit Bayer BGBG/GRGR Vector"; break;
++	case V4L2_PIX_FMT_SGBRG12V32: descr = "12-bit Bayer GBGB/RGRG Vector"; break;
++	case V4L2_PIX_FMT_SGRBG12V32: descr = "12-bit Bayer GRGR/BGBG Vector"; break;
++	case V4L2_PIX_FMT_SRGGB12V32: descr = "12-bit Bayer RGRG/GBGB Vector"; break;
++	case V4L2_PIX_FMT_SBGGR14V32: descr = "14-bit Bayer RGRG/GBGB Vector"; break;
++	case V4L2_PIX_FMT_SGBRG14V32: descr = "14-bit Bayer RGRG/GBGB Vector"; break;
++	case V4L2_PIX_FMT_SGRBG14V32: descr = "14-bit Bayer RGRG/GBGB Vector"; break;
++	case V4L2_PIX_FMT_SRGGB14V32: descr = "14-bit Bayer RGRG/GBGB Vector"; break;
++	/* YUV vector formats. */
++	case V4L2_PIX_FMT_YUYV420_V32:	descr = "YUYV 4:2:2 Vector"; break;
++	case V4L2_PIX_FMT_UYVY_V32:	descr = "UYVY 4:2:2 Vector"; break;
++	/* IPU 4 */
++	case V4L2_FMT_IPU_ISA_CFG:	descr = "IPU4 fourcc = ip4c)"; break;
++	case V4L2_FMT_IPU_ISYS_META:	descr = "IPU4 fourcc = ip4m)"; break;
+ 
+ 	default:
+ 		/* Compressed formats */
+-- 
+2.43.0
+

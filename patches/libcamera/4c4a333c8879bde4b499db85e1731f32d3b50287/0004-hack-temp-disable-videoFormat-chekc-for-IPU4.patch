@@ -1,0 +1,29 @@
+From 7418251adff473ba43874bba93f647eba6101ee3 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 24 Dec 2025 17:30:21 +0100
+Subject: [PATCH 4/5] hack: temp disable videoFormat chekc for IPU4
+
+---
+ src/libcamera/pipeline/simple/simple.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/libcamera/pipeline/simple/simple.cpp b/src/libcamera/pipeline/simple/simple.cpp
+index 77a192f6..c6613eb4 100644
+--- a/src/libcamera/pipeline/simple/simple.cpp
++++ b/src/libcamera/pipeline/simple/simple.cpp
+@@ -1553,9 +1553,9 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (captureFormat.fourcc != videoFormat) {
+-		return -EINVAL;
+-	}
++	// if (captureFormat.fourcc != videoFormat) {
++	// 	return -EINVAL;
++	// }
+ 
+ 	if (captureFormat.size != pipeConfig->captureSize) {
+ 		LOG(SimplePipeline, Error)
+-- 
+2.43.0
+

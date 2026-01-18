@@ -1,0 +1,34 @@
+Format: 1.8
+Date: Fri, 16 Jan 2026 15:10:35 +0100
+Source: linux-upstream
+Binary: linux-headers-6.1.159-sp7 linux-image-6.1.159-sp7 linux-libc-dev
+Built-For-Profiles: noudeb
+Architecture: amd64
+Version: 6.1.159-sp7-31
+Distribution: noble
+Urgency: low
+Maintainer: user <user@pc>
+Changed-By: user <user@pc>
+Description:
+ linux-headers-6.1.159-sp7 - Linux kernel headers for 6.1.159-sp7 on amd64
+ linux-image-6.1.159-sp7 - Linux kernel, version 6.1.159-sp7
+ linux-libc-dev - Linux support headers for userspace development
+Changes:
+ linux-upstream (6.1.159-sp7-31) noble; urgency=low
+ .
+   * Custom built Linux kernel.
+Checksums-Sha1:
+ 9f5e613b785605afb9183f2a966d79fb240e14f6 9381406 linux-headers-6.1.159-sp7_6.1.159-sp7-31_amd64.deb
+ 9125808dad19eb792197f564b362673d0aa7f4c8 87815438 linux-image-6.1.159-sp7_6.1.159-sp7-31_amd64.deb
+ 4d7b4987877d781c1ffca32f45f36b9077822b07 1319578 linux-libc-dev_6.1.159-sp7-31_amd64.deb
+ 296b1a65c9e4fc569ee798d156471d2e408d1c89 6257 linux-upstream_6.1.159-sp7-31_amd64.buildinfo
+Checksums-Sha256:
+ a4811a0a64bea82f1232f4f2401d2791b2bad79d046b2954804e3cb49cefb90f 9381406 linux-headers-6.1.159-sp7_6.1.159-sp7-31_amd64.deb
+ 56c0fb7fce28cdcf443e593dde22832fcfb78f697d002c959482019e5bae5e6d 87815438 linux-image-6.1.159-sp7_6.1.159-sp7-31_amd64.deb
+ 20ec8ce7ecac6c58e6b369c3a8d5cd945687d6aa20bf187f12cdb7e817f37b29 1319578 linux-libc-dev_6.1.159-sp7-31_amd64.deb
+ d99127f3dc2055fafe75a3e3a127918c50f51a25cfbc383e7321a826828173bf 6257 linux-upstream_6.1.159-sp7-31_amd64.buildinfo
+Files:
+ 92dfb3923c906331d3333a5b589aa4e3 9381406 kernel optional linux-headers-6.1.159-sp7_6.1.159-sp7-31_amd64.deb
+ 8243b26449a07af6370abccce97c479a 87815438 kernel optional linux-image-6.1.159-sp7_6.1.159-sp7-31_amd64.deb
+ 1524a171c51dff9c7877ffe2a2182ad3 1319578 devel optional linux-libc-dev_6.1.159-sp7-31_amd64.deb
+ db851a3ee60269a2da6660a1c979735d 6257 kernel optional linux-upstream_6.1.159-sp7-31_amd64.buildinfo

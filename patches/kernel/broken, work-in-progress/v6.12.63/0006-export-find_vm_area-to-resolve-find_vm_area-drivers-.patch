@@ -1,0 +1,25 @@
+From b79a81b5f2bed2e01bd8c8851749090d21d3ac35 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sat, 13 Dec 2025 22:16:09 +0100
+Subject: [PATCH 06/29] export find_vm_area to resolve `"find_vm_area"
+ [drivers/media/pci/intel/ipu4/intel-ipu4.ko] undefined!`
+
+---
+ mm/vmalloc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 3519c4e4f841..9ad7adcaf0e2 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3214,6 +3214,7 @@ struct vm_struct *find_vm_area(const void *addr)
+ 
+ 	return va->vm;
+ }
++EXPORT_SYMBOL(find_vm_area);
+ 
+ /**
+  * remove_vm_area - find and remove a continuous kernel virtual area
+-- 
+2.51.0
+

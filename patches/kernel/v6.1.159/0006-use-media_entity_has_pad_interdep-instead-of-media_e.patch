@@ -1,0 +1,63 @@
+From 2a6cb03e28f825abe1cc60a54bb2d065a3e70e61 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 7 Jan 2026 18:22:01 +0100
+Subject: [PATCH 06/39] use media_entity_has_pad_interdep instead of
+ media_entity_has_route
+
+---
+ drivers/media/pci/intel/ipu-isys-csi2-be-soc.c | 4 ++--
+ drivers/media/pci/intel/ipu-isys-csi2.c        | 2 +-
+ drivers/media/pci/intel/ipu-isys-subdev.c      | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-csi2-be-soc.c b/drivers/media/pci/intel/ipu-isys-csi2-be-soc.c
+index c2cfc2b7e..a6947aac3 100644
+--- a/drivers/media/pci/intel/ipu-isys-csi2-be-soc.c
++++ b/drivers/media/pci/intel/ipu-isys-csi2-be-soc.c
+@@ -148,7 +148,7 @@ static struct v4l2_subdev_ops csi2_be_soc_sd_ops = {
+ 
+ static struct media_entity_operations csi2_be_soc_entity_ops = {
+ 	.link_validate = v4l2_subdev_link_validate,
+-	.has_route = ipu_isys_subdev_has_route,
++	.has_pad_interdep = ipu_isys_subdev_has_route,
+ };
+ 
+ static void csi2_be_soc_set_ffmt(struct v4l2_subdev *sd,
+@@ -182,7 +182,7 @@ static void csi2_be_soc_set_ffmt(struct v4l2_subdev *sd,
+ 		int i;
+ 
+ 		for (i = 0; i < asd->nsinks; i++)
+-			if (media_entity_has_route(&sd->entity, fmt->pad, i))
++			if (media_entity_has_pad_interdep(&sd->entity, fmt->pad, i))
+ 				break;
+ 		if (i != asd->nsinks)
+ 			sink_pad = i;
+diff --git a/drivers/media/pci/intel/ipu-isys-csi2.c b/drivers/media/pci/intel/ipu-isys-csi2.c
+index a154ecead..e616d0408 100644
+--- a/drivers/media/pci/intel/ipu-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu-isys-csi2.c
+@@ -527,7 +527,7 @@ static struct v4l2_subdev_ops csi2_sd_ops = {
+ 
+ static struct media_entity_operations csi2_entity_ops = {
+ 	.link_validate = csi2_link_validate,
+-	.has_route = csi2_has_route,
++	.has_pad_interdep = csi2_has_route,
+ };
+ 
+ static void csi2_set_ffmt(struct v4l2_subdev *sd,
+diff --git a/drivers/media/pci/intel/ipu-isys-subdev.c b/drivers/media/pci/intel/ipu-isys-subdev.c
+index 6a514a7fc..d07454951 100644
+--- a/drivers/media/pci/intel/ipu-isys-subdev.c
++++ b/drivers/media/pci/intel/ipu-isys-subdev.c
+@@ -297,7 +297,7 @@ int ipu_isys_subdev_fmt_propagate(struct v4l2_subdev *sd,
+ 			/* n:n case: propagate according to route info */
+ 		} else if (asd->nsinks == asd->nsources && asd->nsources > 1) {
+ 			for (i = asd->nsinks; i < sd->entity.num_pads; i++)
+-				if (media_entity_has_route(&sd->entity, pad, i))
++				if (media_entity_has_pad_interdep(&sd->entity, pad, i))
+ 					break;
+ 
+ 			if (i != sd->entity.num_pads) {
+-- 
+2.48.1
+

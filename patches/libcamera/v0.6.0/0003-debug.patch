@@ -1,0 +1,50 @@
+From f944059752e8d8b536be984ad65d4ac855181260 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sat, 20 Dec 2025 17:11:12 +0100
+Subject: [PATCH 3/3] pipeline: simple: Debug
+
+---
+ libcamera/src/libcamera/pipeline/simple/simple.cpp | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/libcamera/src/libcamera/pipeline/simple/simple.cpp b/libcamera/src/libcamera/pipeline/simple/simple.cpp
+index 7fd629d..065e5ba 100644
+--- a/libcamera/src/libcamera/pipeline/simple/simple.cpp
++++ b/libcamera/src/libcamera/pipeline/simple/simple.cpp
+@@ -1429,6 +1429,10 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 	V4L2PixelFormat videoFormat;
+ 	if (format.code == pipeConfig->code) {
+ 		videoFormat = video->toV4L2PixelFormat(pipeConfig->captureFormat);
++		LOG(SimplePipeline, Debug)
++			<< "format.code == pipeConfig->code;"
++			<< " videoFormat = " << videoFormat
++			<< "; pipeConfig->captureFormat = " << pipeConfig->captureFormat;
+ 	} else {
+ 		/*
+ 		 * Bayer pattern has changed because of the transform that was applied on
+@@ -1438,6 +1442,9 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 		BayerFormat cfgBayer = BayerFormat::fromPixelFormat(pipeConfig->captureFormat);
+ 		cfgBayer.order = data->sensor_->bayerOrder(config->combinedTransform());
+ 		videoFormat = cfgBayer.toV4L2PixelFormat();
++		LOG(SimplePipeline, Debug)
++			<< "format.code != pipeConfig->code"
++			<< "; videoFormat = " << videoFormat;
+ 	}
+ 
+ 	V4L2DeviceFormat captureFormat;
+@@ -1456,6 +1463,12 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 
+ 	if (captureFormat.fourcc != videoFormat ||
+ 	    captureFormat.size != pipeConfig->captureSize) {
++		LOG(SimplePipeline, Debug)
++			<< "captureFormat.fourcc = " << captureFormat.fourcc
++			<< "; videoFormat = " << videoFormat;
++		LOG(SimplePipeline, Debug)
++			<< "captureFormat.size = " << captureFormat.size
++			<< "; pipeConfig->captureSize = " << pipeConfig->captureSize;
+ 		LOG(SimplePipeline, Error)
+ 			<< "Unable to configure capture in "
+ 			<< pipeConfig->captureSize << "-" << videoFormat
+-- 
+2.51.0
+

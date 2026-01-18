@@ -1,0 +1,61 @@
+From 2959f2d6228f34a9bc848bb028177c160a484fea Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 13 Jan 2026 15:52:54 +0100
+Subject: [PATCH 2/4] add missing pixel formats
+
+---
+ include/linux/videodev2.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/include/linux/videodev2.h b/include/linux/videodev2.h
+index b40b43d7..97102b07 100644
+--- a/include/linux/videodev2.h
++++ b/include/linux/videodev2.h
+@@ -717,6 +717,44 @@ struct v4l2_pix_format {
+ #define V4L2_PIX_FMT_SGBRG16 v4l2_fourcc('G', 'B', '1', '6') /* 16  GBGB.. RGRG.. */
+ #define V4L2_PIX_FMT_SGRBG16 v4l2_fourcc('G', 'R', '1', '6') /* 16  GRGR.. BGBG.. */
+ #define V4L2_PIX_FMT_SRGGB16 v4l2_fourcc('R', 'G', '1', '6') /* 16  RGRG.. GBGB.. */
++ 
++/* Raw bayer vector formats. */
++#define V4L2_PIX_FMT_SBGGR8_16V32 v4l2_fourcc('b', 'V', '0', 'A')
++#define V4L2_PIX_FMT_SGBRG8_16V32 v4l2_fourcc('b', 'V', '0', 'B')
++#define V4L2_PIX_FMT_SGRBG8_16V32 v4l2_fourcc('b', 'V', '0', 'C')
++#define V4L2_PIX_FMT_SRGGB8_16V32 v4l2_fourcc('b', 'V', '0', 'D')
++#define V4L2_PIX_FMT_SBGGR8V32 v4l2_fourcc('b', 'V', '0', 'A')
++#define V4L2_PIX_FMT_SGBRG8V32 v4l2_fourcc('b', 'V', '0', 'B')
++#define V4L2_PIX_FMT_SGRBG8V32 v4l2_fourcc('b', 'V', '0', 'C')
++#define V4L2_PIX_FMT_SRGGB8V32 v4l2_fourcc('b', 'V', '0', 'D')
++#define V4L2_PIX_FMT_SBGGR10V32 v4l2_fourcc('b', 'V', '0', 'E')
++#define V4L2_PIX_FMT_SGBRG10V32 v4l2_fourcc('b', 'V', '0', 'F')
++#define V4L2_PIX_FMT_SGRBG10V32 v4l2_fourcc('b', 'V', '0', 'G')
++#define V4L2_PIX_FMT_SRGGB10V32 v4l2_fourcc('b', 'V', '0', 'H')
++#define V4L2_PIX_FMT_SBGGR12V32 v4l2_fourcc('b', 'V', '0', 'I')
++#define V4L2_PIX_FMT_SGBRG12V32 v4l2_fourcc('b', 'V', '0', 'J')
++#define V4L2_PIX_FMT_SGRBG12V32 v4l2_fourcc('b', 'V', '0', 'K')
++#define V4L2_PIX_FMT_SRGGB12V32 v4l2_fourcc('b', 'V', '0', 'L')
++
++#ifndef V4L2_PIX_FMT_SBGGR14V32
++/*
++ * Non-vectorized 14bit definitions have been upstreamed.
++ * To keep various versions of the ipu4 builds compileable use local
++ * definitions when global one's doesn't exists.
++ */
++#define V4L2_PIX_FMT_SBGGR14V32	v4l2_fourcc('b', 'V', '0', 'M')
++#define V4L2_PIX_FMT_SGBRG14V32	v4l2_fourcc('b', 'V', '0', 'N')
++#define V4L2_PIX_FMT_SGRBG14V32	v4l2_fourcc('b', 'V', '0', 'O')
++#define V4L2_PIX_FMT_SRGGB14V32	v4l2_fourcc('b', 'V', '0', 'P')
++#endif
++
++/* YUV vector formats. */
++#define V4L2_PIX_FMT_UYVY_V32 v4l2_fourcc('y', 'V', '3', '2')
++#define V4L2_PIX_FMT_YUYV420_V32 v4l2_fourcc('y', '0', '3', '2')
++
++/* IPU4 */
++#define V4L2_FMT_IPU_ISA_CFG	v4l2_fourcc('i', 'p', '4', 'c')
++#define V4L2_FMT_IPU_ISYS_META	v4l2_fourcc('i', 'p', '4', 'm')
+ 
+ /* HSV formats */
+ #define V4L2_PIX_FMT_HSV24 v4l2_fourcc('H', 'S', 'V', '3')
+-- 
+2.51.0
+

@@ -1,0 +1,150 @@
+From 7fb23be9149c9cd1bea6bcef2c6b524d98b10c9b Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Thu, 15 Jan 2026 11:09:45 +0100
+Subject: [PATCH 37/39] use readl_poll_timeout instead of do-while loops
+
+---
+ drivers/media/pci/intel/ipu-buttress.c | 96 ++++++++++----------------
+ 1 file changed, 38 insertions(+), 58 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-buttress.c b/drivers/media/pci/intel/ipu-buttress.c
+index b6c5e590d..a29aae794 100644
+--- a/drivers/media/pci/intel/ipu-buttress.c
++++ b/drivers/media/pci/intel/ipu-buttress.c
+@@ -11,6 +11,7 @@
+ #include <linux/elf.h>
+ #include <linux/errno.h>
+ #include <linux/firmware.h>
++#include <linux/iopoll.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/pm_runtime.h>
+@@ -836,9 +837,8 @@ int ipu_buttress_authenticate(struct ipu_device *isp)
+ {
+ 	struct ipu_psys_pdata *psys_pdata;
+ 	struct ipu_buttress *b = &isp->buttress;
+-	u32 data;
++	u32 data, mask, done, fail;
+ 	int rval;
+-	unsigned long tout_jfs;
+ 
+ 	if (!isp->secure_mode) {
+ 		dev_dbg(&isp->pdev->dev,
+@@ -886,45 +886,31 @@ int ipu_buttress_authenticate(struct ipu_device *isp)
+ 		goto iunit_power_off;
+ 	}
+ 
+-	tout_jfs = jiffies + msecs_to_jiffies(BUTTRESS_CSE_BOOTLOAD_TIMEOUT);
+-	do {
+-		data = readl(isp->base + BUTTRESS_REG_SECURITY_CTL);
+-		data &= BUTTRESS_SECURITY_CTL_FW_SETUP_MASK;
+-		if (data == BUTTRESS_SECURITY_CTL_FW_SETUP_DONE) {
+-			dev_dbg(&isp->pdev->dev, "CSE boot_load done\n");
+-			break;
+-		} else if (data == BUTTRESS_SECURITY_CTL_AUTH_FAILED) {
+-			dev_err(&isp->pdev->dev, "CSE boot_load failed\n");
+-			rval = -EINVAL;
+-			goto iunit_power_off;
+-		}
+-		usleep_range(500, 1000);
+-	} while (!time_after(jiffies, tout_jfs));
+-
+-	if (data != BUTTRESS_SECURITY_CTL_FW_SETUP_DONE) {
+-		dev_err(&isp->pdev->dev, "CSE boot_load timed out\n");
+-		rval = -ETIMEDOUT;
++	mask = BUTTRESS_SECURITY_CTL_FW_SETUP_MASK;
++	done = BUTTRESS_SECURITY_CTL_FW_SETUP_DONE;
++	fail = BUTTRESS_SECURITY_CTL_AUTH_FAILED;
++	rval = readl_poll_timeout(isp->base + BUTTRESS_REG_SECURITY_CTL, data,
++				  ((data & mask) == done ||
++				   (data & mask) == fail), 500,
++				  BUTTRESS_CSE_BOOTLOAD_TIMEOUT);
++	if (rval) {
++		dev_err(&isp->pdev->dev, "CSE boot_load timeout\n");
+ 		goto iunit_power_off;
+ 	}
+ 
+-	tout_jfs = jiffies + msecs_to_jiffies(BUTTRESS_CSE_BOOTLOAD_TIMEOUT);
+-	do {
+-		data = readl(psys_pdata->base + BOOTLOADER_STATUS_OFFSET);
+-		dev_dbg(&isp->pdev->dev, "%s: BOOTLOADER_STATUS 0x%x",
+-			__func__, data);
+-		if (data == BOOTLOADER_MAGIC_KEY) {
+-			dev_dbg(&isp->pdev->dev,
+-				"%s: Expected magic number found, breaking...",
+-				__func__);
+-			break;
+-		}
+-		usleep_range(500, 1000);
+-	} while (!time_after(jiffies, tout_jfs));
++	data = readl(isp->base + BUTTRESS_REG_SECURITY_CTL) & mask;
++	if (data == fail) {
++		dev_err(&isp->pdev->dev, "CSE auth failed\n");
++		rval = -EINVAL;
++		goto iunit_power_off;
++	}
+ 
+-	if (data != BOOTLOADER_MAGIC_KEY) {
+-		dev_dbg(&isp->pdev->dev,
+-			"%s: CSE boot_load timed out...\n", __func__);
+-		rval = -ETIMEDOUT;
++	rval = readl_poll_timeout(psys_pdata->base + BOOTLOADER_STATUS_OFFSET,
++				  data, data == BOOTLOADER_MAGIC_KEY, 500,
++				  BUTTRESS_CSE_BOOTLOAD_TIMEOUT);
++	if (rval) {
++		dev_err(&isp->pdev->dev, "Expect magic number timeout 0x%x\n",
++			data);
+ 		goto iunit_power_off;
+ 	}
+ 
+@@ -943,32 +929,26 @@ int ipu_buttress_authenticate(struct ipu_device *isp)
+ 		goto iunit_power_off;
+ 	}
+ 
+-	tout_jfs = jiffies;
+-	tout_jfs += msecs_to_jiffies(BUTTRESS_CSE_AUTHENTICATE_TIMEOUT);
+-	do {
+-		data = readl(isp->base + BUTTRESS_REG_SECURITY_CTL);
+-		data &= BUTTRESS_SECURITY_CTL_FW_SETUP_MASK;
+-		if (data == BUTTRESS_SECURITY_CTL_AUTH_DONE) {
+-			dev_dbg(&isp->pdev->dev, "CSE authenticate_run done\n");
+-			break;
+-		} else if (data == BUTTRESS_SECURITY_CTL_AUTH_FAILED) {
+-			dev_err(&isp->pdev->dev,
+-				"CSE authenticate_run failed\n");
+-			rval = -EINVAL;
+-			goto iunit_power_off;
+-		}
+-		usleep_range(500, 1000);
+-	} while (!time_after(jiffies, tout_jfs));
++	done = BUTTRESS_SECURITY_CTL_AUTH_DONE;
++	rval = readl_poll_timeout(isp->base + BUTTRESS_REG_SECURITY_CTL, data,
++				  ((data & mask) == done ||
++				   (data & mask) == fail), 500,
++				  BUTTRESS_CSE_AUTHENTICATE_TIMEOUT);
++	if (rval) {
++		dev_err(&isp->pdev->dev, "CSE authenticate timeout\n");
++		goto iunit_power_off;
++	}
+ 
+-	if (data != BUTTRESS_SECURITY_CTL_AUTH_DONE) {
+-		dev_err(&isp->pdev->dev, "CSE authenticate_run timed out\n");
+-		rval = -ETIMEDOUT;
++	data = readl(isp->base + BUTTRESS_REG_SECURITY_CTL) & mask;
++	if (data == fail) {
++		dev_err(&isp->pdev->dev, "CSE boot_load failed\n");
++		rval = -EINVAL;
+ 		goto iunit_power_off;
+ 	}
+ 
+-iunit_power_off:
+-	pm_runtime_put(&isp->psys_iommu->dev);
++	dev_info(&isp->pdev->dev, "CSE authenticate_run done\n");
+ 
++iunit_power_off:
+ 	mutex_unlock(&b->auth_mutex);
+ 
+ 	return rval;
+-- 
+2.48.1
+

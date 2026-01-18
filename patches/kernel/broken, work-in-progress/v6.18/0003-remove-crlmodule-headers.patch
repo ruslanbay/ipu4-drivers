@@ -1,0 +1,35 @@
+From 149c5f7618edb72fa0f29b3ee6435aa9df7ee514 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sun, 21 Dec 2025 17:06:51 +0100
+Subject: [PATCH 03/31] remove crlmodule headers
+
+---
+ drivers/media/pci/intel/ipu-isys-tpg.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-tpg.c b/drivers/media/pci/intel/ipu-isys-tpg.c
+index 8928cbaf2091..615f31bb1a67 100644
+--- a/drivers/media/pci/intel/ipu-isys-tpg.c
++++ b/drivers/media/pci/intel/ipu-isys-tpg.c
+@@ -3,7 +3,6 @@
+ 
+ #include <linux/device.h>
+ #include <linux/module.h>
+-#include <linux/crlmodule.h>
+ 
+ #include <media/media-entity.h>
+ #include <media/v4l2-device.h>
+@@ -17,6 +16,10 @@
+ #include "ipu-isys-video.h"
+ #include "ipu-platform-isys-csi2-reg.h"
+ 
++#define V4L2_CID_CRLMODULE_BASE (V4L2_CID_USER_BASE + 0x2050)
++#define V4L2_CID_FRAME_LENGTH_LINES (V4L2_CID_CRLMODULE_BASE + 1)
++#define V4L2_CID_LINE_LENGTH_PIXELS (V4L2_CID_CRLMODULE_BASE + 2)
++
+ static const u32 tpg_supported_codes_pad[] = {
+ 	MEDIA_BUS_FMT_SBGGR8_1X8,
+ 	MEDIA_BUS_FMT_SGBRG8_1X8,
+-- 
+2.51.0
+
