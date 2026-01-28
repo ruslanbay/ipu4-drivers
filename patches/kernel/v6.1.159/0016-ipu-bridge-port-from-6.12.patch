@@ -1,7 +1,7 @@
 From fe9eb2586d9a92b2b97ace6155715ecc71476ca2 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 14 Dec 2025 00:29:32 +0100
-Subject: [PATCH 16/39] ipu-bridge: port from 6.12
+Subject: [PATCH 16/41] ipu-bridge: port from 6.12
 
 ---
  drivers/media/pci/intel/Kconfig      |  22 +-
@@ -1135,5 +1135,5 @@ index 000000000..16fac7654
 +
 +#endif
 -- 
-2.48.1
+2.51.0
 

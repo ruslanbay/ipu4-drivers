@@ -1,7 +1,7 @@
 From 4994347fc6630900c6c099391188652ba4a8574b Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 23:44:06 +0100
-Subject: [PATCH 14/39] passs entity instaed of entity.pad[0] in
+Subject: [PATCH 14/41] passs entity instaed of entity.pad[0] in
  media_graph_walk_start
 
 ---
@@ -40,5 +40,5 @@ index 0b454eab4..0ecad41bb 100644
  	while (state && (entity2 = media_graph_walk_next(&ip->graph)) &&
  	       entity2 != entity) {
 -- 
-2.48.1
+2.51.0
 

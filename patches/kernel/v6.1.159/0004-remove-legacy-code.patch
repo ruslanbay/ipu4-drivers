@@ -1,7 +1,7 @@
 From e61354dcf305d0b0083b64f2c0fb6b9d897bcb84 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:25:27 +0100
-Subject: [PATCH 04/39] remove legacy code
+Subject: [PATCH 04/41] remove legacy code
 
 ---
  drivers/media/pci/intel/ipu-bus.c             |  13 +-
@@ -2311,5 +2311,5 @@ index 73e2b7ca2..34a59e84c 100644
  	if (cmd->min_psys_freq) {
  		kcmd->constraint.min_freq = cmd->min_psys_freq;
 -- 
-2.48.1
+2.51.0
 

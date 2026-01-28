@@ -1,7 +1,7 @@
 From 33cc4199f0d6a1f4ba5e4016336ec4960228adbb Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:31:02 +0100
-Subject: [PATCH 08/39] rename .bus.csi2.channel to .bus.csi2.vc and
+Subject: [PATCH 08/41] rename .bus.csi2.channel to .bus.csi2.vc and
  .bus.csi2.data_type to .bus.csi2.dt
 
 ---
@@ -36,5 +36,5 @@ index c800f411a..64e7953ee 100644
  
  err_subdev:
 -- 
-2.48.1
+2.51.0
 

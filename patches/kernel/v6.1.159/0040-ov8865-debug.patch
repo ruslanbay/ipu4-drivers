@@ -1,0 +1,351 @@
+From d96003224629eee77ef3036baa7cc108f734d265 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 21 Jan 2026 00:40:13 +0100
+Subject: [PATCH 40/41] ov8865: debug
+
+---
+ drivers/media/i2c/ov8865.c               | 59 ++++++++++++++++++++----
+ drivers/media/pci/intel/ipu-isys-queue.c | 50 ++++++++++++++++++--
+ drivers/media/pci/intel/ipu-isys-video.c |  4 ++
+ drivers/media/pci/intel/ipu-isys.c       | 18 ++++++--
+ 4 files changed, 115 insertions(+), 16 deletions(-)
+ mode change 100644 => 100755 drivers/media/pci/intel/ipu-isys-queue.c
+ mode change 100644 => 100755 drivers/media/pci/intel/ipu-isys-video.c
+ mode change 100644 => 100755 drivers/media/pci/intel/ipu-isys.c
+
+diff --git a/drivers/media/i2c/ov8865.c b/drivers/media/i2c/ov8865.c
+index 83f4cbc78..81bf845e6 100644
+--- a/drivers/media/i2c/ov8865.c
++++ b/drivers/media/i2c/ov8865.c
+@@ -1430,11 +1430,16 @@ static int ov8865_sw_reset(struct ov8865_sensor *sensor)
+ static int ov8865_sw_standby(struct ov8865_sensor *sensor, int standby)
+ {
+ 	u8 value = 0;
++	int ret;
+ 
+ 	if (!standby)
+ 		value = OV8865_SW_STANDBY_STREAM_ON;
+ 
+-	return ov8865_write(sensor, OV8865_SW_STANDBY_REG, value);
++	dev_info(sensor->dev, "[DEBUG] sw_standby: writing 0x%02x to reg 0x100 (standby=%d)\n", value, standby);
++	ret = ov8865_write(sensor, OV8865_SW_STANDBY_REG, value);
++	if (ret)
++		dev_err(sensor->dev, "[DEBUG] sw_standby: write failed, ret=%d\n", ret);
++	return ret;
+ }
+ 
+ static int ov8865_chip_id_check(struct ov8865_sensor *sensor)
+@@ -1476,46 +1481,67 @@ static int ov8865_mipi_configure(struct ov8865_sensor *sensor)
+ 	unsigned int lanes_count = bus_mipi_csi2->num_data_lanes;
+ 	int ret;
+ 
++	dev_info(sensor->dev, "[DEBUG] ov8865_mipi_configure: lanes_count=%u\n", lanes_count);
++
+ 	ret = ov8865_write(sensor, OV8865_MIPI_SC_CTRL0_REG,
+ 			   OV8865_MIPI_SC_CTRL0_LANES(lanes_count) |
+ 			   OV8865_MIPI_SC_CTRL0_MIPI_EN |
+ 			   OV8865_MIPI_SC_CTRL0_UNKNOWN);
+-	if (ret)
++	if (ret) {
++		dev_err(sensor->dev, "[DEBUG] ov8865_mipi_configure: MIPI_SC_CTRL0 write failed: %d\n", ret);
+ 		return ret;
++	}
++	dev_info(sensor->dev, "[DEBUG] ov8865_mipi_configure: MIPI enabled, lanes=%u\n", lanes_count);
+ 
+ 	ret = ov8865_write(sensor, OV8865_MIPI_SC_CTRL2_REG,
+ 			   OV8865_MIPI_SC_CTRL2_PD_MIPI_RST_SYNC);
+-	if (ret)
++	if (ret) {
++		dev_err(sensor->dev, "[DEBUG] ov8865_mipi_configure: MIPI_SC_CTRL2 write failed: %d\n", ret);
+ 		return ret;
++	}
+ 
+ 	if (lanes_count >= 2) {
+ 		ret = ov8865_write(sensor, OV8865_MIPI_LANE_SEL01_REG,
+ 				   OV8865_MIPI_LANE_SEL01_LANE0(0) |
+ 				   OV8865_MIPI_LANE_SEL01_LANE1(1));
+-		if (ret)
++		if (ret) {
++			dev_err(sensor->dev, "[DEBUG] ov8865_mipi_configure: LANE_SEL01 write failed: %d\n", ret);
+ 			return ret;
++		}
++		dev_info(sensor->dev, "[DEBUG] ov8865_mipi_configure: lanes 0-1 configured\n");
+ 	}
+ 
+ 	if (lanes_count >= 4) {
+ 		ret = ov8865_write(sensor, OV8865_MIPI_LANE_SEL23_REG,
+ 				   OV8865_MIPI_LANE_SEL23_LANE2(2) |
+ 				   OV8865_MIPI_LANE_SEL23_LANE3(3));
+-		if (ret)
++		if (ret) {
++			dev_err(sensor->dev, "[DEBUG] ov8865_mipi_configure: LANE_SEL23 write failed: %d\n", ret);
+ 			return ret;
++		}
++		dev_info(sensor->dev, "[DEBUG] ov8865_mipi_configure: lanes 2-3 configured\n");
+ 	}
+ 
+ 	ret = ov8865_update_bits(sensor, OV8865_CLK_SEL1_REG,
+ 				 OV8865_CLK_SEL1_MIPI_EOF,
+ 				 OV8865_CLK_SEL1_MIPI_EOF);
+-	if (ret)
++	if (ret) {
++		dev_err(sensor->dev, "[DEBUG] ov8865_mipi_configure: CLK_SEL1 update failed: %d\n", ret);
+ 		return ret;
++	}
+ 
+ 	/*
+ 	 * This value might need to change depending on PCLK rate,
+ 	 * but it's unclear how. This value seems to generally work
+ 	 * while the default value was found to cause transmission errors.
+ 	 */
+-	return ov8865_write(sensor, OV8865_MIPI_PCLK_PERIOD_REG, 0x16);
++	dev_info(sensor->dev, "[DEBUG] ov8865_mipi_configure: setting PCLK_PERIOD to 0x16\n");
++	ret = ov8865_write(sensor, OV8865_MIPI_PCLK_PERIOD_REG, 0x16);
++	if (ret)
++		dev_err(sensor->dev, "[DEBUG] ov8865_mipi_configure: PCLK_PERIOD write failed: %d\n", ret);
++	
++	dev_info(sensor->dev, "[DEBUG] ov8865_mipi_configure: completed successfully\n");
++	return ret;
+ }
+ 
+ static int ov8865_black_level_configure(struct ov8865_sensor *sensor)
+@@ -1911,6 +1937,9 @@ static int ov8865_mode_configure(struct ov8865_sensor *sensor,
+ {
+ 	int ret;
+ 
++	dev_info(sensor->dev, "[DEBUG] ov8865_mode_configure: output_size=%ux%u, hts=%u, vts=%u\n",
++		 mode->output_size_x, mode->output_size_y, mode->hts, mode->vts);
++
+ 	/* Output Size X */
+ 
+ 	ret = ov8865_write(sensor, OV8865_OUTPUT_SIZE_X_H_REG,
+@@ -2104,6 +2133,7 @@ static int ov8865_mode_configure(struct ov8865_sensor *sensor,
+ 			return ret;
+ 	}
+ 
++	dev_info(sensor->dev, "[DEBUG] ov8865_mode_configure: completed successfully\n");
+ 	return 0;
+ }
+ 
+@@ -2334,6 +2364,8 @@ static int ov8865_sensor_init(struct ov8865_sensor *sensor)
+ {
+ 	int ret;
+ 
++	dev_info(sensor->dev, "[DEBUG] sensor_init: starting\n");
++
+ 	ret = ov8865_sw_reset(sensor);
+ 	if (ret) {
+ 		dev_err(sensor->dev, "failed to perform sw reset\n");
+@@ -2370,6 +2402,7 @@ static int ov8865_sensor_init(struct ov8865_sensor *sensor)
+ 		dev_err(sensor->dev, "failed to configure MIPI\n");
+ 		return ret;
+ 	}
++	dev_info(sensor->dev, "[DEBUG] sensor_init: MIPI configured\n");
+ 
+ 	ret = ov8865_isp_configure(sensor);
+ 	if (ret) {
+@@ -2619,18 +2652,26 @@ static int ov8865_s_stream(struct v4l2_subdev *subdev, int enable)
+ 	struct ov8865_state *state = &sensor->state;
+ 	int ret;
+ 
++	dev_info(sensor->dev, "[DEBUG] s_stream(%d) called\n", enable);
++
+ 	if (enable) {
+ 		ret = pm_runtime_resume_and_get(sensor->dev);
+-		if (ret < 0)
++		if (ret < 0) {
++			dev_err(sensor->dev, "[DEBUG] s_stream: pm_runtime_resume_and_get failed: %d\n", ret);
+ 			return ret;
++		}
++		dev_info(sensor->dev, "[DEBUG] s_stream: pm_runtime_resume_and_get succeeded\n");
+ 	}
+ 
+ 	mutex_lock(&sensor->mutex);
+ 	ret = ov8865_sw_standby(sensor, !enable);
+ 	mutex_unlock(&sensor->mutex);
+ 
+-	if (ret)
++	if (ret) {
++		dev_err(sensor->dev, "[DEBUG] s_stream: ov8865_sw_standby failed: %d\n", ret);
+ 		return ret;
++	}
++	dev_info(sensor->dev, "[DEBUG] s_stream: ov8865_sw_standby succeeded, enable=%d\n", enable);
+ 
+ 	state->streaming = !!enable;
+ 
+diff --git a/drivers/media/pci/intel/ipu-isys-queue.c b/drivers/media/pci/intel/ipu-isys-queue.c
+old mode 100644
+new mode 100755
+index 075cb3ad7..0abfd68cd
+--- a/drivers/media/pci/intel/ipu-isys-queue.c
++++ b/drivers/media/pci/intel/ipu-isys-queue.c
+@@ -430,6 +430,7 @@ void ipu_isys_buffer_list_to_ipu_fw_isys_frame_buff_set(
+ 			struct ipu_isys_buffer_list *bl)
+ {
+ 	struct ipu_isys_buffer *ib;
++	struct ipu_isys_video *av = container_of(ip, struct ipu_isys_video, ip);
+ 
+ 	WARN_ON(!bl->nbufs);
+ 
+@@ -446,6 +447,10 @@ void ipu_isys_buffer_list_to_ipu_fw_isys_frame_buff_set(
+ 	set->send_resp_eof = 0;
+ #endif
+ 
++	dev_info(&av->isys->adev->dev,
++		 "[DEBUG] buffer_list_to_frame_buff_set: %u buffers, short_packet_output_pin=%u\n",
++		 bl->nbufs, ip->short_packet_output_pin);
++
+ 	list_for_each_entry(ib, &bl->head, head) {
+ 		if (ib->type == IPU_ISYS_VIDEO_BUFFER) {
+ 			struct vb2_buffer *vb =
+@@ -453,6 +458,10 @@ void ipu_isys_buffer_list_to_ipu_fw_isys_frame_buff_set(
+ 			struct ipu_isys_queue *aq =
+ 			    vb2_queue_to_ipu_isys_queue(vb->vb2_queue);
+ 
++			dev_info(&av->isys->adev->dev,
++				 "[DEBUG] buffer_list_to_frame_buff_set: VIDEO_BUFFER vb_idx=%u, fw_output=%u\n",
++				 vb->index, aq->fw_output);
++
+ 			if (aq->fill_frame_buff_set_pin)
+ 				aq->fill_frame_buff_set_pin(vb, set);
+ 		} else if (ib->type == IPU_ISYS_SHORT_PACKET_BUFFER) {
+@@ -461,6 +470,10 @@ void ipu_isys_buffer_list_to_ipu_fw_isys_frame_buff_set(
+ 			struct ipu_fw_isys_output_pin_payload_abi *output_pin =
+ 			    &set->output_pins[ip->short_packet_output_pin];
+ 
++			dev_info(&av->isys->adev->dev,
++				 "[DEBUG] buffer_list_to_frame_buff_set: SHORT_PACKET at pin=%u, pb_idx=%u\n",
++				 ip->short_packet_output_pin, pb->index);
++
+ 			output_pin->addr = pb->dma_addr;
+ 			output_pin->out_buf_id = pb->index + 1;
+ 		} else {
+@@ -546,8 +559,14 @@ static int ipu_isys_stream_start(struct ipu_isys_pipeline *ip,
+ 
+ 	mutex_lock(&pipe_av->isys->stream_mutex);
+ 
++	dev_info(&pipe_av->isys->adev->dev,
++		 "[DEBUG] stream_start: Starting stream, bl=%p, error=%d\n",
++		 bl, error);
++
+ 	rval = ipu_isys_video_set_streaming(pipe_av, 1, bl);
+ 	if (rval) {
++		dev_err(&pipe_av->isys->adev->dev,
++			"[DEBUG] stream_start: set_streaming failed: %d\n", rval);
+ 		mutex_unlock(&pipe_av->isys->stream_mutex);
+ 		goto out_requeue;
+ 	}
+@@ -555,6 +574,9 @@ static int ipu_isys_stream_start(struct ipu_isys_pipeline *ip,
+ 	ip->streaming = 1;
+ 
+ 	dev_dbg(&pipe_av->isys->adev->dev, "dispatching queued requests\n");
++	dev_info(&pipe_av->isys->adev->dev,
++		 "[DEBUG] stream_start: dispatching requests, nr_output_pins=%u\n",
++		 ip->nr_output_pins);
+ 
+ 	while ((ireq = ipu_isys_next_queued_request(ip))) {
+ 		struct ipu_fw_isys_frame_buff_set_abi *set;
+@@ -587,23 +609,45 @@ static int ipu_isys_stream_start(struct ipu_isys_pipeline *ip,
+ 
+ 	bl = &__bl;
+ 
++	dev_info(&pipe_av->isys->adev->dev,
++		 "[DEBUG] stream_start: Entering buffer dispatch loop\n");
++
+ 	do {
+ 		struct ipu_fw_isys_frame_buff_set_abi *buf = NULL;
+ 		struct isys_fw_msgs *msg;
+ 
++		dev_dbg(&pipe_av->isys->adev->dev,
++			"[DEBUG] stream_start: Calling buffer_list_get\n");
+ 		rval = buffer_list_get(ip, bl);
+-		if (rval == -EINVAL)
++		if (rval == -EINVAL) {
++			dev_info(&pipe_av->isys->adev->dev,
++				 "[DEBUG] stream_start: buffer_list_get returned -EINVAL (no buffers?)\n");
+ 			goto out_requeue;
+-		else if (rval < 0)
++		} else if (rval < 0) {
++			dev_info(&pipe_av->isys->adev->dev,
++				 "[DEBUG] stream_start: buffer_list_get returned %d, breaking\n",
++				 rval);
+ 			break;
++		}
++		dev_info(&pipe_av->isys->adev->dev,
++			 "[DEBUG] stream_start: buffer_list_get succeeded, nbufs=%u\n",
++			 bl->nbufs);
+ 
+ 		msg = ipu_get_fw_msg_buf(ip);
+-		if (!msg)
++		if (!msg) {
++			dev_err(&pipe_av->isys->adev->dev,
++				"[DEBUG] stream_start: ipu_get_fw_msg_buf FAILED!\n");
+ 			/* TODO: PROPER CLEANUP */
+ 			return -ENOMEM;
++		}
++		dev_dbg(&pipe_av->isys->adev->dev,
++			"[DEBUG] stream_start: Got fw_msg_buf\n");
+ 
+ 		buf = to_frame_msg_buf(msg);
+ 
++		dev_info(&pipe_av->isys->adev->dev,
++			 "[DEBUG] stream_start: Configuring frame buffer set for %u buffers\n",
++			 bl->nbufs);
+ 		ipu_isys_buffer_list_to_ipu_fw_isys_frame_buff_set(buf, ip, bl);
+ 
+ 		ipu_fw_isys_dump_frame_buff_set(&pipe_av->isys->adev->dev, buf,
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+old mode 100644
+new mode 100755
+index 946eb566f..cd357ca25
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -1159,6 +1159,10 @@ void ipu_isys_prepare_firmware_stream_cfg_default(
+ 	ip->output_pins[pin].pin_ready = ipu_isys_queue_buf_ready;
+ 	ip->output_pins[pin].aq = aq;
+ 
++	dev_info(&av->isys->adev->dev,
++		 "[DEBUG] pin_ready callback registered: pin=%u, aq=%p, nof_output_pins=%u\n",
++		 pin, aq, cfg->nof_output_pins);
++
+ 	pin_info = &cfg->output_pins[pin];
+ 	pin_info->input_pin_id = 0;
+ 	pin_info->output_res.width = av->mpix.width;
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+old mode 100644
+new mode 100755
+index 5e65d7dce..a1d024b05
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -1099,14 +1099,24 @@ int isys_isr_one(struct ipu_bus_device *adev)
+ 		 * firmware only release the capture msg until software
+ 		 * get pin_data_ready event
+ 		 */
++		dev_info(&adev->dev,
++			 "[DEBUG] PIN_DATA_READY: stream_handle=%u, pin_id=%u, nof_pins=%u\n",
++			 resp->stream_handle, resp->pin_id, IPU_ISYS_OUTPUT_PINS);
+ 		ipu_put_fw_msg_buf(pipe, resp->buf_id);
+ 		if (resp->pin_id < IPU_ISYS_OUTPUT_PINS &&
+-		    pipe->output_pins[resp->pin_id].pin_ready)
++		    pipe->output_pins[resp->pin_id].pin_ready) {
++			dev_dbg(&adev->dev,
++				"[DEBUG] PIN_DATA_READY: Calling pin_ready callback for pin %u\n",
++				resp->pin_id);
+ 			pipe->output_pins[resp->pin_id].pin_ready(pipe, resp);
+-		else
++		} else {
+ 			dev_err(&adev->dev,
+-				"%d:No data pin ready handler for pin id %d\n",
+-				resp->stream_handle, resp->pin_id);
++				"[DEBUG] PIN_DATA_READY: No handler for stream=%u pin_id=%u (pin_id < %u: %d, callback: %p)\n",
++				resp->stream_handle, resp->pin_id,
++				IPU_ISYS_OUTPUT_PINS,
++				resp->pin_id < IPU_ISYS_OUTPUT_PINS ? 1 : 0,
++				resp->pin_id < IPU_ISYS_OUTPUT_PINS ? pipe->output_pins[resp->pin_id].pin_ready : NULL);
++		}
+ 		
+ 		if (pipe->csi2)
+ 			ipu_isys_csi2_error(pipe->csi2);
+-- 
+2.51.0
+

@@ -1,7 +1,7 @@
 From b2a93b4c02a43e24148bcb1598be435e35715e51 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 11 Jan 2026 15:42:39 +0100
-Subject: [PATCH 27/39] ipu-isys-video.c: debug
+Subject: [PATCH 27/41] ipu-isys-video.c: debug
 
 ---
  drivers/media/pci/intel/ipu-isys-video.c | 16 +++++++++++++---
@@ -47,5 +47,5 @@ index daa7579ae..ae442a832 100644
  		goto out_pipeline_stop;
  	}
 -- 
-2.48.1
+2.51.0
 

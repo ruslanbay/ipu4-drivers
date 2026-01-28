@@ -1,7 +1,7 @@
 From c692c1f93e778af4cd6d5545057eee0504c217cb Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 27 Dec 2025 13:28:15 +0100
-Subject: [PATCH 35/39] LINUX_VERSION_CODE < KERNEL_VERSION(6, 6, 0)
+Subject: [PATCH 35/41] LINUX_VERSION_CODE < KERNEL_VERSION(6, 6, 0)
 
 https://github.com/intel/ipu6-drivers/blob/9766e218112f4173be9b0f06dfae27cb40c54f40/drivers/media/pci/intel/ipu-isys.c#L864
 ---
@@ -104,5 +104,5 @@ index e09c0cde3..88f6f8b8d 100644
  	}
  
 -- 
-2.48.1
+2.51.0
 

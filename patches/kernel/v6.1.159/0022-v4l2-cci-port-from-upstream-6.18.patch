@@ -1,7 +1,7 @@
 From 1161c7ed6cb05b444982a029e9e0e8acd0417846 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 20 Dec 2025 19:32:18 +0100
-Subject: [PATCH 22/39] v4l2-cci: port from upstream 6.18
+Subject: [PATCH 22/41] v4l2-cci: port from upstream 6.18
 
 ---
  drivers/media/v4l2-core/Kconfig    |   9 ++
@@ -398,5 +398,5 @@ index 000000000..4e96e90ee
 +
 +#endif
 -- 
-2.48.1
+2.51.0
 

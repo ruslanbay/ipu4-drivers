@@ -1,7 +1,7 @@
 From bc2817ab222e70925fecd913925f8a64a0cc3ec3 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 15:04:26 +0100
-Subject: [PATCH 25/39] debug
+Subject: [PATCH 25/41] debug
 
 ---
  drivers/media/pci/intel/ipu-isys.c   | 10 +++----
@@ -108,5 +108,5 @@ index d22976b51..8b3c0d8f0 100644
  			snprintf(fmt->description, sz, "%p4cc",
  				 &fmt->pixelformat);
 -- 
-2.48.1
+2.51.0
 

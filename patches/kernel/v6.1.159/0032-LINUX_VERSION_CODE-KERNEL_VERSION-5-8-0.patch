@@ -1,7 +1,7 @@
 From ac6ec6510c0f070b2f33dd37e782b9176cb5fe27 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 27 Dec 2025 11:23:56 +0100
-Subject: [PATCH 32/39] LINUX_VERSION_CODE > KERNEL_VERSION(5, 8, 0)
+Subject: [PATCH 32/41] LINUX_VERSION_CODE > KERNEL_VERSION(5, 8, 0)
 
 https://github.com/intel/ipu6-drivers/blob/9766e218112f4173be9b0f06dfae27cb40c54f40/drivers/media/pci/intel/ipu-buttress.c#L768
 ---
@@ -42,5 +42,5 @@ index 7967fe541..b6c5e590d 100644
  out:
  	kfree(pages);
 -- 
-2.48.1
+2.51.0
 

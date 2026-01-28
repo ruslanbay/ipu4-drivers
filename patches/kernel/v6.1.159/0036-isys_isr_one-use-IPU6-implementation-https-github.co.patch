@@ -1,7 +1,7 @@
 From f15a63e4a4aa608570cc8126f8199fb477e7cac5 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 14 Jan 2026 13:27:07 +0100
-Subject: [PATCH 36/39] isys_isr_one: use IPU6 implementation:
+Subject: [PATCH 36/41] isys_isr_one: use IPU6 implementation:
  https://github.com/intel/ipu6-drivers/blob/master/drivers/media/pci/intel/ipu-isys.c#L1512
 
 ---
@@ -115,5 +115,5 @@ index 88f6f8b8d..5e65d7dce 100644
  		dev_dbg(&adev->dev,
  			"eof: handle %d: (index %u), timestamp 0x%16.16llx\n",
 -- 
-2.48.1
+2.51.0
 

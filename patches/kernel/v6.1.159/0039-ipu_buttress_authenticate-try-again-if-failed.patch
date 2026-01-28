@@ -1,7 +1,7 @@
 From bd9b248803220690d72db45e06d677918cb1b454 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Fri, 16 Jan 2026 14:29:28 +0100
-Subject: [PATCH 39/39] ipu_buttress_authenticate: try again if failed
+Subject: [PATCH 39/41] ipu_buttress_authenticate: try again if failed
 
 ---
  drivers/media/pci/intel/ipu-isys-video.c | 16 +++++++++++++++-
@@ -42,5 +42,5 @@ index 3ccb4a0f9..946eb566f 100644
  		dev_err(&isys->adev->dev, "FW authentication failed\n");
  		return rval;
 -- 
-2.48.1
+2.51.0
 

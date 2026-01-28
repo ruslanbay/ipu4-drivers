@@ -1,7 +1,7 @@
 From e22e42793871afaf09041e9f50840f8013bf9a75 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 7 Jan 2026 18:21:15 +0100
-Subject: [PATCH 05/39] media_entity_has_pad_interdep: mimic Intel's
+Subject: [PATCH 05/41] media_entity_has_pad_interdep: mimic Intel's
  media_entity_has_route implementation
 
 ---
@@ -57,5 +57,5 @@ index 03bb09639..6752818aa 100644
   * media_graph_walk_start - Start walking the media graph at a
   *	given entity
 -- 
-2.48.1
+2.51.0
 

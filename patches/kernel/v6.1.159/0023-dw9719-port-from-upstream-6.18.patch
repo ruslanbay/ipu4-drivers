@@ -1,7 +1,7 @@
 From 54f7d190f96ca3b3d3f39b4d69b014be2bb753fe Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 20 Dec 2025 19:32:43 +0100
-Subject: [PATCH 23/39] dw9719: port from upstream 6.18
+Subject: [PATCH 23/41] dw9719: port from upstream 6.18
 
 ---
  drivers/media/i2c/Kconfig  |   8 +
@@ -427,5 +427,5 @@ index 000000000..505574c83
 +MODULE_DESCRIPTION("DW9719 VCM Driver");
 +MODULE_LICENSE("GPL");
 -- 
-2.48.1
+2.51.0
 

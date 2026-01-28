@@ -1,7 +1,7 @@
 From aa2dedd152800b63049ecd7ff901f27c78b7bd90 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 20 Dec 2025 20:14:05 +0100
-Subject: [PATCH 24/39] ov8865: port from upstream 6.18
+Subject: [PATCH 24/41] ov8865: port from upstream 6.18
 
 ---
  drivers/media/i2c/ov8865.c            | 105 +++++++++++---------------
@@ -440,5 +440,5 @@ index 0d0734f63..096c85423 100644
  
  /**
 -- 
-2.48.1
+2.51.0
 

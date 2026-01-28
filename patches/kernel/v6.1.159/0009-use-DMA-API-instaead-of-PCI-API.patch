@@ -1,7 +1,7 @@
 From 1523e8804891bf09dd50a0c7f051a2467f896114 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:32:09 +0100
-Subject: [PATCH 09/39] use DMA API instaead of PCI API
+Subject: [PATCH 09/41] use DMA API instaead of PCI API
 
 ---
  drivers/media/pci/intel/ipu.c | 5 +----
@@ -24,5 +24,5 @@ index bd5cc0412..b74e21523 100644
  		dev_err(&pdev->dev, "Failed to set DMA mask (%d)\n", rval);
  		trace_printk("E|TMWK\n");
 -- 
-2.48.1
+2.51.0
 

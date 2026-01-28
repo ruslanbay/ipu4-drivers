@@ -1,7 +1,7 @@
 From a0635792bd188f1ea6507d53097e8f5171815c00 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 11 Jan 2026 19:14:00 +0100
-Subject: [PATCH 30/39] use dma_alloc_coherent instead of dma_alloc_attrs
+Subject: [PATCH 30/41] use dma_alloc_coherent instead of dma_alloc_attrs
 
 ---
  drivers/media/pci/intel/ipu-cpd.c     | 6 ++----
@@ -110,5 +110,5 @@ index 71a72e39e..ca78aa731 100644
  		kfree(buf);
  		return 0;
 -- 
-2.48.1
+2.51.0
 

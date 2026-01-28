@@ -1,7 +1,7 @@
 From 3d72d0925ab52033a321eed9deb78dcbfec4851c Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:14:41 +0100
-Subject: [PATCH 02/39] add IPU4 related headers
+Subject: [PATCH 02/41] add IPU4 related headers
 
 ---
  include/media/ipu-isys.h             |  38 +++++++++
@@ -715,5 +715,5 @@ index 45fa03882..0d5a8351e 100644
  #define V4L2_PIX_FMT_HSV24 v4l2_fourcc('H', 'S', 'V', '3')
  #define V4L2_PIX_FMT_HSV32 v4l2_fourcc('H', 'S', 'V', '4')
 -- 
-2.48.1
+2.51.0
 

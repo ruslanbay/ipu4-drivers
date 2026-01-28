@@ -1,7 +1,7 @@
 From fafaeab6aa98557b4b97c526fb9cd203c98a2321 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:16:09 +0100
-Subject: [PATCH 07/39] export find_vm_area to resolve `"find_vm_area"
+Subject: [PATCH 07/41] export find_vm_area to resolve `"find_vm_area"
  [drivers/media/pci/intel/ipu4/intel-ipu4.ko] undefined!`
 
 ---
@@ -21,5 +21,5 @@ index ebeb6b2e1..f7d5b3161 100644
  /**
   * remove_vm_area - find and remove a continuous kernel virtual area
 -- 
-2.48.1
+2.51.0
 

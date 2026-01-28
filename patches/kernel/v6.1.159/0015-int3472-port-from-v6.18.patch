@@ -1,7 +1,7 @@
 From 0ed7746451166cea49eb3976843365e5fafbcaad Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 2 Dec 2025 20:02:49 +0100
-Subject: [PATCH 15/39] int3472: port from v6.18
+Subject: [PATCH 15/41] int3472: port from v6.18
 
 int3472: port from v6.12
 
@@ -1751,5 +1751,5 @@ index 000000000..f4873bf8d
 +
 +#endif
 -- 
-2.48.1
+2.51.0
 

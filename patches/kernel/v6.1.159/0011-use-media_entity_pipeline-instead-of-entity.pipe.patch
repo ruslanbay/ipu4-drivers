@@ -1,7 +1,7 @@
 From 2b288dbc3526ce971e0f54634bd29ee518b905ae Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:39:12 +0100
-Subject: [PATCH 11/39] use media_entity_pipeline instead of entity.pipe
+Subject: [PATCH 11/41] use media_entity_pipeline instead of entity.pipe
 
 ---
  .../media/pci/intel/ipu-isys-csi2-be-soc.c    |  2 +-
@@ -324,5 +324,5 @@ index f93dff3ad..4ac6545ec 100644
  	cfg->isa_cfg.cfg.blc = !!(isa->isa_en->val & V4L2_IPU_ISA_EN_BLC);
  	cfg->isa_cfg.cfg.lsc = !!(isa->isa_en->val & V4L2_IPU_ISA_EN_LSC);
 -- 
-2.48.1
+2.51.0
 

@@ -1,7 +1,7 @@
 From 2bc2dee9c361df417faddc4c788c7d28a068a06c Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 7 Jan 2026 13:50:59 +0100
-Subject: [PATCH 26/39] hack: set external pad
+Subject: [PATCH 26/41] hack: set external pad
 
 ---
  drivers/media/pci/intel/ipu-isys-video.c | 28 ++++++++++++++++++++++++
@@ -47,5 +47,5 @@ index 6447d6519..daa7579ae 100644
  		dev_err(dev, "no external entity set! Driver bug?\n");
  		rval = -EINVAL;
 -- 
-2.48.1
+2.51.0
 

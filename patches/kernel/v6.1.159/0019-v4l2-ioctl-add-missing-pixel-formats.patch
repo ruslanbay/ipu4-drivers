@@ -1,7 +1,7 @@
 From 3d3cd505dea77433dc6fb0a9ed046c942a5e2628 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 22 Dec 2025 14:07:17 +0100
-Subject: [PATCH 19/39] v4l2-ioctl: add missing pixel formats
+Subject: [PATCH 19/41] v4l2-ioctl: add missing pixel formats
 
 ---
  drivers/media/v4l2-core/v4l2-ioctl.c | 24 ++++++++++++++++++++++++
@@ -81,5 +81,5 @@ index 6876ec25b..d22976b51 100644
  	default:
  		/* Compressed formats */
 -- 
-2.48.1
+2.51.0
 

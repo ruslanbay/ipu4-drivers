@@ -1,7 +1,7 @@
 From bcc926a79577436caee11fc1228d11a6f31b8056 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:48:22 +0100
-Subject: [PATCH 12/39] replace some media_pipeline_* functions
+Subject: [PATCH 12/41] replace some media_pipeline_* functions
 
 https://github.com/intel/linux-intel-lts/blob/lts-v6.1.120-linux-241226T022850Z/drivers/media/pci/intel/ipu-isys-video.c
 
@@ -508,5 +508,5 @@ index aefc9615c..f580aee1c 100644
  #define V4L2_IPU_ISA_EN_BLC	(1 << 0)
  #define V4L2_IPU_ISA_EN_LSC	(1 << 1)
 -- 
-2.48.1
+2.51.0
 

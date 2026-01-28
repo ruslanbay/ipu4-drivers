@@ -1,7 +1,7 @@
 From 7fb23be9149c9cd1bea6bcef2c6b524d98b10c9b Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Thu, 15 Jan 2026 11:09:45 +0100
-Subject: [PATCH 37/39] use readl_poll_timeout instead of do-while loops
+Subject: [PATCH 37/41] use readl_poll_timeout instead of do-while loops
 
 ---
  drivers/media/pci/intel/ipu-buttress.c | 96 ++++++++++----------------
@@ -146,5 +146,5 @@ index b6c5e590d..a29aae794 100644
  
  	return rval;
 -- 
-2.48.1
+2.51.0
 

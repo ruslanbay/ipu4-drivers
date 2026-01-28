@@ -1,7 +1,7 @@
 From 148fbdb00a128dd232d1e682524fa4e9fc6e19a5 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:07:45 +0100
-Subject: [PATCH 18/39] advertise V4L2_CAP_IO_MC capability and add mbus_code
+Subject: [PATCH 18/41] advertise V4L2_CAP_IO_MC capability and add mbus_code
  handling to enumeration operation
 
 This commit addresses the issue of advertising device capabilities and format enumeration.
@@ -252,5 +252,5 @@ index 27bfe78aa..d23669a31 100644
  	{
  	 .offset = TRACE_REG_IS_TRACE_UNIT_BASE,
 -- 
-2.48.1
+2.51.0
 

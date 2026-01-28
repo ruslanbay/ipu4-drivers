@@ -1,7 +1,7 @@
 From 3d7da1acb73925cf47e1900b65b41c009705e4f4 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Thu, 15 Jan 2026 12:12:17 +0100
-Subject: [PATCH 38/39] add ivsc drivers
+Subject: [PATCH 38/41] add ivsc drivers
 
 ---
  drivers/media/pci/intel/Kconfig        |   1 +
@@ -1594,5 +1594,5 @@ index 86050be2a..757429664 100644
  	void (*unregistered)(struct v4l2_subdev *sd);
  	int (*open)(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh);
 -- 
-2.48.1
+2.51.0
 
