@@ -1,6 +1,6 @@
-From 6ba50a541ffbd4e23c51a4aa5ee335f09a05884f Mon Sep 17 00:00:00 2001
+From 2004422b1b2e154b98ef9b166be20b5e7d301e1c Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 24 Dec 2025 17:26:43 +0100
+Date: Thu, 29 Jan 2026 02:51:13 +0100
 Subject: [PATCH 1/5] pipeline: simple: Enable simple pipelinehandler with
  SoftISP on Intel IPU4
 
@@ -9,17 +9,17 @@ Subject: [PATCH 1/5] pipeline: simple: Enable simple pipelinehandler with
  1 file changed, 1 insertion(+)
 
 diff --git a/src/libcamera/pipeline/simple/simple.cpp b/src/libcamera/pipeline/simple/simple.cpp
-index b30b0a12..75505f08 100644
+index 4a0b9f58..6fc8ce75 100644
 --- a/src/libcamera/pipeline/simple/simple.cpp
 +++ b/src/libcamera/pipeline/simple/simple.cpp
 @@ -258,6 +258,7 @@ namespace {
  static const SimplePipelineInfo supportedDevices[] = {
  	{ "dcmipp", {}, false },
- 	{ "imx7-csi", { { "pxp", 1 } }, false },
+ 	{ "imx7-csi", { { "pxp", 1 } }, true },
 +	{ "intel-ipu4-isys", {}, true },
  	{ "intel-ipu6", {}, true },
  	{ "intel-ipu7", {}, true },
  	{ "j721e-csi2rx", {}, true },
 -- 
-2.43.0
+2.51.0
 

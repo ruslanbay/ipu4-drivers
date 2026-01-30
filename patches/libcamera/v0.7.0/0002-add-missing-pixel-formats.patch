@@ -1,7 +1,7 @@
-From 2959f2d6228f34a9bc848bb028177c160a484fea Mon Sep 17 00:00:00 2001
+From d168031e48db49b742a411f49483ae666b590b65 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 13 Jan 2026 15:52:54 +0100
-Subject: [PATCH 2/4] add missing pixel formats
+Subject: [PATCH 2/5] add missing pixel formats
 
 ---
  include/linux/videodev2.h | 38 ++++++++++++++++++++++++++++++++++++++

@@ -1,6 +1,6 @@
-From e5cbbc473757083cdde03f5776c12fe5f3e1983b Mon Sep 17 00:00:00 2001
+From ab3121ae2432afc194f8ef0cc63fb9f0c8bf33e3 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 24 Dec 2025 17:29:45 +0100
+Date: Thu, 29 Jan 2026 02:55:18 +0100
 Subject: [PATCH 5/5] debug
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH 5/5] debug
  1 file changed, 13 insertions(+)
 
 diff --git a/src/libcamera/pipeline/simple/simple.cpp b/src/libcamera/pipeline/simple/simple.cpp
-index c6613eb4..ad23ecce 100644
+index f9d154e5..1f4b2d39 100644
 --- a/src/libcamera/pipeline/simple/simple.cpp
 +++ b/src/libcamera/pipeline/simple/simple.cpp
 @@ -1528,6 +1528,10 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
@@ -32,8 +32,8 @@ index c6613eb4..ad23ecce 100644
  	}
  
  	V4L2DeviceFormat captureFormat;
-@@ -1558,6 +1565,12 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
- 	// }
+@@ -1562,6 +1569,12 @@ int SimplePipelineHandler::configure(Camera *camera, CameraConfiguration *c)
+ 	}
  
  	if (captureFormat.size != pipeConfig->captureSize) {
 +		LOG(SimplePipeline, Debug)
@@ -46,5 +46,5 @@ index c6613eb4..ad23ecce 100644
  			<< "Unable to configure capture in "
  			<< pipeConfig->captureSize << "-" << videoFormat
 -- 
-2.43.0
+2.51.0
 
