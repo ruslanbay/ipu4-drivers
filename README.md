@@ -1319,11 +1319,11 @@ Device topology
 ```bash
 sudo apt install meson clang libevent-dev # add libtiff-dev and qt6-base-dev for qcam
 
-git clone https://git.libcamera.org/libcamera/libcamera.git -b v0.6.0 ../libcamera
+git clone https://git.libcamera.org/libcamera/libcamera.git -b v0.7.0 ../libcamera
 
 cd ../libcamera
 
-git am ../ipu4-next/patches/libcamera/v0.6.0/*.patch
+git am ../ipu4-next/patches/libcamera/v0.7.0/*.patch
 
 meson setup build \
     -Dcpp_args="-Wno-c99-designator" \
@@ -1334,7 +1334,9 @@ meson setup build \
     -Dv4l2=enabled
 	#-Dqcam=enabled
 
-ninja -C build install
+sudo ninja -C build install
+
+sudo ldconfig
 ```
 
 ## 13. Test libcamera
