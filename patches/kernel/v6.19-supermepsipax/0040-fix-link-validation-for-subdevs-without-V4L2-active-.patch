@@ -1,0 +1,86 @@
+From 05af7a2ede8f6312ac694a382eb2c61ebafe5098 Mon Sep 17 00:00:00 2001
+From: Tristan <supermepsipax@users.noreply.github.com>
+Date: Sun, 8 Feb 2026 09:39:56 +0100
+Subject: [PATCH 40/41] fix link validation for subdevs without V4L2 active
+ state
+
+The link_validate() function called v4l2_subdev_get_unlocked_active_state()
+and returned -EPIPE immediately when it returned NULL. But IPU4 CSI-2
+subdevs have no V4L2 active state -- they never call
+v4l2_subdev_init_finalize() and manage formats internally via asd->ffmt[].
+
+Fix by making NULL state non-fatal: try the V4L2 state first, and if
+unavailable or if the state accessor returns NULL, fall back to reading
+the format directly from the subdev's internal asd->ffmt[pad][stream].
+---
+ drivers/media/pci/intel/ipu-isys-video.c | 35 ++++++++++++++----------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index 0e35fb632d4f..0c40d50cd056 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -759,9 +759,6 @@ static int link_validate(struct media_link *link)
+ 		return ret;
+ 
+ 	s_sd = media_entity_to_v4l2_subdev(link->source->entity);
+-	s_state = v4l2_subdev_get_unlocked_active_state(s_sd);
+-	if (!s_state)
+-		return ret;
+ 
+ 	dev_dbg(dev, "validating link \"%s\":%u -> \"%s\"\n",
+ 		link->source->entity->name, link->source->index,
+@@ -770,12 +767,28 @@ static int link_validate(struct media_link *link)
+ 	s_pad = media_pad_remote_pad_first(&av->pad);
+ 	s_stream = ipu_isys_get_src_stream_by_src_pad(s_sd, s_pad->index);
+ 
+-	v4l2_subdev_lock_state(s_state);
++	s_state = v4l2_subdev_get_unlocked_active_state(s_sd);
++	if (s_state) {
++		v4l2_subdev_lock_state(s_state);
++		s_fmt = v4l2_subdev_state_get_format(s_state, s_pad->index,
++						     s_stream);
++		v4l2_subdev_unlock_state(s_state);
++	} else {
++		s_fmt = NULL;
++	}
+ 
+-	s_fmt = v4l2_subdev_state_get_format(s_state, s_pad->index, s_stream);
+ 	if (!s_fmt) {
+-		dev_err(dev, "failed to get source pad format\n");
+-		goto unlock;
++		/*
++		 * The subdev has no V4L2 active state (IPU4 manages formats
++		 * internally), or the state accessor returned NULL for a
++		 * stream-aware subdev without routing. Fall back to the
++		 * subdev's internal active format.
++		 */
++		struct ipu_isys_subdev *asd = to_ipu_isys_subdev(s_sd);
++
++		dev_dbg(dev, "using internal format for pad %u stream %u\n",
++			s_pad->index, s_stream);
++		s_fmt = &asd->ffmt[s_pad->index][s_stream];
+ 	}
+ 
+ 	code = ipu_isys_get_isys_format(ipu_isys_get_format(av), 0)->code;
+@@ -787,16 +800,10 @@ static int link_validate(struct media_link *link)
+ 			s_fmt->width, s_fmt->height, s_fmt->code,
+ 			ipu_isys_get_frame_width(av),
+ 			ipu_isys_get_frame_height(av), code);
+-		goto unlock;
++		return ret;
+ 	}
+ 
+-	v4l2_subdev_unlock_state(s_state);
+-
+ 	return 0;
+-unlock:
+-	v4l2_subdev_unlock_state(s_state);
+-
+-	return ret;
+ }
+ 
+ static void get_stream_opened(struct ipu_isys_video *av)
+-- 
+2.51.0
+

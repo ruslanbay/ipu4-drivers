@@ -1,0 +1,25 @@
+From a07c78c703265413f3bd5c2b297ca32ed1e561a7 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Mon, 12 Jan 2026 22:36:21 +0100
+Subject: [PATCH 35/41] v4l2_async_nf_register: function signature was changed
+
+---
+ drivers/media/pci/intel/ipu-isys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index d6fbb14cac40..d14be04414bf 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -492,7 +492,7 @@ static int isys_notifier_init(struct ipu_isys *isys)
+ 	}
+ 
+ 	isys->notifier.ops = &isys_async_ops;
+-	ret = v4l2_async_nf_register(&isys->v4l2_dev, &isys->notifier);
++	ret = v4l2_async_nf_register(&isys->notifier);
+ 	if (ret) {
+ 		dev_err(dev, "failed to register async notifier : %d\n", ret);
+ 		v4l2_async_nf_cleanup(&isys->notifier);
+-- 
+2.51.0
+
