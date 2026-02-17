@@ -1,0 +1,51 @@
+From ede47d8e40ca9514b078533d8a3f391971238088 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 7 Jan 2026 13:50:59 +0100
+Subject: [PATCH 21/45] hack: set external pad
+
+---
+ drivers/media/pci/intel/ipu-isys-video.c | 28 ++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index d7ec8086cf82..b3d85a121d48 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -1861,6 +1861,34 @@ int ipu_isys_video_prepare_streaming(struct ipu_isys_video *av,
+ 		goto out_enum_cleanup;
+ 	}
+ 
++	// hack - manually set ip->external
++	if (!ip->external) {
++		static const char *const sensor_names[] = {
++			"ov8865 1-0010",
++			"ov8865 2-0010",
++			"ov5693 1-0036",
++			"ov5693 2-0036",
++			"ov7251 1-0060",
++			"ov7251 2-0060",
++			"Intel IPU4 TPG 0",
++			"Intel IPU4 TPG 1",
++			NULL
++		};
++
++		struct media_pipeline_pad *ppad;
++
++		list_for_each_entry(ppad, &ip->pipe.pads, list) {
++			const char *name = ppad->pad->entity->name;
++			if (name && match_string(sensor_names, -1, name) >= 0) {
++				ip->external = ppad->pad;
++
++				dev_info(dev, "Hack: Manually set external pad to '%s':%u\n",
++					 name, ppad->pad->index);
++				break;
++			}
++		}
++	}
++
+ 	if (!ip->external) {
+ 		dev_err(dev, "no external entity set! Driver bug?\n");
+ 		rval = -EINVAL;
+-- 
+2.51.0
+

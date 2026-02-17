@@ -1,0 +1,108 @@
+From 1c51dc65160a62054e579d08f3520e8832aa9fb6 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Wed, 21 Jan 2026 12:56:39 +0100
+Subject: [PATCH 44/45] media: intel-ipu4: expand CSI-2 ports to support
+ Surface Pro 7 The Intel IPU4 ISYS driver currently defaults to 5 or 6 ports,
+ causing a kernel panic or probe failure on Surface Pro 7 devices where
+ sensors are physically routed to higher-indexed ports.
+
+On the Surface Pro 7, hardware discovery via ACPI (DSDT) reveals:
+- OV5693 (Front): Port 7
+- OV7251 (IR): Port 6
+- OV8865 (Rear): Port 3
+
+This change expands ipu4_csi_offsets to 8 elements to satisfy bounds
+checks in isys_notifier_bound(). It also updates evsetmask0 and
+evsetmask1 to enable event triggers for ports 3, 6, and 7, preventing
+timeouts during image capture.
+
+To verify port assignments on other devices, decompile the DSDT and
+inspect the 32nd byte (index 0x1F) of the SSDB buffer for each
+camera device.
+---
+ .../media/pci/intel/ipu4/ipu-platform-regs.h  |  3 +++
+ drivers/media/pci/intel/ipu4/ipu4-isys.c      |  3 +++
+ drivers/media/pci/intel/ipu4/ipu4.c           | 24 +++++++++++++++----
+ 3 files changed, 25 insertions(+), 5 deletions(-)
+ mode change 100644 => 100755 drivers/media/pci/intel/ipu4/ipu-platform-regs.h
+ mode change 100644 => 100755 drivers/media/pci/intel/ipu4/ipu4-isys.c
+ mode change 100644 => 100755 drivers/media/pci/intel/ipu4/ipu4.c
+
+diff --git a/drivers/media/pci/intel/ipu4/ipu-platform-regs.h b/drivers/media/pci/intel/ipu4/ipu-platform-regs.h
+old mode 100644
+new mode 100755
+index e54b2b55afbf..89fd67994884
+--- a/drivers/media/pci/intel/ipu4/ipu-platform-regs.h
++++ b/drivers/media/pci/intel/ipu4/ipu-platform-regs.h
+@@ -49,6 +49,9 @@
+ #define IPU_ISYS_CSI2_B_IRQ_MASK		GENMASK(1, 1)
+ #define IPU_ISYS_CSI2_C_IRQ_MASK		GENMASK(2, 2)
+ #define IPU_ISYS_CSI2_D_IRQ_MASK		GENMASK(3, 3)
++#define IPU_ISYS_CSI2_E_IRQ_MASK		GENMASK(4, 4)
++#define IPU_ISYS_CSI2_F_IRQ_MASK		GENMASK(5, 5)
++#define IPU_ISYS_CSI2_G_IRQ_MASK		GENMASK(6, 6)
+ 
+ /* IRQ-related registers relative to ISYS_OFFSET */
+ #define IPU_REG_ISYS_UNISPART_IRQ_EDGE            0x7c000
+diff --git a/drivers/media/pci/intel/ipu4/ipu4-isys.c b/drivers/media/pci/intel/ipu4/ipu4-isys.c
+old mode 100644
+new mode 100755
+index d23669a3103d..514eade03b26
+--- a/drivers/media/pci/intel/ipu4/ipu4-isys.c
++++ b/drivers/media/pci/intel/ipu4/ipu4-isys.c
+@@ -270,6 +270,9 @@ irqreturn_t isys_isr(struct ipu_bus_device *adev)
+ 		{&sip1_status, IPU_ISYS_CSI2_B_IRQ_MASK},
+ 		{&sip1_status, IPU_ISYS_CSI2_C_IRQ_MASK},
+ 		{&sip1_status, IPU_ISYS_CSI2_D_IRQ_MASK},
++		{&sip1_status, IPU_ISYS_CSI2_E_IRQ_MASK},
++		{&sip1_status, IPU_ISYS_CSI2_F_IRQ_MASK},
++		{&sip1_status, IPU_ISYS_CSI2_G_IRQ_MASK},
+ 	};
+ 
+ 	spin_lock(&isys->power_lock);
+diff --git a/drivers/media/pci/intel/ipu4/ipu4.c b/drivers/media/pci/intel/ipu4/ipu4.c
+old mode 100644
+new mode 100755
+index c3615d225431..d4d552e0b2aa
+--- a/drivers/media/pci/intel/ipu4/ipu4.c
++++ b/drivers/media/pci/intel/ipu4/ipu4.c
+@@ -275,17 +275,31 @@ const struct ipu_buttress_ctrl psys_buttress_ctrl = {
+ 
+ #ifdef CONFIG_VIDEO_INTEL_IPU4P
+ 
++// /*
++//  * ipu4p available hw ports start from sip0 port3
++//  * available ports are:
++//  * s0p3, s1p0, s1p1, s1p2, s1p3
++//  */
++// static unsigned int ipu4p_csi_offsets[] = {
++// 	0x64300, 0x6c000, 0x6c100, 0x6c200, 0x6c300
++// };
++
+ /*
+- * ipu4p available hw ports start from sip0 port3
+- * available ports are:
+- * s0p3, s1p0, s1p1, s1p2, s1p3
++ * calculated using IPU_REG_ISYS_CSI_IRQ_CTRL_BASE(p) from ipu-platform-regs.h
+  */
+ static unsigned int ipu4p_csi_offsets[] = {
+-	0x64300, 0x6c000, 0x6c100, 0x6c200, 0x6c300
++	0x6c400,  /* Port 0 - unused */
++	0x6cc00,  /* Port 1 - unused */
++	0x6d000,  /* Port 2 - unused */
++	0x6dc00,  /* Port 3 - rear camera (0x6cc00 + 0x800*2) */
++	0x6e400,  /* Port 4 - unused */
++	0x6ec00,  /* Port 5 - unused */
++	0x6f400,  /* Port 6 - IR camera (0x6cc00 + 0x800*5) */
++	0x6fc00   /* Port 7 - front camera (0x6cc00 + 0x800*6) */
+ };
+ 
+ static unsigned char ipu4p_csi_evlanecombine[] = {
+-	0, 0, 0, 0, 0, 0
++	0, 0, 0, 0, 0, 0, 0, 0  /* No lane combining for any port */
+ };
+ 
+ static unsigned int ipu4p_tpg_offsets[] = {
+-- 
+2.51.0
+

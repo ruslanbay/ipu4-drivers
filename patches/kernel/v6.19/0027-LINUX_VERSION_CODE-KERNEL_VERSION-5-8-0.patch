@@ -1,0 +1,46 @@
+From 3aa2dd25abead822def6afa25cff456539441a7c Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sat, 27 Dec 2025 11:23:56 +0100
+Subject: [PATCH 27/45] LINUX_VERSION_CODE > KERNEL_VERSION(5, 8, 0)
+
+https://github.com/intel/ipu6-drivers/blob/9766e218112f4173be9b0f06dfae27cb40c54f40/drivers/media/pci/intel/ipu-buttress.c#L768
+---
+ drivers/media/pci/intel/ipu-buttress.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-buttress.c b/drivers/media/pci/intel/ipu-buttress.c
+index 7967fe5410d3..b6c5e590d052 100644
+--- a/drivers/media/pci/intel/ipu-buttress.c
++++ b/drivers/media/pci/intel/ipu-buttress.c
+@@ -778,8 +778,8 @@ int ipu_buttress_map_fw_image(struct ipu_bus_device *sys,
+ {
+ 	struct page **pages;
+ 	const void *addr;
+-	unsigned long n_pages, i;
+-	int rval;
++	unsigned long n_pages;
++	int rval, i;
+ 
+ 	n_pages = PAGE_ALIGN(fw->size) >> PAGE_SHIFT;
+ 
+@@ -806,14 +806,14 @@ int ipu_buttress_map_fw_image(struct ipu_bus_device *sys,
+ 		goto out;
+ 	}
+ 
+-	n_pages = dma_map_sg(&sys->dev, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
+-	if (n_pages != sgt->nents) {
++	rval = dma_map_sgtable(&sys->dev, sgt, DMA_TO_DEVICE, 0);
++	if (rval < 0) {
+ 		rval = -ENOMEM;
+ 		sg_free_table(sgt);
+ 		goto out;
+ 	}
+ 
+-	dma_sync_sg_for_device(&sys->dev, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	dma_sync_sgtable_for_device(&sys->dev, sgt, DMA_TO_DEVICE);
+ 
+ out:
+ 	kfree(pages);
+-- 
+2.51.0
+
