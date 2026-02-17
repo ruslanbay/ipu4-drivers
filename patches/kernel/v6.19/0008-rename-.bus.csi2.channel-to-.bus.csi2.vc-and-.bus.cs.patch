@@ -1,7 +1,7 @@
 From 449822d924e73a9620236fa38771bc27241d4f76 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:31:02 +0100
-Subject: [PATCH 08/45] rename .bus.csi2.channel to .bus.csi2.vc and
+Subject: [PATCH 08/56] rename .bus.csi2.channel to .bus.csi2.vc and
  .bus.csi2.data_type to .bus.csi2.dt
 
 ---

@@ -1,7 +1,7 @@
 From c19afe07daceddd002749fd26e08e7f25be01b80 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 04:32:31 +0100
-Subject: [PATCH 26/45] use dma_free_coherent instead of dma_free_attrs
+Subject: [PATCH 26/56] use dma_free_coherent instead of dma_free_attrs
 
 ---
  drivers/media/pci/intel/ipu-cpd.c  |  8 +++-----

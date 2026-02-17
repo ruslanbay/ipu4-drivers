@@ -1,7 +1,7 @@
 From d30051bf9f5ffef2db3e549c95db8e66d881697a Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 7 Jan 2026 20:24:04 +0100
-Subject: [PATCH 24/45] =?UTF-8?q?hack:=20disable=20failing=20check=20becau?=
+Subject: [PATCH 24/56] =?UTF-8?q?hack:=20disable=20failing=20check=20becau?=
  =?UTF-8?q?se=20the=20sensor=20has=20a=20fixed=20hardware=20rotation=20of?=
  =?UTF-8?q?=20180=C2=B0?=
 MIME-Version: 1.0

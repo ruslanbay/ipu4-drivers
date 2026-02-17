@@ -1,7 +1,7 @@
 From d390d04e34588bf0fc13ca5751e3e0ac98183fd9 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 7 Jan 2026 18:21:15 +0100
-Subject: [PATCH 05/45] media_entity_has_pad_interdep: mimic Intel's
+Subject: [PATCH 05/56] media_entity_has_pad_interdep: mimic Intel's
  media_entity_has_route implementation
 
 ---

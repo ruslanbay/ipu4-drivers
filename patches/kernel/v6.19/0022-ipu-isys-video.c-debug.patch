@@ -1,7 +1,7 @@
 From 38ef51d842ff6225cf396d25c4cb9797fbb3caf4 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 11 Jan 2026 15:42:39 +0100
-Subject: [PATCH 22/45] ipu-isys-video.c: debug
+Subject: [PATCH 22/56] ipu-isys-video.c: debug
 
 ---
  drivers/media/pci/intel/ipu-isys-video.c | 16 +++++++++++++---

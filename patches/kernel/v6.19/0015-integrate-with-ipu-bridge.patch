@@ -1,7 +1,7 @@
 From 5e5296756074957e36c818199a093c5656caabdb Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 15:01:11 +0100
-Subject: [PATCH 15/45] integrate with ipu-bridge
+Subject: [PATCH 15/56] integrate with ipu-bridge
 
 ---
  drivers/media/pci/intel/ipu-isys.c | 123 ++++++++++++++++++++++++++++-

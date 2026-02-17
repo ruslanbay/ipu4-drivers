@@ -1,0 +1,32 @@
+From f824369bce85f27ec3bfd3369234e173cd552635 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 17 Feb 2026 06:19:31 +0000
+Subject: [PATCH 48/56] Prevent crash when format state is uninitialized
+
+---
+ drivers/media/pci/intel/ipu-isys-subdev.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-subdev.c b/drivers/media/pci/intel/ipu-isys-subdev.c
+index e151bdf93316..4f86cb01a5fe 100644
+--- a/drivers/media/pci/intel/ipu-isys-subdev.c
++++ b/drivers/media/pci/intel/ipu-isys-subdev.c
+@@ -858,9 +858,12 @@ int ipu_isys_subdev_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 		struct v4l2_rect *try_compose =
+ 			v4l2_subdev_state_get_compose(fh->state, i);
+ 
+-		*try_fmt = asd->ffmt[i][0];
+-		*try_crop = asd->crop[i];
+-		*try_compose = asd->compose[i];
++		if (try_fmt)
++			*try_fmt = asd->ffmt[i][0];
++		if (try_crop)
++			*try_crop = asd->crop[i];
++		if (try_compose)
++			*try_compose = asd->compose[i];
+ 	}
+ 
+ 	mutex_unlock(&asd->mutex);
+-- 
+2.51.0
+

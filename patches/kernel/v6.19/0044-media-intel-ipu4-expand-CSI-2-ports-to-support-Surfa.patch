@@ -1,7 +1,7 @@
 From 1c51dc65160a62054e579d08f3520e8832aa9fb6 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 21 Jan 2026 12:56:39 +0100
-Subject: [PATCH 44/45] media: intel-ipu4: expand CSI-2 ports to support
+Subject: [PATCH 44/56] media: intel-ipu4: expand CSI-2 ports to support
  Surface Pro 7 The Intel IPU4 ISYS driver currently defaults to 5 or 6 ports,
  causing a kernel panic or probe failure on Surface Pro 7 devices where
  sensors are physically routed to higher-indexed ports.

@@ -1,7 +1,7 @@
 From 82ead23f5c9391a3e126a367691d56359a201f41 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:07:45 +0100
-Subject: [PATCH 16/45] advertise V4L2_CAP_IO_MC capability and add mbus_code
+Subject: [PATCH 16/56] advertise V4L2_CAP_IO_MC capability and add mbus_code
  handling to enumeration operation
 
 This commit addresses the issue of advertising device capabilities and format enumeration.

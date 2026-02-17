@@ -1,7 +1,7 @@
 From 7b02aee4a39a3659b30a800dbb7b0179676bd945 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 29 Nov 2025 07:16:04 +0100
-Subject: [PATCH 13/45] use iosys_map instead of dma_buf_map
+Subject: [PATCH 13/56] use iosys_map instead of dma_buf_map
 
 https://github.com/intel/linux-intel-lts/blob/lts-v6.1.120-linux-241226T022850Z/drivers/media/pci/intel/ipu-psys.c
 ---
