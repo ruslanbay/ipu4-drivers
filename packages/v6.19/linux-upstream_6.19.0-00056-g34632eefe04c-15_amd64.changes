@@ -1,0 +1,34 @@
+Format: 1.8
+Date: Tue, 17 Feb 2026 14:24:33 +0100
+Source: linux-upstream
+Binary: linux-headers-6.19.0-surface linux-image-6.19.0-surface linux-libc-dev
+Built-For-Profiles: noudeb
+Architecture: amd64
+Version: 6.19.0-00056-g34632eefe04c-15
+Distribution: resolute
+Urgency: low
+Maintainer: user <user@pc>
+Changed-By: user <user@pc>
+Description:
+ linux-headers-6.19.0-surface - Linux kernel headers for 6.19.0-surface on amd64
+ linux-image-6.19.0-surface - Linux kernel, version 6.19.0-surface
+ linux-libc-dev - Linux support headers for userspace development
+Changes:
+ linux-upstream (6.19.0-00056-g34632eefe04c-15) resolute; urgency=low
+ .
+   * Custom built Linux kernel.
+Checksums-Sha1:
+ d6e553841ce7f6fe549645d8bb7ab56faca8a72e 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ fb12508ed7eca83739224cd05b6b6b862187403f 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 6d99b2e9c0d4194848599c219e8118bbab91fdd3 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 2831d4d475ffa1b001da2ed502097d32d1204a63 7929 linux-upstream_6.19.0-00056-g34632eefe04c-15_amd64.buildinfo
+Checksums-Sha256:
+ 59c91b62abb30e10f41bb2ac7a811031d8d727c55556b6ea06030655ff0028b2 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ e670a71664c67b280e35b0dbe5d8c89f52fc366063f4cf02cc8df0ea7556d97e 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ e8bce094c362b2159cd3fc9ebc85153b47497c88d7b72af204450ceb3ec45f81 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ bcbf1cc7ea31e8a71729ab795e439c1eb17abb45c88dca19ffc5c6c2ceccb793 7929 linux-upstream_6.19.0-00056-g34632eefe04c-15_amd64.buildinfo
+Files:
+ 38291df7f3c1710e175c4566e1c33276 9944564 kernel optional linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 5ba03aa4c27a0701740add97e04f03ba 25897332 kernel optional linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ cf3d8414e3446c5fb6d8c4bf21f6fe75 1532564 devel optional linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 04986ed85156c6cf4e6f6698e42d432d 7929 kernel optional linux-upstream_6.19.0-00056-g34632eefe04c-15_amd64.buildinfo

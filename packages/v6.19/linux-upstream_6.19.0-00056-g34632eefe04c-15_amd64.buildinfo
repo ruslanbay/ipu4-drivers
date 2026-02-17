@@ -2,22 +2,22 @@ Format: 1.0
 Source: linux-upstream
 Binary: linux-headers-6.19.0-surface linux-image-6.19.0-surface linux-libc-dev
 Architecture: amd64
-Version: 6.19.0-00045-ge041f0b179c0-11
+Version: 6.19.0-00056-g34632eefe04c-15
 Checksums-Md5:
- f0a39fede4536ad3df45c1952c573c23 9944804 linux-headers-6.19.0-surface_6.19.0-00045-ge041f0b179c0-11_amd64.deb
- 0932cf55aee6878d985db2bfc639159b 25897194 linux-image-6.19.0-surface_6.19.0-00045-ge041f0b179c0-11_amd64.deb
- b9371bacfe3f42888cedd5fec7aeccaa 1532452 linux-libc-dev_6.19.0-00045-ge041f0b179c0-11_amd64.deb
+ 38291df7f3c1710e175c4566e1c33276 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 5ba03aa4c27a0701740add97e04f03ba 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ cf3d8414e3446c5fb6d8c4bf21f6fe75 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
 Checksums-Sha1:
- d22cf7f9c0bc11e93ddd321946d0ea70e1f0d533 9944804 linux-headers-6.19.0-surface_6.19.0-00045-ge041f0b179c0-11_amd64.deb
- b9e9cf81cfb7bd9a51a989565e0717386ff493b8 25897194 linux-image-6.19.0-surface_6.19.0-00045-ge041f0b179c0-11_amd64.deb
- 4683e919b0a8f199fd6854139b411bd51a34aac2 1532452 linux-libc-dev_6.19.0-00045-ge041f0b179c0-11_amd64.deb
+ d6e553841ce7f6fe549645d8bb7ab56faca8a72e 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ fb12508ed7eca83739224cd05b6b6b862187403f 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 6d99b2e9c0d4194848599c219e8118bbab91fdd3 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
 Checksums-Sha256:
- b888aed2c300485d3fc2e08fa1f2fa0b16ae275ff18be85aac0cb2ed43a67383 9944804 linux-headers-6.19.0-surface_6.19.0-00045-ge041f0b179c0-11_amd64.deb
- 10103b4fcb6306f4fe0cdb9b54f742f0d26fa0e51dc4e3b10bfd902d4ddb5840 25897194 linux-image-6.19.0-surface_6.19.0-00045-ge041f0b179c0-11_amd64.deb
- e75023c5c339026688610409202f48fd3b1900faf85cab699d9e2c66c80adc92 1532452 linux-libc-dev_6.19.0-00045-ge041f0b179c0-11_amd64.deb
+ 59c91b62abb30e10f41bb2ac7a811031d8d727c55556b6ea06030655ff0028b2 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ e670a71664c67b280e35b0dbe5d8c89f52fc366063f4cf02cc8df0ea7556d97e 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ e8bce094c362b2159cd3fc9ebc85153b47497c88d7b72af204450ceb3ec45f81 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Tue, 10 Feb 2026 19:33:20 +0100
+Build-Date: Tue, 17 Feb 2026 14:26:18 +0100
 Build-Tainted-By:
  usr-local-has-includes
  usr-local-has-libraries
@@ -31,11 +31,11 @@ Installed-Build-Depends:
  base-passwd (= 3.6.8),
  bash (= 5.3-1ubuntu1),
  bc (= 1.07.1-4build1),
- binutils (= 2.45.50.20260119-1ubuntu1),
- binutils-common (= 2.45.50.20260119-1ubuntu1),
- binutils-x86-64-linux-gnu (= 2.45.50.20260119-1ubuntu1),
+ binutils (= 2.46-1ubuntu1),
+ binutils-common (= 2.46-1ubuntu1),
+ binutils-x86-64-linux-gnu (= 2.46-1ubuntu1),
  bison (= 2:3.8.2+dfsg-1build4),
- bsdextrautils (= 2.41.2-4ubuntu2),
+ bsdextrautils (= 2.41.2-4ubuntu3),
  build-essential (= 12.12ubuntu2),
  bzip2 (= 1.0.8-6build2),
  clang-19 (= 1:19.1.7-20ubuntu1),
@@ -68,7 +68,7 @@ Installed-Build-Depends:
  gcc-15 (= 15.2.0-12ubuntu1),
  gcc-15-base (= 15.2.0-12ubuntu1),
  gcc-15-x86-64-linux-gnu (= 15.2.0-12ubuntu1),
- gcc-16-base (= 16-20260208-1ubuntu1),
+ gcc-16-base (= 16-20260210-0ubuntu1),
  gcc-x86-64-linux-gnu (= 4:15.2.0-4ubuntu1),
  gettext (= 0.23.2-1),
  gettext-base (= 0.23.2-1),
@@ -79,33 +79,33 @@ Installed-Build-Depends:
  hostname (= 3.25build1),
  init-system-helpers (= 1.69),
  intltool-debian (= 0.35.0+20060710.6build1),
- kmod (= 34.2-2ubuntu1),
+ kmod (= 34.2-2ubuntu2),
  libacl1 (= 2.3.2-2),
  libarchive-zip-perl (= 1.68-1),
- libasan8 (= 16-20260208-1ubuntu1),
- libatomic1 (= 16-20260208-1ubuntu1),
+ libasan8 (= 16-20260210-0ubuntu1),
+ libatomic1 (= 16-20260210-0ubuntu1),
  libattr1 (= 1:2.5.2-3build2),
  libaudit-common (= 1:4.1.2-1),
  libaudit1 (= 1:4.1.2-1),
- libbinutils (= 2.45.50.20260119-1ubuntu1),
- libblkid1 (= 2.41.2-4ubuntu2),
+ libbinutils (= 2.46-1ubuntu1),
+ libblkid1 (= 2.41.2-4ubuntu3),
  libbsd0 (= 0.12.2-2build2),
  libbz2-1.0 (= 1.0.8-6build2),
- libc-bin (= 2.42-2ubuntu4),
- libc-dev-bin (= 2.42-2ubuntu4),
- libc-gconv-modules-extra (= 2.42-2ubuntu4),
- libc6 (= 2.42-2ubuntu4),
- libc6-dev (= 2.42-2ubuntu4),
+ libc-bin (= 2.42-2ubuntu5),
+ libc-dev-bin (= 2.42-2ubuntu5),
+ libc-gconv-modules-extra (= 2.42-2ubuntu5),
+ libc6 (= 2.42-2ubuntu5),
+ libc6-dev (= 2.42-2ubuntu5),
  libcap-ng0 (= 0.8.5-4build4),
  libcap2 (= 1:2.75-10ubuntu1),
- libcc1-0 (= 16-20260208-1ubuntu1),
+ libcc1-0 (= 16-20260210-0ubuntu1),
  libclang-common-19-dev (= 1:19.1.7-20ubuntu1),
  libclang-cpp19 (= 1:19.1.7-20ubuntu1),
  libclang1-19 (= 1:19.1.7-20ubuntu1),
  libcrypt-dev (= 1:4.5.1-1),
  libcrypt1 (= 1:4.5.1-1),
- libctf-nobfd0 (= 2.45.50.20260119-1ubuntu1),
- libctf0 (= 2.45.50.20260119-1ubuntu1),
+ libctf-nobfd0 (= 2.46-1ubuntu1),
+ libctf0 (= 2.46-1ubuntu1),
  libdb5.3t64 (= 5.3.28+dfsg2-10ubuntu1),
  libdebconfclient0 (= 0.280ubuntu1),
  libdebhelper-perl (= 13.28ubuntu1),
@@ -120,69 +120,69 @@ Installed-Build-Depends:
  libfile-stripnondeterminism-perl (= 1.15.0-1build1),
  libgc1 (= 1:8.2.12-1),
  libgcc-15-dev (= 15.2.0-12ubuntu1),
- libgcc-s1 (= 16-20260208-1ubuntu1),
+ libgcc-s1 (= 16-20260210-0ubuntu1),
  libgdbm-compat4t64 (= 1.26-1build1),
  libgdbm6t64 (= 1.26-1build1),
- libgmp10 (= 2:6.3.0+dfsg-5ubuntu1),
- libgomp1 (= 16-20260208-1ubuntu1),
- libgprofng0 (= 2.45.50.20260119-1ubuntu1),
- libhwasan0 (= 16-20260208-1ubuntu1),
+ libgmp10 (= 2:6.3.0+dfsg-5ubuntu2),
+ libgomp1 (= 16-20260210-0ubuntu1),
+ libgprofng0 (= 2.46-1ubuntu1),
+ libhwasan0 (= 16-20260210-0ubuntu1),
  libisl23 (= 0.27-1build1),
- libitm1 (= 16-20260208-1ubuntu1),
+ libitm1 (= 16-20260210-0ubuntu1),
  libjansson4 (= 2.14-2build4),
- libkmod2 (= 34.2-2ubuntu1),
+ libkmod2 (= 34.2-2ubuntu2),
  libllvm19 (= 1:19.1.7-20ubuntu1),
- liblsan0 (= 16-20260208-1ubuntu1),
+ liblsan0 (= 16-20260210-0ubuntu1),
  liblz4-1 (= 1.10.0-6),
  liblzma-dev (= 5.8.2-2),
  liblzma5 (= 5.8.2-2),
  libmagic-mgc (= 1:5.46-5build1),
  libmagic1t64 (= 1:5.46-5build1),
  libmd0 (= 1.1.0-2build4),
- libmount1 (= 2.41.2-4ubuntu2),
+ libmount1 (= 2.41.2-4ubuntu3),
  libmpc3 (= 1.3.1-2),
  libmpfr6 (= 4.2.2-2),
  libncursesw6 (= 6.6+20251231-1),
  libobjc-15-dev (= 15.2.0-12ubuntu1),
- libobjc4 (= 16-20260208-1ubuntu1),
- libpam-modules (= 1.7.0-5ubuntu2),
- libpam-modules-bin (= 1.7.0-5ubuntu2),
- libpam-runtime (= 1.7.0-5ubuntu2),
- libpam0g (= 1.7.0-5ubuntu2),
- libpcre2-8-0 (= 10.46-1),
+ libobjc4 (= 16-20260210-0ubuntu1),
+ libpam-modules (= 1.7.0-5ubuntu3),
+ libpam-modules-bin (= 1.7.0-5ubuntu3),
+ libpam-runtime (= 1.7.0-5ubuntu3),
+ libpam0g (= 1.7.0-5ubuntu3),
+ libpcre2-8-0 (= 10.46-1build1),
  libperl5.40 (= 5.40.1-6build1),
  libpipeline1 (= 1.5.8-2),
  libpopt0 (= 1.19+dfsg-2build1),
  libpython3-stdlib (= 3.13.9-3),
- libpython3.13-minimal (= 3.13.11-1),
- libpython3.13-stdlib (= 3.13.11-1),
- libquadmath0 (= 16-20260208-1ubuntu1),
+ libpython3.13-minimal (= 3.13.12-1),
+ libpython3.13-stdlib (= 3.13.12-1),
+ libquadmath0 (= 16-20260210-0ubuntu1),
  libreadline8t64 (= 8.3-3),
  libseccomp2 (= 2.6.0-2ubuntu4),
  libselinux1 (= 3.9-4),
- libsframe3 (= 2.45.50.20260119-1ubuntu1),
- libsmartcols1 (= 2.41.2-4ubuntu2),
+ libsframe3 (= 2.46-1ubuntu1),
+ libsmartcols1 (= 2.41.2-4ubuntu3),
  libsqlite3-0 (= 3.46.1-9),
  libssl-dev (= 3.5.3-1ubuntu2),
  libssl3t64 (= 3.5.3-1ubuntu2),
  libstdc++-15-dev (= 15.2.0-12ubuntu1),
- libstdc++6 (= 16-20260208-1ubuntu1),
+ libstdc++6 (= 16-20260210-0ubuntu1),
  libsystemd0 (= 259-1ubuntu3),
  libtinfo6 (= 6.6+20251231-1),
  libtool (= 2.5.4-9),
- libtsan2 (= 16-20260208-1ubuntu1),
- libubsan1 (= 16-20260208-1ubuntu1),
+ libtsan2 (= 16-20260210-0ubuntu1),
+ libubsan1 (= 16-20260210-0ubuntu1),
  libuchardet0 (= 0.0.8-2),
  libudev1 (= 259-1ubuntu3),
  libunistring5 (= 1.3-2),
- libuuid1 (= 2.41.2-4ubuntu2),
+ libuuid1 (= 2.41.2-4ubuntu3),
  libxml2-16 (= 2.15.1+dfsg-2ubuntu1),
  libxxhash0 (= 0.8.3-2build1),
  libzstd-dev (= 1.5.7+dfsg-3),
  libzstd1 (= 1.5.7+dfsg-3),
  linux-libc-dev (= 6.19.0-3.3),
  llvm-19-linker-tools (= 1:19.1.7-20ubuntu1),
- lto-disabled-list (= 76),
+ lto-disabled-list (= 77),
  m4 (= 1.4.21-1),
  make (= 4.4.1-2),
  man-db (= 2.13.1-1build1),
@@ -199,21 +199,21 @@ Installed-Build-Depends:
  po-debconf (= 1.0.22),
  python3 (= 3.13.9-3),
  python3-minimal (= 3.13.9-3),
- python3.13 (= 3.13.11-1),
- python3.13-minimal (= 3.13.11-1),
+ python3.13 (= 3.13.12-1),
+ python3.13-minimal (= 3.13.12-1),
  readline-common (= 8.3-3),
  rpcsvc-proto (= 1.4.3-1build1),
  rsync (= 3.4.1+ds1-7),
- rust-coreutils (= 0.5.0-0ubuntu2),
+ rust-coreutils (= 0.6.0-0ubuntu1),
  sed (= 4.9-2build3),
  sensible-utils (= 0.0.26build1),
  sysvinit-utils (= 3.15-5ubuntu1),
  tar (= 1.35+dfsg-3.1build2),
  tzdata (= 2025c-3ubuntu3),
- util-linux (= 2.41.2-4ubuntu2),
+ util-linux (= 2.41.2-4ubuntu3),
  xz-utils (= 5.8.2-2),
- zlib1g (= 1:1.3.dfsg+really1.3.1-1ubuntu2),
- zlib1g-dev (= 1:1.3.dfsg+really1.3.1-1ubuntu2)
+ zlib1g (= 1:1.3.dfsg+really1.3.1-1ubuntu3),
+ zlib1g-dev (= 1:1.3.dfsg+really1.3.1-1ubuntu3)
 Environment:
  AR="ar"
  AWK="awk"
@@ -227,6 +227,6 @@ Environment:
  LD="ld"
  LEX="flex"
  MAKE="make"
- MAKEFLAGS="rR -j8 --jobserver-auth=fifo:/tmp/GMfifo53453 --no-print-directory -- LOCALVERSION=-surface"
- SOURCE_DATE_EPOCH="1770748315"
+ MAKEFLAGS="rR -j8 --jobserver-auth=fifo:/tmp/GMfifo8723 --no-print-directory -- LOCALVERSION=-surface"
+ SOURCE_DATE_EPOCH="1771334673"
  YACC="bison"
