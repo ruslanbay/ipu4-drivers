@@ -1,7 +1,7 @@
 From 5d251478e4d3fc9f4f5fc2d7211e9e4f73cff62a Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 7 Jan 2026 18:47:39 +0100
-Subject: [PATCH 23/56] add missing pixel formats to resolve failed
+Subject: [PATCH 23/58] add missing pixel formats to resolve failed
  v4l2-compliance checks:
 
 Format ioctls (Input 0):

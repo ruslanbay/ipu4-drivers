@@ -1,7 +1,7 @@
 From c3fcb5d24b3722e45600e73172cc948d6e0e8390 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 19:47:38 +0100
-Subject: [PATCH 35/56] match v4l2_subdev_pad_ops.set_routing signature
+Subject: [PATCH 35/58] match v4l2_subdev_pad_ops.set_routing signature
 
 ---
  drivers/media/pci/intel/ipu-isys-subdev.c | 4 +++-

@@ -1,7 +1,7 @@
 From 2a303bd44f22deb8cd7f48e138af37807bd1b6af Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:29:52 +0100
-Subject: [PATCH 38/56] v4l2_get_link_freq: function signature was changed
+Subject: [PATCH 38/58] v4l2_get_link_freq: function signature was changed
 
 ---
  drivers/media/pci/intel/ipu-isys-csi2.c | 11 ++++++++++-

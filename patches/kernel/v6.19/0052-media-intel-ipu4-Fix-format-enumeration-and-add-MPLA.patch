@@ -1,7 +1,7 @@
 From d9909d794d8a4a968bc4adf0f8f5dc3e378e59e2 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 08:33:57 +0000
-Subject: [PATCH 52/56] media: intel-ipu4: Fix format enumeration and add
+Subject: [PATCH 52/58] media: intel-ipu4: Fix format enumeration and add
  MPLANE support
 
 Remove V4L2_SUBDEV_FL_HAS_SUBSTREAMS from CSI-2 subDevs. In kernel

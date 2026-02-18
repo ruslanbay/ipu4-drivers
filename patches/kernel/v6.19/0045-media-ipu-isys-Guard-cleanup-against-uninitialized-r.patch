@@ -1,7 +1,7 @@
 From 47d10f136fb74354f874eab320b78aba384a019e Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 05:59:27 +0000
-Subject: [PATCH 45/56] media: ipu-isys: Guard cleanup against uninitialized
+Subject: [PATCH 45/58] media: ipu-isys: Guard cleanup against uninitialized
  resources and add debug logging
 
 Fix NULL pointer dereferences in cleanup functions during driver init failures. Add guards to prevent cleanup of partially-initialized resources:

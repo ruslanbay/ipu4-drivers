@@ -1,7 +1,7 @@
 From 2afbbe7fbd26cb78cb6bb0241fbdc8eb66e7c97e Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:34:40 +0100
-Subject: [PATCH 39/56] use v4l2_async_connection instead of v4l2_async_subdev
+Subject: [PATCH 39/58] use v4l2_async_connection instead of v4l2_async_subdev
 
 ---
  drivers/media/pci/intel/ipu-isys.c | 2 +-

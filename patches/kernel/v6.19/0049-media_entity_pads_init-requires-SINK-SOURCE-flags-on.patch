@@ -1,7 +1,7 @@
 From a907b6301d6083e0d8bbab763bcd4bc0ed50780f Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 06:27:24 +0000
-Subject: [PATCH 49/56] media_entity_pads_init() requires SINK/SOURCE flags on
+Subject: [PATCH 49/58] media_entity_pads_init() requires SINK/SOURCE flags on
  each pad.
 
 Set default pad directions in ipu_isys_subdev_init() before media_entity_pads_init()

@@ -1,7 +1,7 @@
 From f316b334018904f218f4bd91e1471e4b8f66c5ff Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 12:46:48 +0000
-Subject: [PATCH 54/56] Fix format table lookup priority in link_validate():
+Subject: [PATCH 54/58] Fix format table lookup priority in link_validate():
  Search per-device av->pfmts (packed formats) first for matching pixelformat
  before falling back to global ipu_isys_get_isys_format(). For CSI-2 capture
  with SBGGR10P, the packed fourcc was not found in the global table, causing

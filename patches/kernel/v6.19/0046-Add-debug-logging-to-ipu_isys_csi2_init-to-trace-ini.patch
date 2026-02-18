@@ -1,7 +1,7 @@
 From 3b3d2e17231c13a004d3baf0261ad2c89b26e781 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 05:59:55 +0000
-Subject: [PATCH 46/56] Add debug logging to ipu_isys_csi2_init to trace
+Subject: [PATCH 46/58] Add debug logging to ipu_isys_csi2_init to trace
  initialization progress
 
 ---

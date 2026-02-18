@@ -1,7 +1,7 @@
 From e729185a76fe551504e0379f5c4ed8a89f43c696 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:35:16 +0100
-Subject: [PATCH 40/56] ipu_bus_match: function signature was changed
+Subject: [PATCH 40/58] ipu_bus_match: function signature was changed
 
 ---
  drivers/media/pci/intel/ipu-bus.c | 2 +-
