@@ -1,23 +1,23 @@
 Format: 1.0
 Source: linux-upstream
-Binary: linux-headers-6.19.0-surface linux-image-6.19.0-surface linux-libc-dev
+Binary: linux-headers-6.19.2-surface linux-image-6.19.2-surface linux-libc-dev
 Architecture: amd64
-Version: 6.19.0-00056-g34632eefe04c-15
+Version: 6.19.2-g9dd17c59fedf-20
 Checksums-Md5:
- 38291df7f3c1710e175c4566e1c33276 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
- 5ba03aa4c27a0701740add97e04f03ba 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
- cf3d8414e3446c5fb6d8c4bf21f6fe75 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 55e34c59ba96a277a56c4df1e925f084 9944110 linux-headers-6.19.2-surface_6.19.2-g9dd17c59fedf-20_amd64.deb
+ 41239c291e7b7a8c1e2c14e1f18cdcc0 25897848 linux-image-6.19.2-surface_6.19.2-g9dd17c59fedf-20_amd64.deb
+ fca88ef76460229cef77a6dc900a3c5c 1532526 linux-libc-dev_6.19.2-g9dd17c59fedf-20_amd64.deb
 Checksums-Sha1:
- d6e553841ce7f6fe549645d8bb7ab56faca8a72e 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
- fb12508ed7eca83739224cd05b6b6b862187403f 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
- 6d99b2e9c0d4194848599c219e8118bbab91fdd3 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 78bf68a5657e9ed597f34db1458d7ae3f02021b7 9944110 linux-headers-6.19.2-surface_6.19.2-g9dd17c59fedf-20_amd64.deb
+ 2b4ce6c3978d3f419933367f3cad9a970d4c54ff 25897848 linux-image-6.19.2-surface_6.19.2-g9dd17c59fedf-20_amd64.deb
+ fac7bf40e2ce3e776e7dc0ee917ee1ddab725936 1532526 linux-libc-dev_6.19.2-g9dd17c59fedf-20_amd64.deb
 Checksums-Sha256:
- 59c91b62abb30e10f41bb2ac7a811031d8d727c55556b6ea06030655ff0028b2 9944564 linux-headers-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
- e670a71664c67b280e35b0dbe5d8c89f52fc366063f4cf02cc8df0ea7556d97e 25897332 linux-image-6.19.0-surface_6.19.0-00056-g34632eefe04c-15_amd64.deb
- e8bce094c362b2159cd3fc9ebc85153b47497c88d7b72af204450ceb3ec45f81 1532564 linux-libc-dev_6.19.0-00056-g34632eefe04c-15_amd64.deb
+ 1a67cb32d256907960a5b7e29eb06d9be19fab5594988effe1eb3522cf711d55 9944110 linux-headers-6.19.2-surface_6.19.2-g9dd17c59fedf-20_amd64.deb
+ 655d14d1dd98981fbb0dc68637b5ca9933e693e154d2f6ad76ff2c27ba211f4f 25897848 linux-image-6.19.2-surface_6.19.2-g9dd17c59fedf-20_amd64.deb
+ 9bed36bce9e41b586cdb94b1bf92f86fd75e5e37bcc8af0dc089e01bea4b3658 1532526 linux-libc-dev_6.19.2-g9dd17c59fedf-20_amd64.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Tue, 17 Feb 2026 14:26:18 +0100
+Build-Date: Wed, 18 Feb 2026 10:32:58 +0100
 Build-Tainted-By:
  usr-local-has-includes
  usr-local-has-libraries
@@ -180,7 +180,7 @@ Installed-Build-Depends:
  libxxhash0 (= 0.8.3-2build1),
  libzstd-dev (= 1.5.7+dfsg-3),
  libzstd1 (= 1.5.7+dfsg-3),
- linux-libc-dev (= 6.19.0-3.3),
+ linux-libc-dev (= 6.19.0-5.5),
  llvm-19-linker-tools (= 1:19.1.7-20ubuntu1),
  lto-disabled-list (= 77),
  m4 (= 1.4.21-1),
@@ -227,6 +227,6 @@ Environment:
  LD="ld"
  LEX="flex"
  MAKE="make"
- MAKEFLAGS="rR -j8 --jobserver-auth=fifo:/tmp/GMfifo8723 --no-print-directory -- LOCALVERSION=-surface"
- SOURCE_DATE_EPOCH="1771334673"
+ MAKEFLAGS="rR -j8 --jobserver-auth=fifo:/tmp/GMfifo27497 --no-print-directory -- LOCALVERSION=-surface"
+ SOURCE_DATE_EPOCH="1771405340"
  YACC="bison"
