@@ -1,4 +1,4 @@
-From b198f18fd41a9def0c92f3f6d67ffd63480f6c2e Mon Sep 17 00:00:00 2001
+From 6f997a410206be5c0d84ad30b03f3e9d96699371 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 20:17:08 +0100
 Subject: [PATCH 36/56] Revert "mm: remove follow_pte()"

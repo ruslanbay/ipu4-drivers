@@ -1,4 +1,4 @@
-From 2bc4e0747319db3dae6902d6eab5b3d8b26e4edf Mon Sep 17 00:00:00 2001
+From e9a07f4b9ab26fdbef5111f129b678728fcb0b6f Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 11 Jan 2026 19:14:00 +0100
 Subject: [PATCH 25/56] use dma_alloc_coherent instead of dma_alloc_attrs

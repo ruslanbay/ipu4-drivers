@@ -1,4 +1,4 @@
-From c4c9d8980759a8d5570db1e6cbbf39283d4c757f Mon Sep 17 00:00:00 2001
+From c7c2009d1b9298e2a415eca4b4f218940b4d9ce9 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 19:41:17 +0100
 Subject: [PATCH 34/56] convert symbol namespace to string literal

@@ -1,4 +1,4 @@
-From bdbab8f4510a04ae0a280e35a0432a7cc8d8e93c Mon Sep 17 00:00:00 2001
+From 2afbbe7fbd26cb78cb6bb0241fbdc8eb66e7c97e Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:34:40 +0100
 Subject: [PATCH 39/56] use v4l2_async_connection instead of v4l2_async_subdev

@@ -1,4 +1,4 @@
-From 38957d7a4582ad1b6871b9280a4267149b1de66c Mon Sep 17 00:00:00 2001
+From 3349d4313556aa5233ebeaa9fb7b365043640cee Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:36:21 +0100
 Subject: [PATCH 42/56] v4l2_async_nf_register: function signature was changed

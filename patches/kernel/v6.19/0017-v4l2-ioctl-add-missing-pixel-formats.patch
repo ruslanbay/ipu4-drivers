@@ -1,4 +1,4 @@
-From deb328b8e80cb41d67a76101e13847cfff4282a8 Mon Sep 17 00:00:00 2001
+From 2da488767b07842f94b2ab19cbe811365d8b3251 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 17:59:15 +0100
 Subject: [PATCH 17/56] v4l2-ioctl: add missing pixel formats

@@ -1,4 +1,4 @@
-From 3aa2dd25abead822def6afa25cff456539441a7c Mon Sep 17 00:00:00 2001
+From 05c2afe86074ced495b243d9a18f24565e0f8ff9 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 27 Dec 2025 11:23:56 +0100
 Subject: [PATCH 27/56] LINUX_VERSION_CODE > KERNEL_VERSION(5, 8, 0)

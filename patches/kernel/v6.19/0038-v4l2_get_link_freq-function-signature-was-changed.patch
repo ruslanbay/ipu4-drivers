@@ -1,4 +1,4 @@
-From c828c25100d9a77c24c1dc5f94a97dab1e5fda42 Mon Sep 17 00:00:00 2001
+From 2a303bd44f22deb8cd7f48e138af37807bd1b6af Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:29:52 +0100
 Subject: [PATCH 38/56] v4l2_get_link_freq: function signature was changed

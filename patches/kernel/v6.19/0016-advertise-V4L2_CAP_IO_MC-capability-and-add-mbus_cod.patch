@@ -1,4 +1,4 @@
-From 82ead23f5c9391a3e126a367691d56359a201f41 Mon Sep 17 00:00:00 2001
+From 4d20e56e1489cb401b331b703adcd195e7d3a3d1 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:07:45 +0100
 Subject: [PATCH 16/56] advertise V4L2_CAP_IO_MC capability and add mbus_code

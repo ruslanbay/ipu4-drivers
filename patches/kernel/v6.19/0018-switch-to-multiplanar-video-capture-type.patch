@@ -1,4 +1,4 @@
-From 8949aaaeae7d6c958d6e3eecfe7f9519bf1aeb66 Mon Sep 17 00:00:00 2001
+From e413edbbabe25736b2c8d6a61b3e5908290ef1f8 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:08:31 +0100
 Subject: [PATCH 18/56] switch to multiplanar video capture type

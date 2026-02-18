@@ -1,4 +1,4 @@
-From 6486e5639b746645f03c58c28be9854929743c03 Mon Sep 17 00:00:00 2001
+From da4e1535ef3b54bec2f0ccb43a30a4ff4ce7df33 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:35:28 +0100
 Subject: [PATCH 41/56] v4l2_async_nf_init: function signature was changed

@@ -1,4 +1,4 @@
-From a2775e5bae3ff2d4c2ec545df2d7effad30a15f7 Mon Sep 17 00:00:00 2001
+From 7c29253e04df66b0220a26cc6bc33f0c8f7ff4b1 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:16:09 +0100
 Subject: [PATCH 07/56] export find_vm_area to resolve `"find_vm_area"
