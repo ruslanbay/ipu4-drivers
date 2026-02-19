@@ -1,7 +1,7 @@
 From 391df0abdedce23d70fc4f8b91a9bd4f4d4b063e Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 18:06:59 +0100
-Subject: [PATCH 24/53] use strscpy instead of strlcpy
+Subject: [PATCH 24/54] use strscpy instead of strlcpy
 
 ---
  drivers/media/pci/intel/ipu-isys-video.c | 6 +++---

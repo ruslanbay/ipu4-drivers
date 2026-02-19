@@ -1,7 +1,7 @@
 From adc446ff5998a27335d17255fb907b8dc493540d Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 18:14:53 +0100
-Subject: [PATCH 25/53] use noop_llseek instead of no_llseek
+Subject: [PATCH 25/54] use noop_llseek instead of no_llseek
 
 ---
  drivers/media/pci/intel/ipu-trace.c | 4 ++--

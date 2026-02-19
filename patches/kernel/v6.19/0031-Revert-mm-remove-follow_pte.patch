@@ -1,7 +1,7 @@
 From d48f2d49b179852013b42ed93e49e749755950ec Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 20:17:08 +0100
-Subject: [PATCH 31/53] Revert "mm: remove follow_pte()"
+Subject: [PATCH 31/54] Revert "mm: remove follow_pte()"
 
 This reverts commit b0a1c0d0edcd75a0f8ec5fd19dbd64b8d097f534.
 ---

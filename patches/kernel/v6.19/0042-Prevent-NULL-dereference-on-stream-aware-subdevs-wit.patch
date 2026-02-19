@@ -1,7 +1,7 @@
 From ebf1c8a91faaa04b08a79346879836e673a76b81 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 06:23:27 +0000
-Subject: [PATCH 42/53] Prevent NULL dereference on stream-aware subdevs
+Subject: [PATCH 42/54] Prevent NULL dereference on stream-aware subdevs
  without routing
 
 ---

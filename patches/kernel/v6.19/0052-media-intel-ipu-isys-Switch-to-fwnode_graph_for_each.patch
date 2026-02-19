@@ -1,7 +1,7 @@
 From 013349e9e3f5c319fd8c415f0260a734c47e2ae2 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Thu, 19 Feb 2026 10:33:11 +0100
-Subject: [PATCH 52/53] media: intel/ipu-isys: Switch to
+Subject: [PATCH 52/54] media: intel/ipu-isys: Switch to
  fwnode_graph_for_each_endpoint()
 
 Use fwnode_graph_for_each_endpoint() to iterate over the endpoints

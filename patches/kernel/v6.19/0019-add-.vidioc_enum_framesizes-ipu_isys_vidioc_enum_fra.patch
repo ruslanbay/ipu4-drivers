@@ -1,7 +1,7 @@
 From a704f0d2072ed69a4e5945c68e5a813b9361853f Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:09:22 +0100
-Subject: [PATCH 19/53] add .vidioc_enum_framesizes =
+Subject: [PATCH 19/54] add .vidioc_enum_framesizes =
  ipu_isys_vidioc_enum_framesizes to resolve `Unable to enumerate frame sizes:
  Inappropriate ioctl for device`:
 

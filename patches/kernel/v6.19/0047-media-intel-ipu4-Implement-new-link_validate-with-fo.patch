@@ -1,7 +1,7 @@
 From 35f05188016d348609406f34de89cb89d98d6f0c Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 08:38:39 +0000
-Subject: [PATCH 47/53] media: intel-ipu4: Implement new link_validate with
+Subject: [PATCH 47/54] media: intel-ipu4: Implement new link_validate with
  format validation
 
 Replace routing-based link validation with proper format negotiation

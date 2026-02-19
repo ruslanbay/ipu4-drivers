@@ -1,7 +1,7 @@
 From 51edd99b61c891e351657cf0845cc08fd52149ac Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 27 Dec 2025 11:23:56 +0100
-Subject: [PATCH 22/53] media: intel/ipu4: use dma_map_sgtable helpers
+Subject: [PATCH 22/54] media: intel/ipu4: use dma_map_sgtable helpers
 
 Replace the deprecated dma_map_sg() and dma_sync_sg_for_device()
 calls with dma_map_sgtable() and dma_sync_sgtable_for_device().

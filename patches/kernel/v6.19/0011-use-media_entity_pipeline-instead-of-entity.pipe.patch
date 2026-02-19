@@ -1,7 +1,7 @@
 From c6a02063d5dc2845afbfede26b587006066f11af Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:39:12 +0100
-Subject: [PATCH 11/53] use media_entity_pipeline instead of entity.pipe
+Subject: [PATCH 11/54] use media_entity_pipeline instead of entity.pipe
 
 ---
  .../media/pci/intel/ipu-isys-csi2-be-soc.c    |  2 +-

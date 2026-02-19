@@ -1,7 +1,7 @@
 From 9bab56b99a4b7faacc140670a7803a7edde34f51 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 08:25:37 +0000
-Subject: [PATCH 45/53] media: intel-ipu4: Add infrastructure for link
+Subject: [PATCH 45/54] media: intel-ipu4: Add infrastructure for link
  validation
 
 Add helper functions and data structures needed for format validation

@@ -1,7 +1,7 @@
 From ec106bea8085f6875a28bc6ad05f9667457c1d36 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 12:47:09 +0000
-Subject: [PATCH 49/53] Count video device entities to set nr_queues: During
+Subject: [PATCH 49/54] Count video device entities to set nr_queues: During
  graph walk in ipu_isys_video_prepare_streaming(), count all video device
  entities and increment nr_queues accordingly. The streaming start logic waits
  for nr_streaming == nr_queues, but nr_queues was only incremented in
