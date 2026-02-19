@@ -1,7 +1,7 @@
 From 0caa57517dc256d20b28075a8145dab6641dace2 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 06:32:44 +0000
-Subject: [PATCH 44/54] Prevent cleanup of never-initialized arrays
+Subject: [PATCH 44/55] Prevent cleanup of never-initialized arrays
 
 ---
  drivers/media/pci/intel/ipu-isys.c | 10 ++++++----

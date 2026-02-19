@@ -1,7 +1,7 @@
 From 047f4444a2117116d03528b34400cbc840e57407 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 17 Feb 2026 06:19:31 +0000
-Subject: [PATCH 41/54] Prevent crash when format state is uninitialized
+Subject: [PATCH 41/55] Prevent crash when format state is uninitialized
 
 ---
  drivers/media/pci/intel/ipu-isys-subdev.c | 9 ++++++---

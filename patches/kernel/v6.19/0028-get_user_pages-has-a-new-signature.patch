@@ -1,7 +1,7 @@
 From e19908dbefdaf1cfda08947650fc2104109deef3 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 19:36:24 +0100
-Subject: [PATCH 28/54] get_user_pages has a new signature
+Subject: [PATCH 28/55] get_user_pages has a new signature
 
 ---
  drivers/media/pci/intel/ipu-psys.c | 2 +-

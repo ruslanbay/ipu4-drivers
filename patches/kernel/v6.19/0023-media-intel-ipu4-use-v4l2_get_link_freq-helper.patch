@@ -1,7 +1,7 @@
 From 75022bd1c35f7f23d1054c23094ef96df9952b28 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 27 Dec 2025 12:48:58 +0100
-Subject: [PATCH 23/54] media: intel/ipu4: use v4l2_get_link_freq() helper
+Subject: [PATCH 23/55] media: intel/ipu4: use v4l2_get_link_freq() helper
 
 Simplify the retrieval of the CSI-2 link frequency by using the
 standard v4l2_get_link_freq() helper instead of manually

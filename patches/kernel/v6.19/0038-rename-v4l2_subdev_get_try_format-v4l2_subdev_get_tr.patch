@@ -1,7 +1,7 @@
 From 3c30c64cbe93838373498aaae48747bf2af16523 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 23:05:44 +0100
-Subject: [PATCH 38/54] rename v4l2_subdev_get_try_format,
+Subject: [PATCH 38/55] rename v4l2_subdev_get_try_format,
  v4l2_subdev_get_try_crop and v4l2_subdev_get_try_compose
 
 ---

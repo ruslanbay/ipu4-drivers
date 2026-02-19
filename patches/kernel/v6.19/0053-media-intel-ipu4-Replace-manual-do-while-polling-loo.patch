@@ -1,7 +1,7 @@
 From 22c42d852175c59ac2ad594de6a171df3569c92b Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Thu, 19 Feb 2026 23:45:55 +0100
-Subject: [PATCH 53/54] media: intel/ipu4: Replace manual do-while polling
+Subject: [PATCH 53/55] media: intel/ipu4: Replace manual do-while polling
  loops with the readl_poll_timeout() macro
 
 ---

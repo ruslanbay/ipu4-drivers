@@ -1,7 +1,7 @@
 From c4864b35cb6ed3efc57d3abad4021b5eb8426922 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 18 Feb 2026 15:33:39 +0100
-Subject: [PATCH 51/54] media: intel-ipu4: expand CSI-2 ports to support
+Subject: [PATCH 51/55] media: intel-ipu4: expand CSI-2 ports to support
  Surface Pro 7
 
 ---

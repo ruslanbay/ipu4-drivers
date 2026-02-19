@@ -1,7 +1,7 @@
 From 8d5d45b1729afd45dcd41e3e13ea6a9a97208de3 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 18:22:50 +0100
-Subject: [PATCH 27/54] rename try_to_del_timer_sync to timer_delete_sync_try
+Subject: [PATCH 27/55] rename try_to_del_timer_sync to timer_delete_sync_try
 
 ---
  drivers/media/pci/intel/ipu4/ipu4-psys.c | 2 +-

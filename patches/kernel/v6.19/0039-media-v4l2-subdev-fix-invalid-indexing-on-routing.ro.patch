@@ -1,7 +1,7 @@
 From 81aed36591928190378e33850aa49e6fb17913ab Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Tue, 10 Feb 2026 20:04:03 +0100
-Subject: [PATCH 39/54] media: v4l2-subdev: fix invalid indexing on
+Subject: [PATCH 39/55] media: v4l2-subdev: fix invalid indexing on
  routing.routes
 
 The 'routes' member in struct v4l2_subdev_routing is a __u64, not a pointer type. Direct array indexing is not possible. Cast the address to a local struct v4l2_subdev_route pointer to correctly access the routing table and check for active routes.

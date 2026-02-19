@@ -1,7 +1,7 @@
 From 8ee4cb0d05f961d111c6859b688638d5d6e921ee Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 18 Feb 2026 10:01:46 +0100
-Subject: [PATCH 50/54] fix IPU4P firmware port-to-array-index mapping
+Subject: [PATCH 50/55] fix IPU4P firmware port-to-array-index mapping
 
 IPU4P uses non-contiguous firmware port numbering: array indices 0-4 map to firmware ports 3, 6, 7, 8, 9. The ACPI SSDB tables report firmware port numbers, but the driver used them as direct array indices into isys->csi2[], causing out-of-bounds access.
 

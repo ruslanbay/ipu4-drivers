@@ -1,7 +1,7 @@
 From c284bc022f33942e57712fce8cfbd0d964738c5e Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 12 Jan 2026 22:36:21 +0100
-Subject: [PATCH 37/54] v4l2_async_nf_register: function signature was changed
+Subject: [PATCH 37/55] v4l2_async_nf_register: function signature was changed
 
 ---
  drivers/media/pci/intel/ipu-isys.c | 2 +-

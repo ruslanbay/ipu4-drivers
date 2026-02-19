@@ -1,7 +1,7 @@
 From 9c9cf13d122c1a2b9e6da901e52753180414867a Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:08:31 +0100
-Subject: [PATCH 18/54] switch to multiplanar video capture type
+Subject: [PATCH 18/55] switch to multiplanar video capture type
 
 The device is advertised[1] as supporting multiplanar capture, which libcamera will assess[2] and decide that it should look for buffers with the type V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, but .enum_fmt() returns no formats if the passed in buffer type[3] is not V4L2_BUF_TYPE_VIDEO_CAPTURE (note the lack of _MPLANE).
 
