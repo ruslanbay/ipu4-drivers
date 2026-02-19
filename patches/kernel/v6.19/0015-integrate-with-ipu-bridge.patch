@@ -1,17 +1,17 @@
-From df5560807b3dd72f94eff2772782042fb90ef35f Mon Sep 17 00:00:00 2001
+From 2e5e2b9e271848558c8326b50d618c23754adb08 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 15:01:11 +0100
-Subject: [PATCH 15/58] integrate with ipu-bridge
+Subject: [PATCH 15/53] integrate with ipu-bridge
 
 ---
- drivers/media/pci/intel/ipu-isys.c | 123 ++++++++++++++++++++++++++++-
+ drivers/media/pci/intel/ipu-isys.c | 119 +++++++++++++++++++++++++++++
  drivers/media/pci/intel/ipu-isys.h |  11 +++
- drivers/media/pci/intel/ipu.c      |  13 +++
+ drivers/media/pci/intel/ipu.c      |  13 ++++
  include/media/ipu-isys.h           |   5 --
- 4 files changed, 145 insertions(+), 7 deletions(-)
+ 4 files changed, 143 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
-index 95344bb1ac87..f8c17f0c4231 100644
+index 95344bb1ac87..40ae88e6be79 100644
 --- a/drivers/media/pci/intel/ipu-isys.c
 +++ b/drivers/media/pci/intel/ipu-isys.c
 @@ -13,6 +13,7 @@
@@ -22,7 +22,7 @@ index 95344bb1ac87..f8c17f0c4231 100644
  #include <media/ipu-isys.h>
  #include <media/v4l2-mc.h>
  #include <media/v4l2-subdev.h>
-@@ -394,17 +395,129 @@ static struct media_device_ops isys_mdev_ops = {
+@@ -394,6 +395,118 @@ static struct media_device_ops isys_mdev_ops = {
  	.req_queue = ipu_isys_req_queue,
  };
  
@@ -141,19 +141,6 @@ index 95344bb1ac87..f8c17f0c4231 100644
  static int isys_register_devices(struct ipu_isys *isys)
  {
  	int rval;
- 
- 	isys->media_dev.dev = &isys->adev->dev;
- 	isys->media_dev.ops = &isys_mdev_ops;
--	strlcpy(isys->media_dev.model,
-+	strscpy(isys->media_dev.model,
- 		IPU_MEDIA_DEV_MODEL_NAME, sizeof(isys->media_dev.model));
- 	snprintf(isys->media_dev.bus_info, sizeof(isys->media_dev.bus_info),
- 		 "pci:%s", dev_name(isys->adev->dev.parent->parent));
--	strlcpy(isys->v4l2_dev.name, isys->media_dev.model,
-+	strscpy(isys->v4l2_dev.name, isys->media_dev.model,
- 		sizeof(isys->v4l2_dev.name));
- 
- 	media_device_init(&isys->media_dev);
 @@ -433,6 +546,10 @@ static int isys_register_devices(struct ipu_isys *isys)
  	if (rval)
  		goto out_isys_unregister_subdevices;

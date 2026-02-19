@@ -1,7 +1,7 @@
-From 2e7747ef3ba9cfc88ce436df9c91623d8a17b3b1 Mon Sep 17 00:00:00 2001
+From a704f0d2072ed69a4e5945c68e5a813b9361853f Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:09:22 +0100
-Subject: [PATCH 19/58] add .vidioc_enum_framesizes =
+Subject: [PATCH 19/53] add .vidioc_enum_framesizes =
  ipu_isys_vidioc_enum_framesizes to resolve `Unable to enumerate frame sizes:
  Inappropriate ioctl for device`:
 
@@ -17,10 +17,10 @@ Subject: [PATCH 19/58] add .vidioc_enum_framesizes =
  1 file changed, 27 insertions(+)
 
 diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
-index c54813e7b8ce..d7ec8086cf82 100644
+index 13a10e6005e5..0d5d5f9f061e 100644
 --- a/drivers/media/pci/intel/ipu-isys-video.c
 +++ b/drivers/media/pci/intel/ipu-isys-video.c
-@@ -459,6 +459,32 @@ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
+@@ -461,6 +461,32 @@ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
  	return -EINVAL;
  }
  
@@ -53,7 +53,7 @@ index c54813e7b8ce..d7ec8086cf82 100644
  static int vidioc_g_fmt_vid_cap_mplane(struct file *file, void *fh,
  				       struct v4l2_format *fmt)
  {
-@@ -2099,6 +2125,7 @@ static const struct v4l2_ioctl_ops ioctl_ops_splane = {
+@@ -2101,6 +2127,7 @@ static const struct v4l2_ioctl_ops ioctl_ops_splane = {
  static const struct v4l2_ioctl_ops ioctl_ops_mplane = {
  	.vidioc_querycap = ipu_isys_vidioc_querycap,
  	.vidioc_enum_fmt_vid_cap = ipu_isys_vidioc_enum_fmt,

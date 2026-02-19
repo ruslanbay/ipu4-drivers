@@ -1,27 +1,29 @@
-From 4d20e56e1489cb401b331b703adcd195e7d3a3d1 Mon Sep 17 00:00:00 2001
+From 2f79270f795f4a0e36d73d1a456be28b105e5c8d Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:07:45 +0100
-Subject: [PATCH 16/58] advertise V4L2_CAP_IO_MC capability and add mbus_code
+Subject: [PATCH 16/53] advertise V4L2_CAP_IO_MC capability and add mbus_code
  handling to enumeration operation
 
 This commit addresses the issue of advertising device capabilities and format enumeration.
 
 The V4L2_CAP_IO_MC flag in the video device capabilities must now be set to correctly advertise the capability. Additionally, the .vidioc_enum_fmt_vid_cap operation needs an update to handle the mbus_code field, ensuring it only enumerates formats that are compatible with the specified media bus code.
 ---
- drivers/media/pci/intel/ipu-isys-video.c | 122 +++++++++++++++++------
+ drivers/media/pci/intel/ipu-isys-video.c | 124 +++++++++++++++++------
  drivers/media/pci/intel/ipu-isys-video.h |   1 +
  drivers/media/pci/intel/ipu4/ipu4-isys.c |  54 ----------
- 3 files changed, 91 insertions(+), 86 deletions(-)
+ 3 files changed, 93 insertions(+), 86 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
-index 0ecad41bb7fd..5a8c8d22f877 100644
+index 0ecad41bb7fd..d07cb2a6e066 100644
 --- a/drivers/media/pci/intel/ipu-isys-video.c
 +++ b/drivers/media/pci/intel/ipu-isys-video.c
-@@ -37,6 +37,73 @@ static bool use_stream_stop;
+@@ -37,6 +37,75 @@ static bool use_stream_stop;
  module_param(use_stream_stop, bool, 0660);
  MODULE_PARM_DESC(use_stream_stop, "Use STOP command if running in CSI capture mode");
  
 +const struct ipu_isys_pixelformat ipu_isys_pfmts[] = {
++	{V4L2_PIX_FMT_Y10, 10, 10, 0, MEDIA_BUS_FMT_Y10_1X10,
++	 IPU_FW_ISYS_FRAME_FORMAT_RAW10},
 +	/* YUV vector format */
 +	{V4L2_PIX_FMT_YUYV420_V32, 24, 24, 0, MEDIA_BUS_FMT_YUYV12_1X24,
 +	 IPU_FW_ISYS_FRAME_FORMAT_YUV420_16},
@@ -91,7 +93,7 @@ index 0ecad41bb7fd..5a8c8d22f877 100644
  const struct ipu_isys_pixelformat ipu_isys_pfmts_be_soc[] = {
  	{V4L2_PIX_FMT_Y10, 16, 10, 0, MEDIA_BUS_FMT_Y10_1X10,
  	 IPU_FW_ISYS_FRAME_FORMAT_RAW16},
-@@ -340,9 +407,11 @@ int ipu_isys_vidioc_querycap(struct file *file, void *fh,
+@@ -340,9 +409,11 @@ int ipu_isys_vidioc_querycap(struct file *file, void *fh,
  	cap->capabilities = V4L2_CAP_VIDEO_CAPTURE
  	    | V4L2_CAP_VIDEO_CAPTURE_MPLANE
  	    | V4L2_CAP_VIDEO_OUTPUT_MPLANE | V4L2_CAP_STREAMING
@@ -105,7 +107,7 @@ index 0ecad41bb7fd..5a8c8d22f877 100644
  
  	switch (av->aq.vbq.type) {
  	case V4L2_BUF_TYPE_VIDEO_CAPTURE:
-@@ -364,42 +433,30 @@ int ipu_isys_vidioc_querycap(struct file *file, void *fh,
+@@ -364,42 +435,30 @@ int ipu_isys_vidioc_querycap(struct file *file, void *fh,
  int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
  			     struct v4l2_fmtdesc *f)
  {
@@ -115,13 +117,13 @@ index 0ecad41bb7fd..5a8c8d22f877 100644
 -	const u32 *supported_codes;
 -	const struct ipu_isys_pixelformat *pfmt;
 -	u32 index;
--
++	unsigned int i, num_found;
+ 
 -	if (!pad || !pad->entity)
 -		return -EINVAL;
 -	sd = media_entity_to_v4l2_subdev(pad->entity);
 -	supported_codes = to_ipu_isys_subdev(sd)->supported_codes[pad->index];
-+	unsigned int i, num_found;
- 
+-
 -	/* Walk the 0-terminated array for the f->index-th code. */
 -	for (index = f->index; *supported_codes && index;
 -	     index--, supported_codes++) {
@@ -165,7 +167,7 @@ index 0ecad41bb7fd..5a8c8d22f877 100644
  }
  
  static int vidioc_g_fmt_vid_cap_mplane(struct file *file, void *fh,
-@@ -2134,7 +2191,8 @@ int ipu_isys_video_init(struct ipu_isys_video *av,
+@@ -2134,7 +2193,8 @@ int ipu_isys_video_init(struct ipu_isys_video *av,
  	av->vdev.queue = &av->aq.vbq;
  	av->vdev.lock = &av->mutex;
  

@@ -1,7 +1,7 @@
 From 7c29253e04df66b0220a26cc6bc33f0c8f7ff4b1 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:16:09 +0100
-Subject: [PATCH 07/58] export find_vm_area to resolve `"find_vm_area"
+Subject: [PATCH 07/53] export find_vm_area to resolve `"find_vm_area"
  [drivers/media/pci/intel/ipu4/intel-ipu4.ko] undefined!`
 
 ---

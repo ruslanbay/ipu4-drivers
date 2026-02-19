@@ -1,7 +1,7 @@
-From e413edbbabe25736b2c8d6a61b3e5908290ef1f8 Mon Sep 17 00:00:00 2001
+From 9c9cf13d122c1a2b9e6da901e52753180414867a Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Wed, 10 Dec 2025 15:08:31 +0100
-Subject: [PATCH 18/58] switch to multiplanar video capture type
+Subject: [PATCH 18/53] switch to multiplanar video capture type
 
 The device is advertised[1] as supporting multiplanar capture, which libcamera will assess[2] and decide that it should look for buffers with the type V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, but .enum_fmt() returns no formats if the passed in buffer type[3] is not V4L2_BUF_TYPE_VIDEO_CAPTURE (note the lack of _MPLANE).
 
@@ -15,10 +15,10 @@ Change that line to V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
-index 5a8c8d22f877..c54813e7b8ce 100644
+index d07cb2a6e066..13a10e6005e5 100644
 --- a/drivers/media/pci/intel/ipu-isys-video.c
 +++ b/drivers/media/pci/intel/ipu-isys-video.c
-@@ -439,7 +439,7 @@ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
+@@ -441,7 +441,7 @@ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
  		if ((ipu_isys_pfmts[i].is_meta &&
  		     f->type != V4L2_BUF_TYPE_META_CAPTURE) ||
  		    (!ipu_isys_pfmts[i].is_meta &&

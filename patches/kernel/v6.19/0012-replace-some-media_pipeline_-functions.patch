@@ -1,7 +1,7 @@
 From 4d447e1fbf7b3b70212c221faf7b8cd3f48d8b95 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:48:22 +0100
-Subject: [PATCH 12/58] replace some media_pipeline_* functions
+Subject: [PATCH 12/53] replace some media_pipeline_* functions
 
 https://github.com/intel/linux-intel-lts/blob/lts-v6.1.120-linux-241226T022850Z/drivers/media/pci/intel/ipu-isys-video.c
 

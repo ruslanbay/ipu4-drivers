@@ -1,7 +1,7 @@
 From 760ba368de63b19e0a83187027b66036df7e3b15 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:25:27 +0100
-Subject: [PATCH 04/58] remove legacy code
+Subject: [PATCH 04/53] remove legacy code
 
 ---
  drivers/media/pci/intel/ipu-bus.c             |  13 +-

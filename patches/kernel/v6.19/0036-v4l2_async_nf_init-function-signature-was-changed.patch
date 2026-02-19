@@ -1,0 +1,25 @@
+From 9f8b0836d5a27c80fdb16b0e435d83686d8fd4cd Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Mon, 12 Jan 2026 22:35:28 +0100
+Subject: [PATCH 36/53] v4l2_async_nf_init: function signature was changed
+
+---
+ drivers/media/pci/intel/ipu-isys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index e4e7cd97da20..fec4dfb0b27b 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -448,7 +448,7 @@ static int isys_notifier_init(struct ipu_isys *isys)
+ 	unsigned int i;
+ 	int ret;
+ 
+-	v4l2_async_nf_init(&isys->notifier);
++	v4l2_async_nf_init(&isys->notifier, &isys->v4l2_dev);
+ 
+ 	for (i = 0; i < ISYS_MAX_PORTS; i++) {
+ 		struct v4l2_fwnode_endpoint vep = {
+-- 
+2.51.0
+

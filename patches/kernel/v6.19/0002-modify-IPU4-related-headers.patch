@@ -1,7 +1,7 @@
 From 74ec2a227aebb18c12338b348043977d67bc941a Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 17:03:15 +0100
-Subject: [PATCH 02/58] modify IPU4 related headers
+Subject: [PATCH 02/53] modify IPU4 related headers
 
 ---
  include/media/v4l2-subdev.h        | 18 ++++++++++++++

@@ -1,0 +1,49 @@
+From 51edd99b61c891e351657cf0845cc08fd52149ac Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sat, 27 Dec 2025 11:23:56 +0100
+Subject: [PATCH 22/53] media: intel/ipu4: use dma_map_sgtable helpers
+
+Replace the deprecated dma_map_sg() and dma_sync_sg_for_device()
+calls with dma_map_sgtable() and dma_sync_sgtable_for_device().
+
+Link: https://github.com/intel/ipu6-drivers/blob/master/drivers/media/pci/intel/ipu-buttress.c#L778
+---
+ drivers/media/pci/intel/ipu-buttress.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-buttress.c b/drivers/media/pci/intel/ipu-buttress.c
+index 7967fe5410d3..b6c5e590d052 100644
+--- a/drivers/media/pci/intel/ipu-buttress.c
++++ b/drivers/media/pci/intel/ipu-buttress.c
+@@ -778,8 +778,8 @@ int ipu_buttress_map_fw_image(struct ipu_bus_device *sys,
+ {
+ 	struct page **pages;
+ 	const void *addr;
+-	unsigned long n_pages, i;
+-	int rval;
++	unsigned long n_pages;
++	int rval, i;
+ 
+ 	n_pages = PAGE_ALIGN(fw->size) >> PAGE_SHIFT;
+ 
+@@ -806,14 +806,14 @@ int ipu_buttress_map_fw_image(struct ipu_bus_device *sys,
+ 		goto out;
+ 	}
+ 
+-	n_pages = dma_map_sg(&sys->dev, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
+-	if (n_pages != sgt->nents) {
++	rval = dma_map_sgtable(&sys->dev, sgt, DMA_TO_DEVICE, 0);
++	if (rval < 0) {
+ 		rval = -ENOMEM;
+ 		sg_free_table(sgt);
+ 		goto out;
+ 	}
+ 
+-	dma_sync_sg_for_device(&sys->dev, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	dma_sync_sgtable_for_device(&sys->dev, sgt, DMA_TO_DEVICE);
+ 
+ out:
+ 	kfree(pages);
+-- 
+2.51.0
+
