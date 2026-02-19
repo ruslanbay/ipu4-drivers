@@ -1,0 +1,34 @@
+Format: 1.8
+Date: Fri, 20 Feb 2026 00:06:04 +0100
+Source: linux-upstream
+Binary: linux-headers-6.19.2-surface linux-image-6.19.2-surface linux-libc-dev
+Built-For-Profiles: noudeb
+Architecture: amd64
+Version: 6.19.2-g2adbfc622fb4-59
+Distribution: resolute
+Urgency: low
+Maintainer: user <user@pc>
+Changed-By: user <user@pc>
+Description:
+ linux-headers-6.19.2-surface - Linux kernel headers for 6.19.2-surface on amd64
+ linux-image-6.19.2-surface - Linux kernel, version 6.19.2-surface
+ linux-libc-dev - Linux support headers for userspace development
+Changes:
+ linux-upstream (6.19.2-g2adbfc622fb4-59) resolute; urgency=low
+ .
+   * Custom built Linux kernel.
+Checksums-Sha1:
+ 962c7783fc94dbbf1837f9df180528cff6529bea 9944304 linux-headers-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 41fa69779db13b86c253df7015b4a43529bd8234 25896112 linux-image-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ f24260261b7b2a4aa5170c626c292702d2af73d7 1532784 linux-libc-dev_6.19.2-g2adbfc622fb4-59_amd64.deb
+ e5043a8b27618cf49de5028630ae971b563d309e 7869 linux-upstream_6.19.2-g2adbfc622fb4-59_amd64.buildinfo
+Checksums-Sha256:
+ 99d171c1d02f2c6affafa5a7e6819fed1eb184f4720958876ec6bdfa95d33353 9944304 linux-headers-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 7016cc4342f491089e68a27b9b0e44d1195948a8eacc6a76f89c7893ed938800 25896112 linux-image-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 9d56117c9b2518c4c8b7cae99681f4556f212370a886acebf565532749ab4447 1532784 linux-libc-dev_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 64de9321239cebcc8af37e02331c426e81cfd40030bd320c785120e8a0255d00 7869 linux-upstream_6.19.2-g2adbfc622fb4-59_amd64.buildinfo
+Files:
+ 9b8d1fb22b405fae1deafd28a1037ccc 9944304 kernel optional linux-headers-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 64eaca1f786edbecca78ea11cb947f5b 25896112 kernel optional linux-image-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ ecab165a75efc1e4c31bbcf643a2c1b2 1532784 devel optional linux-libc-dev_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 798d11bb54060edf285bb5449e528165 7869 kernel optional linux-upstream_6.19.2-g2adbfc622fb4-59_amd64.buildinfo

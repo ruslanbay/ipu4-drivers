@@ -2,22 +2,22 @@ Format: 1.0
 Source: linux-upstream
 Binary: linux-headers-6.19.2-surface linux-image-6.19.2-surface linux-libc-dev
 Architecture: amd64
-Version: 6.19.2-g8c5953b933a5-58
+Version: 6.19.2-g2adbfc622fb4-59
 Checksums-Md5:
- be6d1d67673097c367b8b8ba00b993cc 9944418 linux-headers-6.19.2-surface_6.19.2-g8c5953b933a5-58_amd64.deb
- a29d77900533df65567bd502c000d326 25898956 linux-image-6.19.2-surface_6.19.2-g8c5953b933a5-58_amd64.deb
- 9ab2e99f8d4df84cb16f5cf391b4bd86 1532464 linux-libc-dev_6.19.2-g8c5953b933a5-58_amd64.deb
+ 9b8d1fb22b405fae1deafd28a1037ccc 9944304 linux-headers-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 64eaca1f786edbecca78ea11cb947f5b 25896112 linux-image-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ ecab165a75efc1e4c31bbcf643a2c1b2 1532784 linux-libc-dev_6.19.2-g2adbfc622fb4-59_amd64.deb
 Checksums-Sha1:
- f86cb36254bda21696874ebb386baa5dfc56272b 9944418 linux-headers-6.19.2-surface_6.19.2-g8c5953b933a5-58_amd64.deb
- 8d38e88ad5ae2fcaa7182ae161810616c30ef710 25898956 linux-image-6.19.2-surface_6.19.2-g8c5953b933a5-58_amd64.deb
- a2300f67fc0a9048629a79d156ead95eb850dcde 1532464 linux-libc-dev_6.19.2-g8c5953b933a5-58_amd64.deb
+ 962c7783fc94dbbf1837f9df180528cff6529bea 9944304 linux-headers-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 41fa69779db13b86c253df7015b4a43529bd8234 25896112 linux-image-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ f24260261b7b2a4aa5170c626c292702d2af73d7 1532784 linux-libc-dev_6.19.2-g2adbfc622fb4-59_amd64.deb
 Checksums-Sha256:
- 550f34465505c6310c83ea220e317a8e9de475a47e2be31024518ea9dbef4974 9944418 linux-headers-6.19.2-surface_6.19.2-g8c5953b933a5-58_amd64.deb
- 2e8cc41752d9a8135fcbbd1bab0f68fa09aec9f0e3ba1e0e57a6466e59a446b6 25898956 linux-image-6.19.2-surface_6.19.2-g8c5953b933a5-58_amd64.deb
- d4da02f26f20339bac716701f0973074c2055d8f7af95508d42b705493f94e9b 1532464 linux-libc-dev_6.19.2-g8c5953b933a5-58_amd64.deb
+ 99d171c1d02f2c6affafa5a7e6819fed1eb184f4720958876ec6bdfa95d33353 9944304 linux-headers-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 7016cc4342f491089e68a27b9b0e44d1195948a8eacc6a76f89c7893ed938800 25896112 linux-image-6.19.2-surface_6.19.2-g2adbfc622fb4-59_amd64.deb
+ 9d56117c9b2518c4c8b7cae99681f4556f212370a886acebf565532749ab4447 1532784 linux-libc-dev_6.19.2-g2adbfc622fb4-59_amd64.deb
 Build-Origin: Ubuntu
 Build-Architecture: amd64
-Build-Date: Thu, 19 Feb 2026 23:47:40 +0100
+Build-Date: Fri, 20 Feb 2026 00:07:50 +0100
 Build-Tainted-By:
  usr-local-has-includes
  usr-local-has-libraries
@@ -227,6 +227,6 @@ Environment:
  LD="ld"
  LEX="flex"
  MAKE="make"
- MAKEFLAGS="rR -j8 --jobserver-auth=fifo:/tmp/GMfifo15014 --no-print-directory -- LOCALVERSION=-surface"
- SOURCE_DATE_EPOCH="1771541170"
+ MAKEFLAGS="rR -j8 --jobserver-auth=fifo:/tmp/GMfifo8823 --no-print-directory -- LOCALVERSION=-surface"
+ SOURCE_DATE_EPOCH="1771542364"
  YACC="bison"
