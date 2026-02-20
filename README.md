@@ -103,7 +103,7 @@ Prevent the creation of the large -dbg debug information packages during make bi
 ./scripts/config --enable DEBUG_INFO_NONE
 ```
 
-### 6.4. Enable IPU and Sensor Drivers
+### 6.4. Enable IPU4 and Sensor Drivers
 
 ```bash
 # Intel IPU4 Core & Bridge
@@ -160,6 +160,14 @@ Device Drivers >
   X86 Platform Specific Device Drivers
 
 <M> Intel SkyLake ACPI INT3472 Driver
+```
+
+### 6.5. Disable IPU6 and IPU7 Drivers
+
+```bash
+./scripts/config --disable CONFIG_VIDEO_INTEL_IPU6
+
+./scripts/config --disable CONFIG_VIDEO_INTEL_IPU7
 ```
 
 ## 7. Build the kernel
