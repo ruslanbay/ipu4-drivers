@@ -245,6 +245,8 @@ Workaround:
 echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT intel_iommu=on iommu=pt"' | sudo tee /etc/default/grub.d/99-iommu.cfg
 
 sudo update-grub
+
+sudo systemctl reboot
 ```
 
 ### 10.3. The `CSE boot_load failed` error
@@ -277,13 +279,13 @@ sudo systemctl reboot
 Once the system has fully booted and the environment is stable, load the modules manually in the specific order required by the Intel IPU4 driver stack:
 
 ```bash
- sudo modprobe ivsc_csi && \
-   sudo modprobe ipu_bridge && \
-   sudo modprobe intel_ipu4p_isys_csslib && \
-   sudo modprobe intel_ipu4p_psys_csslib && \
-   sudo modprobe intel_ipu4p && \
-   sudo modprobe intel_ipu4p_psys && \
-   sudo modprobe intel_ipu4p_isys
+sudo modprobe ivsc_csi && \
+  sudo modprobe ipu_bridge && \
+  sudo modprobe intel_ipu4p_isys_csslib && \
+  sudo modprobe intel_ipu4p_psys_csslib && \
+  sudo modprobe intel_ipu4p && \
+  sudo modprobe intel_ipu4p_psys && \
+  sudo modprobe intel_ipu4p_isys
 ```
 
 ## 11. Test the IPU4 driver
@@ -1806,6 +1808,8 @@ meson setup build \
 sudo ninja -C build install
 
 sudo ldconfig
+
+sudo systemctl reboot
 ```
 
 ## 13. Test libcamera
