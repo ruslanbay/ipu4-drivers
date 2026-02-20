@@ -107,28 +107,26 @@ Prevent the creation of the large -dbg debug information packages during make bi
 
 ```bash
 # Intel IPU4 Core & Bridge
-./scripts/config --set-str CONFIG_IPU_BRIDGE m
-./scripts/config --set-str CONFIG_VIDEO_INTEL_IPU m
+./scripts/config --module CONFIG_IPU_BRIDGE
+./scripts/config --module CONFIG_VIDEO_INTEL_IPU
 
-# IPU4 Generation & Platform (Booleans)
+# IPU4 Generation & Platform
 ./scripts/config --enable CONFIG_VIDEO_INTEL_IPU4P
 ./scripts/config --enable CONFIG_VIDEO_INTEL_IPU_SOC
 
 # Firmware & Power Controller
-./scripts/config --set-str CONFIG_VIDEO_INTEL_IPU_FW_LIB m
-./scripts/config --set-str CONFIG_INTEL_SKL_INT3472 m
-./scripts/config --set-str CONFIG_INTEL_VSC m
+./scripts/config --enable CONFIG_VIDEO_INTEL_IPU_FW_LIB
+./scripts/config --enable CONFIG_INTEL_SKL_INT3472
+./scripts/config --enable CONFIG_INTEL_VSC
 
 # Camera Sensors
-./scripts/config --set-str CONFIG_VIDEO_OV5693 m
-./scripts/config --set-str CONFIG_VIDEO_OV7251 m
-./scripts/config --set-str CONFIG_VIDEO_OV8865 m
-./scripts/config --set-str CONFIG_VIDEO_OV9734 m
+./scripts/config --module CONFIG_VIDEO_OV5693
+./scripts/config --module CONFIG_VIDEO_OV7251
+./scripts/config --module CONFIG_VIDEO_OV8865
+./scripts/config --module CONFIG_VIDEO_OV9734
 ```
 
 Or you can use `make menuconfig` to enable necessary drivers via the interactive configuration menu:
-
-IPU related options:
 
 ```
 Device Drivers >
@@ -143,11 +141,9 @@ Device Drivers >
       intel ipu hardware platform type (Compile for SOC)
         (X) Compile for SOC
 <M> Compile firmware library
-```
 
-Camera sensors:
 
-```
+
 Device Drivers >
   Multimedia support >
     Media ancillary drivers >
@@ -157,11 +153,9 @@ Device Drivers >
 <M> OmniVision OV7251 sensor support
 <M> OmniVision OV8865 sensor support
 <M> OmniVision OV9734 sensor support
-```
 
-INT3472 (camera power controller):
 
-```
+
 Device Drivers >
   X86 Platform Specific Device Drivers
 
