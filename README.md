@@ -283,52 +283,90 @@ Once the system has fully booted and the environment is stable, load the modules
   </summary>
 
 ```
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: enabling device (0000 -> 0002)
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: Device 0x8a19 (rev: 0x3)
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: physical base address 0x6000000000
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: mapped as: 0x0000000074592112
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: update security control register failed
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: Unable to set secure mode!
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: IPU in secure mode
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: cpd file name: ipu4p_cpd.bin
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: Moduledata version: 20191030, library version: 20181222
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: CSS release: 20181222
-Dec 20 20:20:19 pc kernel: acpi INT347A:00: _PLD call failed, using default orientation
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: Found supported sensor INT347A:00
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: Connected 1 cameras
-Dec 20 20:20:19 pc kernel: intel-ipu4 intel-ipu: IPU driver verion 1.0
-Dec 20 20:20:19 pc kernel: intel-ipu4-mmu intel-ipu4-mmu0: MMU: 1, allocated page for trash: 0x0000000080980377
-Dec 20 20:20:19 pc kernel: intel-ipu4-mmu intel-ipu4-mmu0: mmu is not ready yet. skipping.
-Dec 20 20:20:19 pc kernel: intel-ipu4-mmu intel-ipu4-mmu1: MMU: 0, allocated page for trash: 0x000000004cab7b66
-Dec 20 20:20:19 pc kernel: ov8865 i2c-INT347A:00: supply dvdd not found, using dummy regulator
-Dec 20 20:20:19 pc kernel: ov8865 i2c-INT347A:00: supply dovdd not found, using dummy regulator
-Dec 20 20:20:20 pc kernel: intel-ipu4-mmu intel-ipu4-mmu0: mmu is not ready yet. skipping.
-Dec 20 20:20:20 pc kernel: intel-ipu4-mmu intel-ipu4-mmu0: iova trash buffer for MMUID: 1 is 4286578688
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: isys probe 000000005b7be633 000000005b7be633
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 0 was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 1 was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 2 was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 3 was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 4 was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-mmu intel-ipu4-mmu1: mmu is not ready yet. skipping.
-Dec 20 20:20:20 pc kernel: intel-ipu4 intel-ipu: Sending BOOT_LOAD to CSE
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI2 BE SOC was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI2 BE was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 ISA was not initialized!
-Dec 20 20:20:20 pc kernel: intel-ipu4-isys intel-ipu4-isys0: no subdevice info provided
-Dec 20 20:20:20 pc kernel: ov8865 i2c-INT347A:00: Consider updating driver ov8865 to match on endpoints
-Dec 20 20:20:20 pc kernel: intel-ipu4-mmu intel-ipu4-mmu1: iova trash buffer for MMUID: 0 is 4286578688
-Dec 20 20:20:20 pc kernel: intel-ipu4-psys intel-ipu4-psys0: pkg_dir entry count:12
-Dec 20 20:20:25 pc kernel: ov8865 i2c-INT347A:00: Instantiated dw9719 VCM
-Dec 20 20:20:25 pc kernel: intel-ipu4-isys intel-ipu4-isys0: FW authentication failed
-Dec 20 20:20:25 pc kernel: intel-ipu4 intel-ipu: Sending BOOT_LOAD to CSE
-Dec 20 20:20:25 pc kernel: intel-ipu4 intel-ipu: expected resp: 0x1, IPC response: 0x220 
-Dec 20 20:20:25 pc kernel: intel-ipu4 intel-ipu: CSE boot_load failed
-Dec 20 20:20:25 pc kernel: intel-ipu4-isys intel-ipu4-isys0: FW authentication failed
-Dec 20 20:20:25 pc kernel: intel-ipu4 intel-ipu: Sending BOOT_LOAD to CSE
-Dec 20 20:20:25 pc kernel: intel-ipu4 intel-ipu: Sending AUTHENTICATE_RUN to CSE
-Dec 20 20:20:25 pc kernel: intel-ipu4-psys intel-ipu4-psys0: psys probe minor: 0
-Dec 20 20:20:25 pc kernel: dw9719 i2c-INT347A:00-VCM: supply vdd not found, using dummy regulator
+int3472-discrete INT3472:00: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:01: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:02: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:00: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:01: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:02: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:00: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:01: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:02: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:00: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:01: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:02: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:00: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:01: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:02: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:00: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:01: cannot find GPIO chip INT3455:00, deferring
+int3472-discrete INT3472:02: cannot find GPIO chip INT3455:00, deferring
+intel-ipu4 intel-ipu: enabling device (0000 -> 0002)
+intel-ipu4 intel-ipu: Device 0x8a19 (rev: 0x3)
+intel-ipu4 intel-ipu: physical base address 0x6000000000
+intel-ipu4 intel-ipu: mapped as: 0x00000000d38648bf
+intel-ipu4 intel-ipu: IPU in secure mode
+intel-ipu4 intel-ipu: cpd file name: ipu4p_cpd.bin
+intel-ipu4 intel-ipu: Moduledata version: 20191030, library version: 20181222
+intel-ipu4 intel-ipu: CSS release: 20181222
+intel-ipu4 intel-ipu: Found supported sensor INT33BE:00
+intel-ipu4 intel-ipu: Found supported sensor INT347A:00
+intel-ipu4 intel-ipu: Connected 2 cameras
+intel-ipu4 intel-ipu: IPU driver verion 1.0
+intel-ipu4-mmu intel-ipu4-mmu0: MMU: 1, allocated page for trash: 0x00000000c7736baa
+intel-ipu4-mmu intel-ipu4-mmu0: mmu is not ready yet. skipping.
+intel-ipu4-mmu intel-ipu4-mmu1: MMU: 0, allocated page for trash: 0x000000000be83c02
+ov8865 i2c-INT347A:00: supply dvdd not found, using dummy regulator
+ov8865 i2c-INT347A:00: supply dovdd not found, using dummy regulator
+ov5693 i2c-INT33BE:00: supply dovdd not found, using dummy regulator
+ov5693 i2c-INT33BE:00: supply dvdd not found, using dummy regulator
+intel-ipu4-mmu intel-ipu4-mmu0: mmu is not ready yet. skipping.
+intel-ipu4-mmu intel-ipu4-mmu0: iova trash buffer for MMUID: 1 is 4286578688
+intel-ipu4-isys intel-ipu4-isys0: isys probe 000000008a557eb0 000000008a557eb0
+intel-ipu4-isys intel-ipu4-isys0: registering subdevices: 8 CSI-2 ports, 2 TPGs
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 0
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 0 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 1
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 1 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 2
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 2 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 3
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 3 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 4
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 4 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 5
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 5 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 6
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 6 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: initializing CSI-2 port 7
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI-2 7 was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI2 BE SOC was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 CSI2 BE was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: Entity type for entity Intel IPU4 ISA was not initialized!
+intel-ipu4-isys intel-ipu4-isys0: no subdevice info provided
+intel-ipu4-mmu intel-ipu4-mmu1: mmu is not ready yet. skipping.
+intel-ipu4 intel-ipu: Sending BOOT_LOAD to CSE
+intel-ipu4-mmu intel-ipu4-mmu1: iova trash buffer for MMUID: 0 is 4286578688
+intel-ipu4-psys intel-ipu4-psys0: pkg_dir entry count:12
+ov8865 i2c-INT347A:00: Instantiated dw9719 VCM
+intel-ipu4 intel-ipu: Expect magic number timeout 0xffffffeb
+intel-ipu4-isys intel-ipu4-isys0: FW authentication failed, retrying... (3 attempts left)
+intel-ipu4 intel-ipu: Sending BOOT_LOAD to CSE
+intel-ipu4 intel-ipu: expected resp: 0x1, IPC response: 0x220 
+intel-ipu4 intel-ipu: CSE boot_load failed
+intel-ipu4-isys intel-ipu4-isys0: FW authentication failed, retrying... (3 attempts left)
+intel-ipu4 intel-ipu: Sending BOOT_LOAD to CSE
+intel-ipu4 intel-ipu: Sending AUTHENTICATE_RUN to CSE
+intel-ipu4 intel-ipu: CSE authenticate_run done
+intel-ipu4-psys intel-ipu4-psys0: psys probe minor: 0
+intel-ipu4-isys intel-ipu4-isys0: s_stream ov8865 2-0010 (ext)
+intel-ipu4-isys intel-ipu4-isys0: stream stop time out (source=7 handle=0 vc=0 stream_id=0 send_type=5)
+intel-ipu4-isys intel-ipu4-isys0: s_stream ov5693 1-0036 (ext)
+intel-ipu4-isys intel-ipu4-isys0: stream close time out (source=7 handle=0 vc=0 stream_id=0)
+intel-ipu4-isys intel-ipu4-isys0: Intel IPU4 CSI-2 2 capture 0: cleaning active queue 3
+intel-ipu4-isys intel-ipu4-isys0: Intel IPU4 CSI-2 2 capture 0: cleaning active queue 2
+intel-ipu4-isys intel-ipu4-isys0: Intel IPU4 CSI-2 2 capture 0: cleaning active queue 1
+intel-ipu4-isys intel-ipu4-isys0: Intel IPU4 CSI-2 2 capture 0: cleaning active queue 0
 ```
 </details></br>
 
