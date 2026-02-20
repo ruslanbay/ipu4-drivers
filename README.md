@@ -230,7 +230,24 @@ echo "options intel_ipu4p fw_version_check=0" | sudo tee -a /etc/modprobe.d/ipu4
 sudo systemctl reboot
 ```
 
-### 10.2. The `CSE boot_load failed` error
+### 10.2. The `PTE Read access is not set` error
+
+```bash
+journalctl -b
+
+DMAR: DRHD: handling fault status reg 2
+DMAR: [DMA Read NO_PASID] Request device [00:05.0] fault addr 0x0 [fault reason 0x06] PTE Read access is not set
+```
+
+Workaround:
+
+```bash
+echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT intel_iommu=on iommu=pt"' | sudo tee /etc/default/grub.d/99-iommu.cfg
+
+sudo update-grub
+```
+
+### 10.3. The `CSE boot_load failed` error
 
 If you encounter "CSE boot_load failed" or timeout errors during boot, it usually indicates the Intel Management Engine (CSE) and the IPU driver are out of sync during the early init phase.
 
