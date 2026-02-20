@@ -1,0 +1,34 @@
+Format: 1.8
+Date: Fri, 20 Feb 2026 05:16:04 +0100
+Source: linux-upstream
+Binary: linux-headers-6.19.3-surface linux-image-6.19.3-surface linux-libc-dev
+Built-For-Profiles: noudeb
+Architecture: amd64
+Version: 6.19.3-gffff5d0207a4-64
+Distribution: resolute
+Urgency: low
+Maintainer: user <user@pc>
+Changed-By: user <user@pc>
+Description:
+ linux-headers-6.19.3-surface - Linux kernel headers for 6.19.3-surface on amd64
+ linux-image-6.19.3-surface - Linux kernel, version 6.19.3-surface
+ linux-libc-dev - Linux support headers for userspace development
+Changes:
+ linux-upstream (6.19.3-gffff5d0207a4-64) resolute; urgency=low
+ .
+   * Custom built Linux kernel.
+Checksums-Sha1:
+ a18fa6db5567e310534f81ae93b53d2134855bf7 10239304 linux-headers-6.19.3-surface_6.19.3-gffff5d0207a4-64_amd64.deb
+ f600dd9374522aaee208ab8020f64a2250e22d98 114000362 linux-image-6.19.3-surface_6.19.3-gffff5d0207a4-64_amd64.deb
+ 939e754f92f21872b162202643f41ee9fbc2e8aa 1532390 linux-libc-dev_6.19.3-gffff5d0207a4-64_amd64.deb
+ 1959aace5f2e5a50d08a514cf54f6f9006056224 7877 linux-upstream_6.19.3-gffff5d0207a4-64_amd64.buildinfo
+Checksums-Sha256:
+ 2044c008f75dfb34086255e89b9c238b8ff9703b505ee458aa220eed73a7c307 10239304 linux-headers-6.19.3-surface_6.19.3-gffff5d0207a4-64_amd64.deb
+ d36f2b9fd98c6a1f9cb63ac02ea67dd2d9e9bdb3ff0f046be1e05384b10b75b0 114000362 linux-image-6.19.3-surface_6.19.3-gffff5d0207a4-64_amd64.deb
+ b364700e8cdf86609dbe29ca697deb721bf54bbdbc0aface7a43994eecc91ea9 1532390 linux-libc-dev_6.19.3-gffff5d0207a4-64_amd64.deb
+ 68813d31fb8a94a5e696978a2d98729f0805e5d33c129bcfbfb0da4715f27dc2 7877 linux-upstream_6.19.3-gffff5d0207a4-64_amd64.buildinfo
+Files:
+ 766b06378c331ad1cf9cc1296399d617 10239304 kernel optional linux-headers-6.19.3-surface_6.19.3-gffff5d0207a4-64_amd64.deb
+ 6a5af7d4878769f291989e51b291eab8 114000362 kernel optional linux-image-6.19.3-surface_6.19.3-gffff5d0207a4-64_amd64.deb
+ cd993bfec427c8d1424883090cec0d6d 1532390 devel optional linux-libc-dev_6.19.3-gffff5d0207a4-64_amd64.deb
+ 793546f084a80e5a3d2ac6c990a0b21a 7877 kernel optional linux-upstream_6.19.3-gffff5d0207a4-64_amd64.buildinfo
