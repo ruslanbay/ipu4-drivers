@@ -186,6 +186,9 @@ Install all generated packages and reboot:
 ```bash
 sudo apt install ../linux-headers-*.deb ../linux-image-*.deb
 
+# Add user to the video group
+sudo usermod -aG video $USER
+
 sudo reboot
 ```
 
@@ -245,8 +248,6 @@ Workaround:
 echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT intel_iommu=on iommu=pt"' | sudo tee /etc/default/grub.d/99-iommu.cfg
 
 sudo update-grub
-
-sudo systemctl reboot
 ```
 
 ### 10.3. The `CSE boot_load failed` error
@@ -279,13 +280,13 @@ sudo systemctl reboot
 Once the system has fully booted and the environment is stable, load the modules manually in the specific order required by the Intel IPU4 driver stack:
 
 ```bash
-sudo modprobe ivsc_csi && \
-  sudo modprobe ipu_bridge && \
-  sudo modprobe intel_ipu4p_isys_csslib && \
-  sudo modprobe intel_ipu4p_psys_csslib && \
-  sudo modprobe intel_ipu4p && \
-  sudo modprobe intel_ipu4p_psys && \
-  sudo modprobe intel_ipu4p_isys
+ sudo modprobe ivsc_csi && \
+   sudo modprobe ipu_bridge && \
+   sudo modprobe intel_ipu4p_isys_csslib && \
+   sudo modprobe intel_ipu4p_psys_csslib && \
+   sudo modprobe intel_ipu4p && \
+   sudo modprobe intel_ipu4p_psys && \
+   sudo modprobe intel_ipu4p_isys
 ```
 
 ## 11. Test the IPU4 driver
@@ -1808,8 +1809,6 @@ meson setup build \
 sudo ninja -C build install
 
 sudo ldconfig
-
-sudo systemctl reboot
 ```
 
 ## 13. Test libcamera
@@ -2309,8 +2308,8 @@ The Intel Image Processing Units (IPU4 and IPU4P) differ primarily by their asso
 
 ||Pro 7|Book 3 13"|Book 3 15"|Laptop 3|
 |-|-|-|-|-|
-|Image Signal Processor|IPU4P|IPU4P|||
-|PCI Device ID|8086:8a19|8086:8a19|||
+|Image Signal Processor|IPU4P||||
+|PCI Device ID|8086:8a19||||
 |&nbsp;|
 |PMIC|INT3472|INT3472|INT3472||
 |&nbsp;|
