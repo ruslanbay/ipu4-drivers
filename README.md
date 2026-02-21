@@ -35,15 +35,19 @@ sudo apt update && \
 Optional but recommended packages:
 
 ```bash
-sudo apt install -y git gawk flex bison openssl libssl-dev dkms autoconf \
+sudo apt install -y gawk flex bison openssl libssl-dev dkms autoconf \
     libelf-dev libudev-dev libpci-dev libiberty-dev
 ```
 
-## 3. Clone the ipu4-next repo
+## 3. Clone the ipu4-drivers repo
+
+Make sure you have both `git` and `git-lfs` packages installed before cloning the `ipu4-drivers` repo. Without `git-lfs` you not gonna get the right binary files.
 
 ```bash
+sudo apt install -y git git-lfs
+
 git clone -b main \
-    https://github.com/ruslanbay/ipu4-next
+    https://github.com/ruslanbay/ipu4-drivers
 ```
 
 This repository contains the IPU4 patch set.
@@ -62,14 +66,14 @@ Use the kernel version that matches the patch set.
 ```bash
 cd linux
 
-git am ../ipu4-next/patches/kernel/v6.19/*.patch
+git am ../ipu4-drivers/patches/kernel/v6.19/*.patch
 ```
 
 ## 6. Kernel Configuration
 
 ### 6.1. Copy Base Configuration
 
-`cp ../ipu4-next/configs/config-6.19.0-5-generic ./.config`
+`cp ../ipu4-drivers/configs/config-6.19.0-5-generic ./.config`
 
 ### 6.2 Set Cryptographic Keys
 
@@ -194,21 +198,23 @@ sudo reboot
 
 ## 9. Install IPU4 firmware
 
-Copy firmware blob to `/usr/lib/firmware/ipu4p_cpd.bin`
+Copy firmware blob to `/usr/lib/firmware/ipu4p_cpd.bin` and validate the sha256 sum:
 
 ```
-sudo cp ../ipu4-next/firmware/ipu4-20191030.bin /usr/lib/firmware/ipu4p_cpd.bin
+sudo cp ../ipu4-drivers/firmware/ipu4-20191030.bin /usr/lib/firmware/ipu4p_cpd.bin
+
+sha256sum /usr/lib/firmware/ipu4p_cpd.bin
 
 sudo reboot
 ```
 
 |Name|Source|Notes|
 |-|-|-|
-|[ipu4-20170209.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-next/refs/heads/main/firmware/ipu4-20170209.bin)|[Intel-5xx-Camera/intel-camera-adaptation](https://github.com/Intel-5xx-Camera/intel-camera-adaptation)|untested, [virustotal](https://www.virustotal.com/gui/file/0a9bf4ea62f1538c43f0ced511778a200f3d08b4c8d0f3c8fbe214d3f3f338d1/details)|
-|[ipu4-20180316.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-next/refs/heads/main/firmware/ipu4-20180316.bin)|[RajmohanMani/ipu4pfw](https://github.com/RajmohanMani/ipu4pfw)|untested, [virustotal](https://www.virustotal.com/gui/file/c3e545014e984237c82ddd55183ae14b242c2ba05d6955f8fa110e8d3dc9759e/details)|
-|[ipu4-20190407.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-next/refs/heads/main/firmware/ipu4-20190407.bin)|[Intel - Camera - 42.17134.3.10471](https://www.catalog.update.microsoft.com/Search.aspx?q=42.17134.3.10471)|untested, [virustotal](https://www.virustotal.com/gui/file/ee534f37f979dfc20e1cb4681bae47c9ec57639f3a2d032b79d77b3097b74d97/details)|
-|[ipu4-20191030.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-next/refs/heads/main/firmware/ipu4-20191030.bin)|[Intel - Camera - 42.18362.3.16827](https://www.catalog.update.microsoft.com/Search.aspx?q=42.18362.3.16827)|works, [virustotal](https://www.virustotal.com/gui/file/ff2c36cc81a5c726508b22970c2e2538ff06107dc5a72c93401403c227e5157f/details)|
-|[ipu4-20200609.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-next/refs/heads/main/firmware/ipu4-20200609.bin)|[intel/ipu4-cam-hal](https://github.com/intel/ipu4-cam-hal/tree/main/IPU_binary/lib/firmware)|untested, [virustotal](https://www.virustotal.com/gui/file/9829f9a592365aa8295e394aa2b350e5e72f818c3e667225b2b31564b3827824/details)|
+|[ipu4-20170209.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-drivers/refs/heads/main/firmware/ipu4-20170209.bin)|[Intel-5xx-Camera/intel-camera-adaptation](https://github.com/Intel-5xx-Camera/intel-camera-adaptation)|untested, [virustotal](https://www.virustotal.com/gui/file/0a9bf4ea62f1538c43f0ced511778a200f3d08b4c8d0f3c8fbe214d3f3f338d1/details), <br>SHA256: 0a9bf4ea62f1538c43f0ced511778a200f3d08b4c8d0f3c8fbe214d3f3f338d1|
+|[ipu4-20180316.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-drivers/refs/heads/main/firmware/ipu4-20180316.bin)|[RajmohanMani/ipu4pfw](https://github.com/RajmohanMani/ipu4pfw)|untested, [virustotal](https://www.virustotal.com/gui/file/c3e545014e984237c82ddd55183ae14b242c2ba05d6955f8fa110e8d3dc9759e/details), <br>SHA256: c3e545014e984237c82ddd55183ae14b242c2ba05d6955f8fa110e8d3dc9759e|
+|[ipu4-20190407.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-drivers/refs/heads/main/firmware/ipu4-20190407.bin)|[Intel - Camera - 42.17134.3.10471](https://www.catalog.update.microsoft.com/Search.aspx?q=42.17134.3.10471)|untested, [virustotal](https://www.virustotal.com/gui/file/ee534f37f979dfc20e1cb4681bae47c9ec57639f3a2d032b79d77b3097b74d97/details), <br>SHA256: ee534f37f979dfc20e1cb4681bae47c9ec57639f3a2d032b79d77b3097b74d97|
+|[ipu4-20191030.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-drivers/refs/heads/main/firmware/ipu4-20191030.bin)|[Intel - Camera - 42.18362.3.16827](https://www.catalog.update.microsoft.com/Search.aspx?q=42.18362.3.16827)|works, [virustotal](https://www.virustotal.com/gui/file/ff2c36cc81a5c726508b22970c2e2538ff06107dc5a72c93401403c227e5157f/details), <br>SHA256: ff2c36cc81a5c726508b22970c2e2538ff06107dc5a72c93401403c227e5157f|
+|[ipu4-20200609.bin](https://media.githubusercontent.com/media/ruslanbay/ipu4-drivers/refs/heads/main/firmware/ipu4-20200609.bin)|[intel/ipu4-cam-hal](https://github.com/intel/ipu4-cam-hal/tree/main/IPU_binary/lib/firmware)|untested, [virustotal](https://www.virustotal.com/gui/file/9829f9a592365aa8295e394aa2b350e5e72f818c3e667225b2b31564b3827824/details), <br>SHA256: 9829f9a592365aa8295e394aa2b350e5e72f818c3e667225b2b31564b3827824|
 
 ## 10. Known issues and workarounds
 
@@ -233,7 +239,7 @@ echo "options intel_ipu4p fw_version_check=0" | sudo tee -a /etc/modprobe.d/ipu4
 sudo systemctl reboot
 ```
 
-### 10.2. The `PTE Read access is not set` error
+### 10.2. PTE Read access is not set
 
 ```bash
 journalctl -b
@@ -250,7 +256,34 @@ echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT intel_iommu=on iom
 sudo update-grub
 ```
 
-### 10.3. The `CSE boot_load failed` error
+### 10.3. Invalid CPD header
+
+```bash
+journalctl -b
+
+[ 51.717585] intel-ipu4 intel-ipu: Invalid CPD header
+[ 51.717587] intel-ipu4 intel-ipu: Invalid CPD in file
+[ 51.717587] intel-ipu4 intel-ipu: Failed to validate cpd
+[ 51.717633] intel-ipu4 intel-ipu: probe with driver intel-ipu4 failed with error -22
+```
+
+Workaround: 
+
+1. Make sure you have enough free disk space: `df -h /usr/lib/firmware/`
+
+2. Download firmware blob using the following direct link
+
+https://github.com/ruslanbay/ipu4-drivers/raw/refs/heads/main/firmware/ipu4-20191030.bin?download=
+
+3. Copy the downloaded file to `/usr/lib/firmware/ipu4p_cpd.bin`
+
+4. Check [the sha256 sum](https://github.com/ruslanbay/ipu4-drivers/tree/main?tab=readme-ov-file#9-install-ipu4-firmware)
+
+```bash
+sha256sum /usr/lib/firmware/ipu4p_cpd.bin
+```
+
+### 10.4. CSE boot_load failed
 
 If you encounter "CSE boot_load failed" or timeout errors during boot, it usually indicates the Intel Management Engine (CSE) and the IPU driver are out of sync during the early init phase.
 
@@ -1795,7 +1828,7 @@ git clone https://git.libcamera.org/libcamera/libcamera.git -b v0.7.0 ../libcame
 
 cd ../libcamera
 
-git am ../ipu4-next/patches/libcamera/v0.7.0/*.patch
+git am ../ipu4-drivers/patches/libcamera/v0.7.0/*.patch
 
 meson setup build \
     -Dcpp_args="-Wno-c99-designator" \
@@ -2308,8 +2341,8 @@ The Intel Image Processing Units (IPU4 and IPU4P) differ primarily by their asso
 
 ||Pro 7|Book 3 13"|Book 3 15"|Laptop 3|
 |-|-|-|-|-|
-|Image Signal Processor|IPU4P||||
-|PCI Device ID|8086:8a19||||
+|Image Signal Processor|IPU4P|IPU4P|||
+|PCI Device ID|8086:8a19|8086:8a19|||
 |&nbsp;|
 |PMIC|INT3472|INT3472|INT3472||
 |&nbsp;|
