@@ -2309,8 +2309,8 @@ The Intel Image Processing Units (IPU4 and IPU4P) differ primarily by their asso
 
 ||Pro 7|Book 3 13"|Book 3 15"|Laptop 3|
 |-|-|-|-|-|
-|Image Signal Processor|IPU4P||||
-|PCI Device ID|8086:8a19||||
+|Image Signal Processor|IPU4P|IPU4P|||
+|PCI Device ID|8086:8a19|8086:8a19|||
 |&nbsp;|
 |PMIC|INT3472|INT3472|INT3472||
 |&nbsp;|
