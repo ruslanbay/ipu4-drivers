@@ -1,0 +1,137 @@
+diff -uprN /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/ipu4/ipu4-css/ipu-wrapper.c /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/ipu4/ipu4-css/ipu-wrapper.c
+--- /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/ipu4/ipu4-css/ipu-wrapper.c	2026-02-26 18:01:14.202567768 +0100
++++ /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/ipu4/ipu4-css/ipu-wrapper.c	2026-02-26 18:12:20.294985270 +0100
+@@ -544,4 +544,3 @@ void ipu_wrapper_init(int mmid, struct d
+ 	sys->dev = dev;
+ 	sys->sys_base = base;
+ }
+-
+diff -uprN /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/ipu4/ipu4p-css/ipu-wrapper.c /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/ipu4/ipu4p-css/ipu-wrapper.c
+--- /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/ipu4/ipu4p-css/ipu-wrapper.c	2026-02-26 18:01:14.202567768 +0100
++++ /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/ipu4/ipu4p-css/ipu-wrapper.c	2026-02-26 18:12:20.294985270 +0100
+@@ -544,4 +544,3 @@ void ipu_wrapper_init(int mmid, struct d
+ 	sys->dev = dev;
+ 	sys->sys_base = base;
+ }
+-
+diff -uprN /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/ipu-wrapper.c /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/ipu-wrapper.c
+--- /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/ipu-wrapper.c	2026-02-26 18:01:14.202567768 +0100
++++ /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/ipu-wrapper.c	2026-02-26 18:12:20.294985270 +0100
+@@ -544,4 +544,3 @@ void ipu_wrapper_init(int mmid, struct d
+ 	sys->dev = dev;
+ 	sys->sys_base = base;
+ }
+-
+diff -uprN /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/Kconfig /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/Kconfig
+--- /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/Kconfig	2026-02-26 18:01:14.199728513 +0100
++++ /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/Kconfig	1970-01-01 01:00:00.000000000 +0100
+@@ -1,66 +0,0 @@
+-config VIDEO_INTEL_IPU
+-	tristate "Intel IPU driver"
+-	depends on ACPI
+-	select IOMMU_API
+-	select IOMMU_IOVA
+-	select X86_DEV_DMA_OPS if X86
+-	select VIDEOBUF2_DMA_CONTIG
+-	select PHYS_ADDR_T_64BIT
+-	select COMMON_CLK
+-	help
+-		Say Y here!
+-
+-choice
+-	prompt "intel ipu generation type"
+-	depends on VIDEO_INTEL_IPU
+-	default VIDEO_INTEL_IPU4
+-
+-config VIDEO_INTEL_IPU4
+-	bool "Compile for IPU4 driver"
+-	help
+-		Say Y here!
+-
+-config VIDEO_INTEL_IPU4P
+-	bool "Compile for IPU4P driver"
+-	help
+-		Say Y here!
+-
+-endchoice
+-
+-choice
+-	prompt "intel ipu hardware platform type"
+-	depends on VIDEO_INTEL_IPU
+-	default VIDEO_INTEL_IPU_SOC
+-
+-config VIDEO_INTEL_IPU_SOC
+-	bool "Compile for SOC"
+-	help
+-		Select for SOC platform
+-
+-endchoice
+-
+-config VIDEO_INTEL_IPU_FW_LIB
+-	bool "Compile firmware library"
+-	default y
+-	help
+-		If selected, the firmware hostlib css would be compiled
+-
+-config VIDEO_INTEL_IPU_WERROR
+-	bool "Force GCC to throw an error instead of a warning when compiling"
+-	depends on VIDEO_INTEL_IPU
+-	depends on EXPERT
+-	depends on !COMPILE_TEST
+-	default n
+-	help
+-	  Add -Werror to the build flags for (and only for) intel ipu module.
+-	  Do not enable this unless you are writing code for the ipu module.
+-
+-	  Recommended for driver developers only.
+-
+-	  If in doubt, say "N".
+-
+-config VIDEO_INTEL_UOS
+-        bool "Compile driver per UOS"
+-        help
+-	        If selected UOS driver components will be compiled
+-
+diff -uprN /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/Makefile /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/Makefile
+--- /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/Makefile	2026-02-26 18:01:14.199812354 +0100
++++ /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/Makefile	2026-02-26 18:12:20.280812395 +0100
+@@ -4,16 +4,3 @@
+ #
+ 
+ obj-y	+= ipu3/
+-# force check the compile warning to make sure zero warnings
+-# note we may have build issue when gcc upgraded.
+-ccflags-y := -Wno-error=uninitialized
+-subdir-ccflags-y += $(call cc-disable-warning, unused-parameter)
+-subdir-ccflags-y += $(call cc-disable-warning, implicit-fallthrough)
+-subdir-ccflags-y += $(call cc-disable-warning, missing-field-initializers)
+-subdir-ccflags-y += $(call cc-disable-warning, int-conversion)
+-subdir-ccflags-y += $(call cc-disable-warning, enum-conversion)
+-subdir-ccflags-y += $(call cc-disable-warning, uninitialized)
+-subdir-ccflags-$(CONFIG_VIDEO_INTEL_IPU_WERROR) += -Werror
+-
+-obj-$(CONFIG_VIDEO_INTEL_IPU4)  += ipu4/
+-obj-$(CONFIG_VIDEO_INTEL_IPU4P)	+= ipu4/
+diff -uprN /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/Makefile.rej /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/Makefile.rej
+--- /home/user/temp-repos/linux-intel-lts/drivers/media/pci/intel/Makefile.rej	1970-01-01 01:00:00.000000000 +0100
++++ /home/user/temp-repos/v5.15.195/drivers/media/pci/intel/Makefile.rej	2026-02-26 18:12:20.280898103 +0100
+@@ -0,0 +1,19 @@
++diff a/drivers/media/pci/intel/Makefile b/drivers/media/pci/intel/Makefile	(rejected hunks)
++@@ -5,4 +5,17 @@
++ obj-$(CONFIG_IPU_BRIDGE) += ipu-bridge.o
++ obj-y	+= ipu3/
++ obj-y	+= ivsc/
+++# force check the compile warning to make sure zero warnings
+++# note we may have build issue when gcc upgraded.
+++ccflags-y := -Wno-error=uninitialized
+++subdir-ccflags-y += $(call cc-disable-warning, unused-parameter)
+++subdir-ccflags-y += $(call cc-disable-warning, implicit-fallthrough)
+++subdir-ccflags-y += $(call cc-disable-warning, missing-field-initializers)
+++subdir-ccflags-y += $(call cc-disable-warning, int-conversion)
+++subdir-ccflags-y += $(call cc-disable-warning, enum-conversion)
+++subdir-ccflags-y += $(call cc-disable-warning, uninitialized)
+++subdir-ccflags-$(CONFIG_VIDEO_INTEL_IPU_WERROR) += -Werror
+++
++ obj-$(CONFIG_VIDEO_INTEL_IPU6)	+= ipu6/
+++obj-$(CONFIG_VIDEO_INTEL_IPU4)  += ipu4/
+++obj-$(CONFIG_VIDEO_INTEL_IPU4P)	+= ipu4/
