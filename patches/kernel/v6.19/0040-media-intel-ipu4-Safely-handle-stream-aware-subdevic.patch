@@ -1,6 +1,6 @@
-From 913eec467f67fea8f6bf03127736cb51e3c4756c Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 06:23:27 +0000
+From a814ba52fee559cf6cd01a0e9cd4450b8dd07571 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:31 +0100
 Subject: [PATCH 40/54] media: intel/ipu4: Safely handle stream-aware
  subdevices without routing
 

@@ -1,6 +1,6 @@
-From 506b211ebba1be6d41edf61a18a5f551dfedfc03 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 18 Feb 2026 10:01:46 +0100
+From 628c5591c37d25a0aaa65f1918b61588285c067f Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:36 +0100
 Subject: [PATCH 48/54] media: intel/ipu4: Fix IPU4P firmware
  port-to-array-index mapping
 

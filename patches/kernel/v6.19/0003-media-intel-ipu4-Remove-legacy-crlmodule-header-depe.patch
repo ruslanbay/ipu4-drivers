@@ -1,6 +1,6 @@
-From bd5a743c3ec837d16c363298aea49a0fc08648d4 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 17:06:51 +0100
+From 3870b2b939c107ad2233f533a84de47235850dea Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:02 +0100
 Subject: [PATCH 03/54] media: intel/ipu4: Remove legacy crlmodule header
  dependency
 

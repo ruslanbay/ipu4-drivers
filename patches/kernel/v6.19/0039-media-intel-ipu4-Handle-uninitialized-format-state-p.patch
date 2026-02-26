@@ -1,6 +1,6 @@
-From f314b1492f8d969ff685b3d3a5be8984c7b7f7df Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 06:19:31 +0000
+From d44f24fcfb12dc9ef9b908d91dd7d369fbb6e50e Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:30 +0100
 Subject: [PATCH 39/54] media: intel/ipu4: Handle uninitialized format state
  pointers safely
 

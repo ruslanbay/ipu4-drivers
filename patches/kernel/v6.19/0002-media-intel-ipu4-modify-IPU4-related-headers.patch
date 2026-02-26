@@ -1,6 +1,6 @@
-From 1b9e61b593a4ffb9300a138a0c5ae239f3cd393b Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 17:03:15 +0100
+From 6c99d90eb35e32f944274d4c051b22ab171688d1 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:01 +0100
 Subject: [PATCH 02/54] media: intel/ipu4: modify IPU4 related headers
 
 ---

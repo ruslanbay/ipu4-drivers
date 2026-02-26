@@ -1,6 +1,6 @@
-From e9ed12fc13cd70643c1d2617ed0d944fcbd5577d Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 18:22:50 +0100
+From f9d5f744bc1a38ebb86683ecaa9775ea0e6c769f Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:22 +0100
 Subject: [PATCH 26/54] media: intel/ipu4: Update try_to_del_timer_sync() to
  timer_delete_sync_try()
 

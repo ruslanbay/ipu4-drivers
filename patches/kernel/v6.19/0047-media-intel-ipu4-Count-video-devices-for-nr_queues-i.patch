@@ -1,6 +1,6 @@
-From 0cc959c8262de11495f150fb512b15a0a50c8285 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 12:47:09 +0000
+From 8c0922b862045f30ef1064d1a8776427235273e7 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:35 +0100
 Subject: [PATCH 47/54] media: intel/ipu4: Count video devices for nr_queues
  initialization
 

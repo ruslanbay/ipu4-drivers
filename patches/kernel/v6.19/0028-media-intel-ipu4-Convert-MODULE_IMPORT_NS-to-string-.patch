@@ -1,6 +1,6 @@
-From 82b8c3b14d34be16a04aa15571edbeaf971c46fd Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 19:41:17 +0100
+From 1d13755e6ff9568b4c87a7c69d0c6bd5bf83f6f9 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:23 +0100
 Subject: [PATCH 28/54] media: intel/ipu4: Convert MODULE_IMPORT_NS to string
  literal format
 

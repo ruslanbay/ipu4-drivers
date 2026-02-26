@@ -1,6 +1,6 @@
-From e51c52daf44ee2e4f1c2b086b352b946c6c64268 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 13 Dec 2025 22:48:22 +0100
+From f30d0c089ff398918fd58ab8bb357e6ff33eefe1 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:06 +0100
 Subject: [PATCH 11/54] media: intel/ipu4: Implement virtual channel aware
  pipeline validation
 

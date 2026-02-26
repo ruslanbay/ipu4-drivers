@@ -1,6 +1,6 @@
-From 6ef2d793a6cbbfd00cac2280687ce5847bf38733 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 11 Jan 2026 19:14:00 +0100
+From 3cc4cc2516adca636a4cdd7f9dfa7d9ac53f5583 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:15 +0100
 Subject: [PATCH 19/54] media: intel/ipu4: Simplify DMA buffer allocation with
  dma_alloc_coherent()
 

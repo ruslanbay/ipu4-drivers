@@ -1,6 +1,6 @@
-From fa37d7f7bd0d97e18cb3052c8c57faaf9bfb4fb4 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 27 Dec 2025 11:23:56 +0100
+From 6398ea258318f659daf68084252d104878250c05 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:17 +0100
 Subject: [PATCH 21/54] media: intel/ipu4: Use dma_map_sgtable helpers for
  scatter-gather mapping
 

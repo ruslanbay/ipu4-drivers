@@ -1,6 +1,6 @@
-From d34195d3864b3887c7d701be79ada5f11c479ac6 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Mon, 12 Jan 2026 04:32:31 +0100
+From eefbb22a1e37d7b3d9cd8c50e6e6285f43865ea2 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:15 +0100
 Subject: [PATCH 20/54] media: intel/ipu4: Simplify DMA buffer deallocation
  with dma_free_coherent()
 

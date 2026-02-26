@@ -1,6 +1,6 @@
-From 45649938c09470aec449e0a3f4bd1853a3cdd5cf Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 10 Dec 2025 15:07:45 +0100
+From edafd3aa18e6073bf96db8bbd1b44c98cc0a84b8 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:08 +0100
 Subject: [PATCH 15/54] media: intel/ipu4: Advertise media controller
  capability and filter formats by mbus code
 

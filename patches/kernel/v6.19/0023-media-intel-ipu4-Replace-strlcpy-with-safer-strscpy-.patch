@@ -1,6 +1,6 @@
-From 662e5804460d054ad5361942b7e166d3b9e947fb Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 18:06:59 +0100
+From b1bd62f06dbdf078d1970a43d620244729ef9cda Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:19 +0100
 Subject: [PATCH 23/54] media: intel/ipu4: Replace strlcpy() with safer
  strscpy() function
 

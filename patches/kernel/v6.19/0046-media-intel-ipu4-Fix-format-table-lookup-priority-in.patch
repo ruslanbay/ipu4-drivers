@@ -1,6 +1,6 @@
-From b97f52153f5bbc176c5ac1d9cfcbc5a87ef2d2c2 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 12:46:48 +0000
+From c09ffe3245d44d012be2ed46791271a4b21841ff Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:35 +0100
 Subject: [PATCH 46/54] media: intel/ipu4: Fix format table lookup priority in
  link_validate()
 

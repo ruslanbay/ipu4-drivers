@@ -1,6 +1,6 @@
-From 8e4a2c3f499af9a6874412d7a240bdcf44db2674 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 17:59:15 +0100
+From 49aeb4316190a168ee677bbd32a99529ff498298 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:09 +0100
 Subject: [PATCH 16/54] media: v4l2: Add descriptions for vector Bayer pixel
  formats
 

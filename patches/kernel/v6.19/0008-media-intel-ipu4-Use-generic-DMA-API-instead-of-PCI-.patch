@@ -1,6 +1,6 @@
-From c6d8d7d5d433bd286b8c94bdb205c858d775cd02 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 13 Dec 2025 22:32:09 +0100
+From f0960b9273d1c7ecf43de7518a8364474a189a19 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:04 +0100
 Subject: [PATCH 08/54] media: intel/ipu4: Use generic DMA API instead of
  PCI-specific functions
 

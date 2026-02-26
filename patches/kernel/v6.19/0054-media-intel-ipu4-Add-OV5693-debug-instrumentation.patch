@@ -1,6 +1,6 @@
-From 699e6cc40e4354bbfa9631738775c994f0c556e3 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Fri, 20 Feb 2026 00:14:50 +0100
+From 148787f58e62659066c5bf6d574541952a242834 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:42 +0100
 Subject: [PATCH 54/54] media: intel/ipu4: Add OV5693 debug instrumentation
 
 Add and use cross-component debug traces (ov5693 + ipu-isys-csi2 + ipu-isys-video) to characterize the ov5693/IPU4P no-frame issue.

@@ -1,6 +1,6 @@
-From fc338ddabbcb3e5bdabc2e055fa2b01839ce7a66 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Mon, 12 Jan 2026 22:35:16 +0100
+From 8b3b2c0a58901eb41df9ae8cd7a03150377708fd Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:26 +0100
 Subject: [PATCH 33/54] media: intel/ipu4: Update ipu_bus_match() signature for
  const driver parameter
 

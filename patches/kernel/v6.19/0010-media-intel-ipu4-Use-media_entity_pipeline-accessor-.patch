@@ -1,6 +1,6 @@
-From f0828f67bdcfbb851e1f7ba8d71c3b89ff111adc Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 13 Dec 2025 22:39:12 +0100
+From ac2b878afd30286d05819667c8e4a64dabb2414f Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:06 +0100
 Subject: [PATCH 10/54] media: intel/ipu4: Use media_entity_pipeline() accessor
  function
 

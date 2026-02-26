@@ -1,6 +1,6 @@
-From ddbbd6a8ee5b8a3dd8735924c09fbf9c822c6e8a Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 06:32:44 +0000
+From 5b688e19a4dd31613979e3d9102c1abc24842fbe Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:32 +0100
 Subject: [PATCH 42/54] media: intel/ipu4: Add guards for uninitialized array
  cleanup
 

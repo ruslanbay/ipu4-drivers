@@ -1,6 +1,6 @@
-From 3414ca574d2cb5074d829d0a22e3f35760073dde Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Mon, 12 Jan 2026 22:36:21 +0100
+From f134e7467920988a9259f06de60327c75613d782 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:27 +0100
 Subject: [PATCH 35/54] media: intel/ipu4: Adapt to v4l2_async_nf_register()
  API signature change
 

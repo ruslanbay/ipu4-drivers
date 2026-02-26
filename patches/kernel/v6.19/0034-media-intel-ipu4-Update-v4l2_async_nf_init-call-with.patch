@@ -1,6 +1,6 @@
-From ffba8ecb181a735770c17683cbb372dfbfbf9e00 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Mon, 12 Jan 2026 22:35:28 +0100
+From fb1a5856849e330dfb447860e0234d33fc2507a8 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:27 +0100
 Subject: [PATCH 34/54] media: intel/ipu4: Update v4l2_async_nf_init() call
  with v4l2_dev parameter
 

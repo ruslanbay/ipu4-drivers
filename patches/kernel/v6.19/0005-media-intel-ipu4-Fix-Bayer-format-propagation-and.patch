@@ -1,6 +1,6 @@
-From 4f730ba60ad4b63cb35bd3892fac0abe9fb8c4fa Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 7 Jan 2026 18:22:01 +0100
+From b9fe2b17df6996a4626851defa278cad755bc726 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:03 +0100
 Subject: [PATCH 05/54] media: intel/ipu4: Fix Bayer format propagation and
 
 simplify state handling

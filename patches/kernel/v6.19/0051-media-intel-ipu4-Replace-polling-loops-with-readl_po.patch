@@ -1,6 +1,6 @@
-From 4a81e3d9ed74382083e97b17bcc46cf4b4e5e692 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Thu, 19 Feb 2026 23:45:55 +0100
+From f4c4c0b9b549e1c82e829dd782b442d289f09bd2 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:39 +0100
 Subject: [PATCH 51/54] media: intel/ipu4: Replace polling loops with
  readl_poll_timeout()
 

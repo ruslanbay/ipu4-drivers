@@ -1,6 +1,6 @@
-From 38495bc8ab6e64425d23caecbfa8cf6c150a50f8 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Thu, 26 Feb 2026 12:14:45 +0100
+From 2da8b10cd4bb1436e440dbc26c2be87d8c8303ae Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:41 +0100
 Subject: [PATCH 53/54] media: intel/ipu4: Rename symbols to avoid IPU7
  namespace collision
 

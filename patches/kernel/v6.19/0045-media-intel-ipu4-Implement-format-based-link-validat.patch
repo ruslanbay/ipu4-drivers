@@ -1,6 +1,6 @@
-From d74a0ad71ee6cc572d7e6ca36b1a6515686b168d Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 08:38:39 +0000
+From f052a343e21def2d41768bdd7d05ac4ab4720ec8 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:34 +0100
 Subject: [PATCH 45/54] media: intel/ipu4: Implement format-based link
  validation
 

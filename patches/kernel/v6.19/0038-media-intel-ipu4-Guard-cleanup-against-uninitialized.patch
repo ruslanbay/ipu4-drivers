@@ -1,6 +1,6 @@
-From 836cbad373350d906623d0f2d74391763dffc1b3 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 05:59:27 +0000
+From b3f3624388a08318ff0b499a419a5732787733ca Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:29 +0100
 Subject: [PATCH 38/54] media: intel/ipu4: Guard cleanup against uninitialized
  resources
 

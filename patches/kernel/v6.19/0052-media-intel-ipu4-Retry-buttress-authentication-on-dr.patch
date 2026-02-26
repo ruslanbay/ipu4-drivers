@@ -1,6 +1,6 @@
-From af240796120fc633eb739f627e8010699fe57839 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Fri, 20 Feb 2026 00:12:23 +0100
+From 5e9b2df0806ab8c3bb7badc321ab33102ecbb47f Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:40 +0100
 Subject: [PATCH 52/54] media: intel/ipu4: Retry buttress authentication on
  driver open
 

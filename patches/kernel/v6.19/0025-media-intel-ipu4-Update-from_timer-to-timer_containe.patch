@@ -1,6 +1,6 @@
-From 5b92053ba8d6e53d61f98208bd97e9bb688c5b32 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 18:22:00 +0100
+From d4dae7d802c70b3141c1c8169e0b0bc6fa350901 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:21 +0100
 Subject: [PATCH 25/54] media: intel/ipu4: Update from_timer() to
  timer_container_of()
 

@@ -1,6 +1,6 @@
-From d3e910e51e31b067df6bc6044a04fb18e0da27fd Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 18:14:53 +0100
+From e4042eed8b76bdcb7c97b266041acb8bd2738ec2 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:20 +0100
 Subject: [PATCH 24/54] media: intel/ipu4: Use noop_llseek instead of
  deprecated no_llseek
 

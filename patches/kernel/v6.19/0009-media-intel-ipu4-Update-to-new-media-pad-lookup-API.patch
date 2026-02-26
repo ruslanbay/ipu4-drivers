@@ -1,6 +1,6 @@
-From 66cd9c191a0836c0f8c8cdf419149d9cd64edaf7 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 13 Dec 2025 22:33:19 +0100
+From 60eb6f36882ce5f667c553648c01d4280e8a13a0 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:05 +0100
 Subject: [PATCH 09/54] media: intel/ipu4: Update to new media pad lookup API
 
 Update driver code to use media_pad_remote_pad_first() instead of the

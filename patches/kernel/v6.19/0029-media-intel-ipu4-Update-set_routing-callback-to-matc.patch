@@ -1,6 +1,6 @@
-From 88e7b4acb9aed59183539001f91d4cd03f5ea7ed Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 19:47:38 +0100
+From ae1d24f7f4b012b4350c504b42eccb3d01c6cc46 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:24 +0100
 Subject: [PATCH 29/54] media: intel/ipu4: Update set_routing callback to match
  v4l2_subdev_pad_ops signature
 

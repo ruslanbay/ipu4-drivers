@@ -1,6 +1,6 @@
-From 95f2d0df222fe2a0709c9b75c3dd88a9b233f2d2 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 13 Dec 2025 22:31:02 +0100
+From 4bf99755e88257b81d89afba38acb6ddf8baf80b Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:04 +0100
 Subject: [PATCH 07/54] media: v4l2: Rename CSI-2 frame descriptor fields to
  align with media API
 

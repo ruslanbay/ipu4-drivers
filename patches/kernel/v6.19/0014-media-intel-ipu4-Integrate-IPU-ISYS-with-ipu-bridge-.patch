@@ -1,6 +1,6 @@
-From 975e6e85cf0102525d519cd2325315ba1e118097 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 15:01:11 +0100
+From 2b6b49bf2d61f49c651405683ccb8ae6dc1ef466 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:08 +0100
 Subject: [PATCH 14/54] media: intel/ipu4: Integrate IPU ISYS with ipu-bridge
  for sensor discovery
 

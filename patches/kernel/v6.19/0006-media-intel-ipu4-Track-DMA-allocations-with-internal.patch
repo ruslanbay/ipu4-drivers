@@ -1,6 +1,6 @@
-From 2928bcc7d31311091a1d2f9cd02f0a8ce94c7a0b Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Thu, 26 Feb 2026 11:07:03 +0100
+From d424b4581e45d17bdb4d7f7166f637865f451aa7 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:03 +0100
 Subject: [PATCH 06/54] media: intel/ipu4: Track DMA allocations with internal
  VMA list
 

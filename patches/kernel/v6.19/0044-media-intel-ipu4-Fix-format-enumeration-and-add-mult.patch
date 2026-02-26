@@ -1,6 +1,6 @@
-From ed11c53fb19f3e66f133fad676398b0f00c536af Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 08:33:57 +0000
+From bd34c99fa8f3c5edafcf794b3d2dab71dab6209b Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:33 +0100
 Subject: [PATCH 44/54] media: intel/ipu4: Fix format enumeration and add
  multiplanar format support
 

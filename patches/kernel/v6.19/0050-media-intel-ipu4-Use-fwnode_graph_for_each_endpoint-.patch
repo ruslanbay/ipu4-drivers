@@ -1,6 +1,6 @@
-From 7cb7f2a6d8873114649bdc709c4b8888cf7bb052 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Thu, 19 Feb 2026 10:33:11 +0100
+From c92eb8d7fc07d7286b361ffbd11ace5f087a4f50 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:37 +0100
 Subject: [PATCH 50/54] media: intel/ipu4: Use fwnode_graph_for_each_endpoint()
  for enumeration
 

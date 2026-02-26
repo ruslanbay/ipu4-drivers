@@ -1,6 +1,6 @@
-From 5e9aadd415b36bee4cc148ec7c375f1d528fa8bf Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 06:27:24 +0000
+From d17f9bad755b3d2238ae28db6ec5f87dbbed88c0 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:31 +0100
 Subject: [PATCH 41/54] media: intel/ipu4: Initialize pad directions before
  media_entity_pads_init()
 

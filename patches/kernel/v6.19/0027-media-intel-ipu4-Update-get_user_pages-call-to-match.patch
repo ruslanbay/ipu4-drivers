@@ -1,6 +1,6 @@
-From 457a903b6f8baa7ef0325b419f088c5e421c7d67 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 21 Dec 2025 19:36:24 +0100
+From c63abc1a95544d8313c362b86459730bf1e426c0 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:23 +0100
 Subject: [PATCH 27/54] media: intel/ipu4: Update get_user_pages() call to
  match new kernel signature
 

@@ -1,6 +1,6 @@
-From 5e521bd608aa8cfdca7d09aeef290b1a082beccf Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 29 Nov 2025 07:16:04 +0100
+From f5cf671d6be527cbb2334d184b443f4b1087bb99 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:06 +0100
 Subject: [PATCH 12/54] media: intel/ipu4: Replace dma_buf_map with iosys_map
  for buffer mapping
 

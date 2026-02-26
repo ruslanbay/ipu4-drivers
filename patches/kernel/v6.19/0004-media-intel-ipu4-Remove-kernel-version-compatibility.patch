@@ -1,6 +1,6 @@
-From 60c64543652ae1d34ae51b6e36f9bcce93dc81ba Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 13 Dec 2025 22:25:27 +0100
+From 6cd60fc06397263a5dbdbd3b41b5f5a5c3b11d88 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:02 +0100
 Subject: [PATCH 04/54] media: intel/ipu4: Remove kernel version compatibility
  code
 

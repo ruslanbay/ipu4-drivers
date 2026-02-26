@@ -1,6 +1,6 @@
-From 2704c19f0d4e950c29f03cb62835f5ca20eb38b7 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Mon, 12 Jan 2026 22:34:40 +0100
+From b84e17579c2f8de1487113f5bcf528429e571264 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:26 +0100
 Subject: [PATCH 32/54] media: intel/ipu4: Use v4l2_async_connection for async
  sensor discovery
 

@@ -1,6 +1,6 @@
-From ef4027c27d009d1ec72da1a90ad7f4a1161a28e4 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Tue, 17 Feb 2026 08:25:37 +0000
+From 8e871f6610ba699f5d829eefa3909a3c34b7fadc Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:33 +0100
 Subject: [PATCH 43/54] media: intel/ipu4: Add link validation infrastructure
 
 Add helper functions and data structures needed for format validation

@@ -1,6 +1,6 @@
-From a92e02e20ae91f691e5ea596eeff0dc340f14ea2 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 25 Feb 2026 13:23:48 +0100
+From b51c45fd63082005b4023b6eb166682122617fce Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:25 +0100
 Subject: [PATCH 30/54] media: intel/ipu4: Modernize user page pinning with
  pin_user_pages_fast()
 

@@ -1,6 +1,6 @@
-From 660bf5eed542ed28da8989b9426ed23083586643 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Wed, 10 Dec 2025 15:08:31 +0100
+From e34b0cef29e44b896348b20e85310a8e74edb5ec Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:10 +0100
 Subject: [PATCH 17/54] media: intel/ipu4: Use multiplanar buffer type for
  format enumeration
 

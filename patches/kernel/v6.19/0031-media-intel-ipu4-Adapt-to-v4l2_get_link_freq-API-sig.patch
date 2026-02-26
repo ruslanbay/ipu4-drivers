@@ -1,6 +1,6 @@
-From c3f8dd26bbfd17019af482a0feedc7ef2f355402 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Mon, 12 Jan 2026 22:29:52 +0100
+From 7afd0e92850e915ca382e8e8ebdf1488d4199ba6 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:25 +0100
 Subject: [PATCH 31/54] media: intel/ipu4: Adapt to v4l2_get_link_freq() API
  signature change
 

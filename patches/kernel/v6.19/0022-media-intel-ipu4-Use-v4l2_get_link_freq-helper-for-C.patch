@@ -1,6 +1,6 @@
-From 1b6c2c1185bfb8bd502f781b48467f2c5beda445 Mon Sep 17 00:00:00 2001
-From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 27 Dec 2025 12:48:58 +0100
+From 417671424e5cc559566a20a2215a9ac2ce6af5bb Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:18 +0100
 Subject: [PATCH 22/54] media: intel/ipu4: Use v4l2_get_link_freq() helper for
  CSI-2 link frequency
 
