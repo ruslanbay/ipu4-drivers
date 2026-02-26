@@ -1,0 +1,35 @@
+From f314b1492f8d969ff685b3d3a5be8984c7b7f7df Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 17 Feb 2026 06:19:31 +0000
+Subject: [PATCH 39/54] media: intel/ipu4: Handle uninitialized format state
+ pointers safely
+
+Add NULL pointer checks before dereferencing format state pointers during
+subdevice open. This prevents crashes when format state accessors return NULL.
+---
+ drivers/media/pci/intel/ipu-isys-subdev.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-subdev.c b/drivers/media/pci/intel/ipu-isys-subdev.c
+index 0fabe5a498ea..62efc0196442 100644
+--- a/drivers/media/pci/intel/ipu-isys-subdev.c
++++ b/drivers/media/pci/intel/ipu-isys-subdev.c
+@@ -825,9 +825,12 @@ int ipu_isys_subdev_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 		struct v4l2_rect *try_compose =
+ 			v4l2_subdev_state_get_compose(fh->state, i);
+ 
+-		*try_fmt = asd->ffmt[i][0];
+-		*try_crop = asd->crop[i];
+-		*try_compose = asd->compose[i];
++		if (try_fmt)
++			*try_fmt = asd->ffmt[i][0];
++		if (try_crop)
++			*try_crop = asd->crop[i];
++		if (try_compose)
++			*try_compose = asd->compose[i];
+ 	}
+ 
+ 	mutex_unlock(&asd->mutex);
+-- 
+2.51.0
+

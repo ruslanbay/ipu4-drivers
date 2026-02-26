@@ -1,0 +1,118 @@
+From 6ef2d793a6cbbfd00cac2280687ce5847bf38733 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sun, 11 Jan 2026 19:14:00 +0100
+Subject: [PATCH 19/54] media: intel/ipu4: Simplify DMA buffer allocation with
+ dma_alloc_coherent()
+
+Replace dma_alloc_attrs() calls with the simpler dma_alloc_coherent() API
+where no special DMA attributes are needed. This improves code clarity and
+reduces API surface complexity.
+---
+ drivers/media/pci/intel/ipu-cpd.c     | 6 ++----
+ drivers/media/pci/intel/ipu-isys.c    | 6 ++----
+ drivers/media/pci/intel/ipu-psys.c    | 9 ++++-----
+ drivers/media/pci/intel/ipu-trace.c   | 4 ++--
+ drivers/media/pci/intel/ipu-wrapper.c | 6 ++----
+ 5 files changed, 12 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-cpd.c b/drivers/media/pci/intel/ipu-cpd.c
+index c3692a79c902..3ee942778fec 100644
+--- a/drivers/media/pci/intel/ipu-cpd.c
++++ b/drivers/media/pci/intel/ipu-cpd.c
+@@ -207,10 +207,8 @@ void *ipu_cpd_create_pkg_dir(struct ipu_bus_device *adev,
+ 	met_sz = met_ent->len;
+ 
+ 	*pkg_dir_size = PKG_DIR_SIZE + man_sz + met_sz;
+-	pkg_dir = dma_alloc_attrs(&adev->dev, *pkg_dir_size, dma_addr,
+-				  GFP_KERNEL,
+-				  0
+-	    );
++	pkg_dir = dma_alloc_coherent(&adev->dev, *pkg_dir_size, dma_addr,
++				  GFP_KERNEL);
+ 	if (!pkg_dir)
+ 		return pkg_dir;
+ 
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index 40ae88e6be79..e69b72a67c4d 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -767,11 +767,9 @@ static int alloc_fw_msg_buffers(struct ipu_isys *isys, int amount)
+ 	unsigned long flags;
+ 
+ 	for (i = 0; i < amount; i++) {
+-		addr = dma_alloc_attrs(&isys->adev->dev,
++		addr = dma_alloc_coherent(&isys->adev->dev,
+ 				       sizeof(struct isys_fw_msgs),
+-				       &dma_addr, GFP_KERNEL,
+-				       0
+-		    );
++				       &dma_addr, GFP_KERNEL);
+ 		if (!addr)
+ 			break;
+ 		addr->dma_addr = dma_addr;
+diff --git a/drivers/media/pci/intel/ipu-psys.c b/drivers/media/pci/intel/ipu-psys.c
+index 5371cf2f3ff2..06305d72b7e8 100644
+--- a/drivers/media/pci/intel/ipu-psys.c
++++ b/drivers/media/pci/intel/ipu-psys.c
+@@ -94,9 +94,8 @@ struct ipu_psys_pg *__get_pg_buf(struct ipu_psys *psys, size_t pg_size)
+ 	if (!kpg)
+ 		return NULL;
+ 
+-	kpg->pg = dma_alloc_attrs(&psys->adev->dev, pg_size,
+-				  &kpg->pg_dma_addr, GFP_KERNEL,
+-				  0);
++	kpg->pg = dma_alloc_coherent(&psys->adev->dev, pg_size,
++				  &kpg->pg_dma_addr, GFP_KERNEL);
+ 	if (!kpg->pg) {
+ 		kfree(kpg);
+ 		return NULL;
+@@ -1357,10 +1356,10 @@ static int ipu_psys_probe(struct ipu_bus_device *adev)
+ 		kpg = kzalloc(sizeof(*kpg), GFP_KERNEL);
+ 		if (!kpg)
+ 			goto out_free_pgs;
+-		kpg->pg = dma_alloc_attrs(&adev->dev,
++		kpg->pg = dma_alloc_coherent(&adev->dev,
+ 					  IPU_PSYS_PG_MAX_SIZE,
+ 					  &kpg->pg_dma_addr,
+-					  GFP_KERNEL, 0);
++					  GFP_KERNEL);
+ 		if (!kpg->pg) {
+ 			kfree(kpg);
+ 			goto out_free_pgs;
+diff --git a/drivers/media/pci/intel/ipu-trace.c b/drivers/media/pci/intel/ipu-trace.c
+index 824515a66ac1..c7128ca3adb5 100644
+--- a/drivers/media/pci/intel/ipu-trace.c
++++ b/drivers/media/pci/intel/ipu-trace.c
+@@ -195,10 +195,10 @@ static void __ipu_trace_restore(struct device *dev)
+ 
+ 	if (!sys->memory.memory_buffer) {
+ 		sys->memory.memory_buffer =
+-		    dma_alloc_attrs(dev, MEMORY_RING_BUFFER_SIZE +
++		    dma_alloc_coherent(dev, MEMORY_RING_BUFFER_SIZE +
+ 				    MEMORY_RING_BUFFER_GUARD,
+ 				    &sys->memory.dma_handle,
+-				    GFP_KERNEL, 0);
++				    GFP_KERNEL);
+ 	}
+ 
+ 	if (!sys->memory.memory_buffer) {
+diff --git a/drivers/media/pci/intel/ipu-wrapper.c b/drivers/media/pci/intel/ipu-wrapper.c
+index f9bdc0b50894..92515234daff 100644
+--- a/drivers/media/pci/intel/ipu-wrapper.c
++++ b/drivers/media/pci/intel/ipu-wrapper.c
+@@ -238,10 +238,8 @@ u64 shared_memory_alloc(unsigned int mmid, size_t bytes)
+ 	/*alloc using ipu dma driver */
+ 	buf->bytes = PAGE_ALIGN(bytes);
+ 
+-	buf->addr = dma_alloc_attrs(mine->dev, buf->bytes, &buf->iova,
+-				    GFP_KERNEL,
+-				    0
+-	    );
++	buf->addr = dma_alloc_coherent(mine->dev, buf->bytes, &buf->iova,
++				    GFP_KERNEL);
+ 	if (!buf->addr) {
+ 		kfree(buf);
+ 		return 0;
+-- 
+2.51.0
+
