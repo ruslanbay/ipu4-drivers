@@ -1,7 +1,14 @@
-From 760ba368de63b19e0a83187027b66036df7e3b15 Mon Sep 17 00:00:00 2001
+From 5c58004e46c0ce18c2804a66555225635de86ec8 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 13 Dec 2025 22:25:27 +0100
-Subject: [PATCH 04/55] remove legacy code
+Subject: [PATCH 04/54] media: intel/ipu4: Remove kernel version compatibility code
+
+Remove #ifdef blocks for older kernel versions and legacy code paths that
+handled compatibility with kernel versions < 4.15. This simplification is
+valid for current kernel versions (>= 6.1).
+
+Also remove unused legacy features and conditional logic that is no longer
+needed in modern kernels.
 
 ---
  drivers/media/pci/intel/ipu-bus.c             |  13 +-

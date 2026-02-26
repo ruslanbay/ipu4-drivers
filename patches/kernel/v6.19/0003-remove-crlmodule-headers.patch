@@ -1,7 +1,14 @@
-From c8b65aaab3d10012140e50e0b50620dd36304003 Mon Sep 17 00:00:00 2001
+From 26e52a2d3b8b0be8b92f1d566203f5719d982287 Mon Sep 17 00:00:00 2001
 From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 21 Dec 2025 17:06:51 +0100
-Subject: [PATCH 03/55] remove crlmodule headers
+Subject: [PATCH 03/54] media: intel/ipu4: Remove legacy crlmodule header dependency
+
+Remove the external crlmodule header dependency from the test pattern
+generator. Replace with local control ID definitions to eliminate the
+dependency on external camera module drivers.
+
+The crlmodule is a legacy external camera driver library; this change
+allows IPU4 to operate independently without requiring it.
 
 ---
  drivers/media/pci/intel/ipu-isys-tpg.c | 5 ++++-

@@ -1,0 +1,28 @@
+From 1780bb7f45d8745785d4782b5febbcfcfaea4bc7 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sun, 21 Dec 2025 19:36:24 +0100
+Subject: [PATCH 27/54] media: intel/ipu4: Update get_user_pages() call to match new kernel signature
+
+Adapt get_user_pages() call to the new kernel API that removed the vm_struct
+parameter from the function signature.
+
+---
+ drivers/media/pci/intel/ipu-psys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-psys.c b/drivers/media/pci/intel/ipu-psys.c
+index b4baef858356..66e0e158d580 100644
+--- a/drivers/media/pci/intel/ipu-psys.c
++++ b/drivers/media/pci/intel/ipu-psys.c
+@@ -197,7 +197,7 @@ static int ipu_psys_get_userpages(struct ipu_dma_buf_attach *attach)
+ 		nr = get_user_pages(
+ 				   start & PAGE_MASK, npages,
+ 				   FOLL_WRITE,
+-				   pages, NULL);
++				   pages);
+ 		if (nr < npages)
+ 			goto error_up_read;
+ 	}
+-- 
+2.51.0
+

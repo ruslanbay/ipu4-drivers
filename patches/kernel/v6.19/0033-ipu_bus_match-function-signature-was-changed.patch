@@ -1,0 +1,28 @@
+From cc3fd0bf5cb47605c30b54d9410816c1b713acc1 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Mon, 12 Jan 2026 22:35:16 +0100
+Subject: [PATCH 33/54] media: intel/ipu4: Update ipu_bus_match() signature for const driver parameter
+
+Add const qualifier to device_driver parameter in bus match function to align
+with the updated kernel device driver model API.
+
+---
+ drivers/media/pci/intel/ipu-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-bus.c b/drivers/media/pci/intel/ipu-bus.c
+index 70548b1bfc46..7d48bd3a7dd1 100644
+--- a/drivers/media/pci/intel/ipu-bus.c
++++ b/drivers/media/pci/intel/ipu-bus.c
+@@ -164,7 +164,7 @@ static const struct dev_pm_ops ipu_bus_pm_ops = {
+ #define IPU_BUS_PM_OPS	NULL
+ #endif
+ 
+-static int ipu_bus_match(struct device *dev, struct device_driver *drv)
++static int ipu_bus_match(struct device *dev, const struct device_driver *drv)
+ {
+ 	struct ipu_bus_driver *adrv = to_ipu_bus_driver(drv);
+ 
+-- 
+2.51.0
+

@@ -1,0 +1,28 @@
+From b7d61ac4874230049c37b3cbd2aee7e4af30f851 Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Mon, 12 Jan 2026 22:35:28 +0100
+Subject: [PATCH 34/54] media: intel/ipu4: Update v4l2_async_nf_init() call with v4l2_dev parameter
+
+Adapt async notifier initialization to the new v4l2_async_nf_init() API that
+requires the v4l2_device handle for proper notifier registration.
+
+---
+ drivers/media/pci/intel/ipu-isys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index e4e7cd97da20..fec4dfb0b27b 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -448,7 +448,7 @@ static int isys_notifier_init(struct ipu_isys *isys)
+ 	unsigned int i;
+ 	int ret;
+ 
+-	v4l2_async_nf_init(&isys->notifier);
++	v4l2_async_nf_init(&isys->notifier, &isys->v4l2_dev);
+ 
+ 	for (i = 0; i < ISYS_MAX_PORTS; i++) {
+ 		struct v4l2_fwnode_endpoint vep = {
+-- 
+2.51.0
+
