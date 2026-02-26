@@ -2425,6 +2425,54 @@ Based on the DSDT extraction, the Surface Pro 7 utilizes the following configura
 |OV7251 (IR)|CAM3|0x06 (Port 6)|0x01 (1 Lane)|
 |OV8865 (Rear)|CAMR|0x03 (Port 3)|0x04 (4 Lanes)|
 
+# Misc
+
+To confirm this implementation matches the official Intel downstream source (excluding whitespace/formatting), follow these steps to compare the Intel LTS Reference against the Patched Stable Kernel:
+
+## 1. Setup workspace
+```bash
+mkdir -p ~/temp-repos && cd ~/temp-repos
+```
+
+## 2. Clone the Reference (Intel Downstream)
+```bash
+git clone --depth 1 --filter=blob:none --no-checkout \
+          --single-branch \
+          --branch lts-v5.15.195-android_t-251103T063840Z \
+          https://github.com/intel/linux-intel-lts linux-intel-lts && \
+cd linux-intel-lts && \
+git sparse-checkout init --cone && \
+git sparse-checkout set drivers/media/pci/intel && \
+git checkout
+```
+
+## 3. Clone the Target (Upstream Stable)
+```bash
+cd ~/temp-repos
+git clone --depth 1 --filter=blob:none --no-checkout \
+          --single-branch \
+          -b v5.15.195 \
+          https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git v5.15.195 && \
+cd v5.15.195 && \
+git sparse-checkout init --cone && \
+git sparse-checkout set drivers/media/pci/intel && \
+git checkout
+```
+
+## 4. Apply the patch
+```bash
+curl -sL https://raw.githubusercontent.com/ruslanbay/ipu4-drivers/refs/heads/main/patches/kernel/v6.19/0001-media-intel-Add-IPU4-input-and-processing-system-dri.patch | git am
+```
+
+## 5. Compare results (Ignoring whitespace and blank lines)
+```bash
+diff -uprN -w -B --suppress-common-lines \
+    ~/temp-repos/linux-intel-lts/drivers/media/pci/intel \
+    ~/temp-repos/v5.15.195/drivers/media/pci/intel > ipu4_comparison.diff
+```
+
+The result will be saved to [ipu4_comparison.diff](https://github.com/ruslanbay/ipu4-drivers/blob/main/assets/ipu4_comparison.diff)
+
 # Links
 
 1. https://github.com/intel/ipu4-cam-hal
