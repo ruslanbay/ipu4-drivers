@@ -2461,7 +2461,7 @@ git checkout
 
 ## 4. Apply the patch
 ```bash
-curl -sL https://raw.githubusercontent.com/ruslanbay/ipu4-drivers/refs/heads/main/patches/kernel/v6.19/0001-media-intel-Add-IPU4-input-and-processing-system-dri.patch | git am
+curl -sL https://raw.githubusercontent.com/ruslanbay/ipu4-drivers/refs/heads/main/patches/kernel/v6.19/0001-media-intel-Add-IPU4-input-and-processing-system-dri.patch | git am --reject
 ```
 
 ## 5. Compare results (Ignoring whitespace and blank lines)
