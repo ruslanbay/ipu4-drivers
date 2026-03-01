@@ -1,0 +1,34 @@
+From 73092cc7fa91cd9dc1acfb796f6fc2daee8e27d5 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:31 +0100
+Subject: [PATCH 42/56] media: intel/ipu4: Initialize pad directions before
+ media_entity_pads_init()
+
+Set default pad directions in ipu_isys_subdev_init() before media_entity_pads_init().
+
+The media_entity_pads_init() function requires SINK/SOURCE flags to be set on each
+pad. Initialize pad directions before calling this function to ensure proper media
+framework integration.
+---
+ drivers/media/pci/intel/ipu-isys-subdev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-subdev.c b/drivers/media/pci/intel/ipu-isys-subdev.c
+index 5945c2b0febe..71e4b44108a8 100644
+--- a/drivers/media/pci/intel/ipu-isys-subdev.c
++++ b/drivers/media/pci/intel/ipu-isys-subdev.c
+@@ -913,6 +913,11 @@ int ipu_isys_subdev_init(struct ipu_isys_subdev *asd,
+ 			return -ENOMEM;
+ 	}
+ 
++	for (i = 0; i < num_sink; i++)
++		asd->pad[i].flags = MEDIA_PAD_FL_SINK;
++	for (i = num_sink; i < num_pads; i++)
++		asd->pad[i].flags = MEDIA_PAD_FL_SOURCE;
++
+ 	rval = media_entity_pads_init(&asd->sd.entity, num_pads, asd->pad);
+ 	if (rval)
+ 		goto out_mutex_destroy;
+-- 
+2.51.0
+

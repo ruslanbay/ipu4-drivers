@@ -1,0 +1,35 @@
+From 92c9a6ac05dcfc084814464c34ac627ae8e5de69 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Sun, 1 Mar 2026 19:01:09 +0100
+Subject: [PATCH 55/56] media: intel/ipu4: Workaround to enable libcamera
+ simple pipeline
+
+HACK: Rename "intel-ipu4-isys" to "intel-ipu6".
+
+The libcamera simple pipeline handler currently lacks a dedicated
+match for "intel-ipu4-isys", but it can successfully enumerate
+the device  if it identifies as "intel-ipu6". This allows using the
+software ISP path as a temporary solution.
+
+Revert this once libcamera implements native IPU4 support.
+---
+ drivers/media/pci/intel/ipu-pdata.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu-pdata.h b/drivers/media/pci/intel/ipu-pdata.h
+index 66f111266f05..0996f19d1c80 100644
+--- a/drivers/media/pci/intel/ipu-pdata.h
++++ b/drivers/media/pci/intel/ipu-pdata.h
+@@ -6,7 +6,8 @@
+ 
+ #define IPU_MMU_NAME IPU_NAME "-mmu"
+ #define IPU_ISYS_CSI2_NAME IPU_NAME "-csi2"
+-#define IPU_ISYS_NAME IPU_NAME "-isys"
++// #define IPU_ISYS_NAME IPU_NAME "-isys"
++#define IPU_ISYS_NAME "intel-ipu6"
+ #define IPU_PSYS_NAME IPU_NAME "-psys"
+ #define IPU_BUTTRESS_NAME IPU_NAME "-buttress"
+ 
+-- 
+2.51.0
+

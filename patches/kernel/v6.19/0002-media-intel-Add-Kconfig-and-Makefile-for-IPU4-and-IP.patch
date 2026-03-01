@@ -1,0 +1,112 @@
+From 33109d58ba121b204561c1ad0545553fc1aab0cb Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Sun, 1 Mar 2026 19:27:20 +0100
+Subject: [PATCH 02/56] media: intel: Add Kconfig and Makefile for IPU4 and
+ IPU4P drivers
+
+Introduce build system support for Intel IPU4 (Apollo Lake) and IPU4P
+(Ice Lake) imaging units. This adds the necessary Kconfig options to
+select between IPU generations and hardware platforms, and updates
+the Makefile to include the ipu4 directory in the build process.
+---
+ drivers/media/pci/intel/Kconfig  | 64 ++++++++++++++++++++++++++++++++
+ drivers/media/pci/intel/Makefile | 13 +++++++
+ 2 files changed, 77 insertions(+)
+
+diff --git a/drivers/media/pci/intel/Kconfig b/drivers/media/pci/intel/Kconfig
+index 3f14ca110d06..2719bb3d0e89 100644
+--- a/drivers/media/pci/intel/Kconfig
++++ b/drivers/media/pci/intel/Kconfig
+@@ -19,3 +19,67 @@ config IPU_BRIDGE
+ 	  - Microsoft Surface models (except Surface Pro 3)
+ 	  - The Lenovo Miix line (for example the 510, 520, 710 and 720)
+ 	  - Dell 7285
++
++config VIDEO_INTEL_IPU
++	tristate "Intel IPU driver"
++	depends on ACPI
++	select IOMMU_API
++	select IOMMU_IOVA
++	select X86_DEV_DMA_OPS if X86
++	select VIDEOBUF2_DMA_CONTIG
++	select PHYS_ADDR_T_64BIT
++	select COMMON_CLK
++	help
++	  Main driver for Intel Image Processing Unit. Say Y here.
++
++choice
++	prompt "Intel IPU generation type"
++	depends on VIDEO_INTEL_IPU
++	default VIDEO_INTEL_IPU4P
++
++config VIDEO_INTEL_IPU4
++	bool "Compile for IPU4 driver"
++	help
++	  Select IPU4 for Intel Apollo Lake (PCI ID 8086:5a88):
++	  Celeron N3350, Pentium N4200 or Atom E3900 Series Imaging Unit.
++
++config VIDEO_INTEL_IPU4P
++	bool "Compile for IPU4P driver"
++	help
++	  Select IPU4P for Intel Ice Lake (PCI ID 8086 8a19).
++	  Supported systems include:
++	  - Surface Pro 7
++	  - Surface Book 3
++	  - Surface Laptop 3
++	  - Dell XPS 13 7390 2-in-1
++
++endchoice
++
++choice
++	prompt "Intel IPU hardware platform type"
++	depends on VIDEO_INTEL_IPU
++	default VIDEO_INTEL_IPU_SOC
++
++config VIDEO_INTEL_IPU_SOC
++	bool "Compile for SOC"
++	help
++	  Select for SOC platform
++
++endchoice
++
++config VIDEO_INTEL_IPU_FW_LIB
++	bool "Compile firmware library"
++	depends on VIDEO_INTEL_IPU
++	default y
++	help
++	  If selected, the firmware hostlib css will be compiled
++
++config VIDEO_INTEL_IPU_WERROR
++	bool "Force GCC to throw errors instead of warnings when compiling"
++	depends on VIDEO_INTEL_IPU
++	depends on EXPERT
++	depends on !COMPILE_TEST
++	default n
++	help
++	  Adds -Werror to the build flags for the Intel IPU module.
++	  Recommended for driver developers only.
+diff --git a/drivers/media/pci/intel/Makefile b/drivers/media/pci/intel/Makefile
+index 3a2cc6567159..90557e8d3556 100644
+--- a/drivers/media/pci/intel/Makefile
++++ b/drivers/media/pci/intel/Makefile
+@@ -5,4 +5,17 @@
+ obj-$(CONFIG_IPU_BRIDGE) += ipu-bridge.o
+ obj-y	+= ipu3/
+ obj-y	+= ivsc/
++# force check the compile warning to make sure zero warnings
++# note we may have build issue when gcc upgraded.
++ccflags-y := -Wno-error=uninitialized
++subdir-ccflags-y += $(call cc-disable-warning, unused-parameter)
++subdir-ccflags-y += $(call cc-disable-warning, implicit-fallthrough)
++subdir-ccflags-y += $(call cc-disable-warning, missing-field-initializers)
++subdir-ccflags-y += $(call cc-disable-warning, int-conversion)
++subdir-ccflags-y += $(call cc-disable-warning, enum-conversion)
++subdir-ccflags-y += $(call cc-disable-warning, uninitialized)
++subdir-ccflags-$(CONFIG_VIDEO_INTEL_IPU_WERROR) += -Werror
++
+ obj-$(CONFIG_VIDEO_INTEL_IPU6)	+= ipu6/
++obj-$(CONFIG_VIDEO_INTEL_IPU4)  += ipu4/
++obj-$(CONFIG_VIDEO_INTEL_IPU4P)	+= ipu4/
+-- 
+2.51.0
+

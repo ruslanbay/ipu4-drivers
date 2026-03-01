@@ -1,0 +1,49 @@
+From 35a8d5414a0fc92cd66349cd675a3d61c2aa58a5 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:40 +0100
+Subject: [PATCH 53/56] media: intel/ipu4: Retry buttress authentication on
+ driver open
+
+Retry ipu_buttress_authenticate() up to 3 times with short delays between
+attempts during video_open(). This improves reliability when hardware
+initialization timing varies across different platforms.
+---
+ drivers/media/pci/intel/ipu-isys-video.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index af8325f00842..8985df24c870 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -231,6 +231,7 @@ static int video_open(struct file *file)
+ 	struct ipu_bus_device *adev = to_ipu_bus_device(&isys->adev->dev);
+ 	struct ipu_device *isp = adev->isp;
+ 	int rval;
++    int retries = 3;
+ 
+ 	mutex_lock(&isys->mutex);
+ 
+@@ -241,7 +242,20 @@ static int video_open(struct file *file)
+ 	}
+ 	mutex_unlock(&isys->mutex);
+ 
++	do {
+ 	rval = ipu_buttress_authenticate(isp);
++		if (rval == 0)
++			break;
++
++		dev_warn(&isys->adev->dev,
++				 "FW authentication failed, retrying... (%d attempts left)\n",
++				 retries);
++
++		/* delay between retries to allow hardware to settle */
++		usleep_range(1000, 2000);
++
++	} while (retries-- > 0);
++
+ 	if (rval) {
+ 		dev_err(&isys->adev->dev, "FW authentication failed\n");
+ 		return rval;
+-- 
+2.51.0
+

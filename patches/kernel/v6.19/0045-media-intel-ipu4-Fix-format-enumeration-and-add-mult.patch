@@ -1,0 +1,191 @@
+From e62be62b534cf08930f998445eae20197d853070 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:33 +0100
+Subject: [PATCH 45/56] media: intel/ipu4: Fix format enumeration and add
+ multiplanar format support
+
+Remove V4L2_SUBDEV_FL_HAS_SUBSTREAMS from CSI-2 subDevs. In kernel
+6.18+, the V4L2 core requires stream-aware subdevs to have proper
+routing configured, but IPU4 manages streams internally. The flag
+caused all set_fmt/get_fmt calls to be rejected with EINVAL.
+
+Fix format enumeration to use per-device format tables (av->pfmts)
+instead of global ipu_isys_pfmts, and add support for multiplanar
+buffer type V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE.
+
+Add helper functions to abstract format access by buffer type:
+ - ipu_isys_get_format()
+ - ipu_isys_get_data_size()
+ - ipu_isys_get_bytes_per_line()
+ - ipu_isys_get_frame_width()
+ - ipu_isys_get_frame_height()
+
+These read from the appropriate format structure based on the active
+buffer queue type (single-planar, multi-planar, or metadata).
+---
+ drivers/media/pci/intel/ipu-isys-csi2.c  |  2 +-
+ drivers/media/pci/intel/ipu-isys-video.c | 92 +++++++++++++++++++++---
+ drivers/media/pci/intel/ipu-isys-video.h |  6 ++
+ 3 files changed, 90 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-csi2.c b/drivers/media/pci/intel/ipu-isys-csi2.c
+index 974becb8247f..d720f826b749 100644
+--- a/drivers/media/pci/intel/ipu-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu-isys-csi2.c
+@@ -674,7 +674,7 @@ int ipu_isys_csi2_init(struct ipu_isys_csi2 *csi2,
+ 				    NR_OF_CSI2_STREAMS,
+ 				    NR_OF_CSI2_SOURCE_PADS,
+ 				    NR_OF_CSI2_SINK_PADS,
+-				    V4L2_SUBDEV_FL_HAS_SUBSTREAMS);
++				    0);
+ 	if (rval)
+ 		goto fail;
+ 
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index 8327fc567ca7..67fe6d430e29 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -435,16 +435,19 @@ int ipu_isys_vidioc_querycap(struct file *file, void *fh,
+ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
+ 			     struct v4l2_fmtdesc *f)
+ {
+-	unsigned int i, num_found;
++	struct ipu_isys_video *av = video_drvdata(file);
++	const struct ipu_isys_pixelformat *pfmt;
++	unsigned int num_found;
+ 
+-	for (i = 0, num_found = 0; i < ARRAY_SIZE(ipu_isys_pfmts); i++) {
+-		if ((ipu_isys_pfmts[i].is_meta &&
++	for (pfmt = av->pfmts, num_found = 0; pfmt->bpp; pfmt++) {
++		if ((pfmt->is_meta &&
+ 		     f->type != V4L2_BUF_TYPE_META_CAPTURE) ||
+-		    (!ipu_isys_pfmts[i].is_meta &&
++		    (!pfmt->is_meta &&
++		     f->type != V4L2_BUF_TYPE_VIDEO_CAPTURE &&
+ 		     f->type != V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE))
+ 			continue;
+ 
+-		if (f->mbus_code && f->mbus_code != ipu_isys_pfmts[i].code)
++		if (f->mbus_code && f->mbus_code != pfmt->code)
+ 			continue;
+ 
+ 		if (num_found < f->index) {
+@@ -453,7 +456,7 @@ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
+ 		}
+ 
+ 		f->flags = 0;
+-		f->pixelformat = ipu_isys_pfmts[i].pixelformat;
++		f->pixelformat = pfmt->pixelformat;
+ 
+ 		return 0;
+ 	}
+@@ -464,13 +467,14 @@ int ipu_isys_vidioc_enum_fmt(struct file *file, void *fh,
+ static int ipu_isys_vidioc_enum_framesizes(struct file *file, void *fh,
+ 					    struct v4l2_frmsizeenum *fsize)
+ {
+-	unsigned int i;
++	struct ipu_isys_video *av = video_drvdata(file);
++	const struct ipu_isys_pixelformat *pfmt;
+ 
+ 	if (fsize->index > 0)
+ 		return -EINVAL;
+ 
+-	for (i = 0; i < ARRAY_SIZE(ipu_isys_pfmts); i++) {
+-		if (fsize->pixel_format != ipu_isys_pfmts[i].pixelformat)
++	for (pfmt = av->pfmts; pfmt->bpp; pfmt++) {
++		if (fsize->pixel_format != pfmt->pixelformat)
+ 			continue;
+ 
+ 		fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
+@@ -2287,3 +2291,73 @@ void ipu_isys_video_cleanup(struct ipu_isys_video *av)
+ 	mutex_destroy(&av->mutex);
+ 	ipu_isys_queue_cleanup(&av->aq);
+ }
++
++u32 ipu_isys_get_format(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.pixelformat;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
++		return av->mpix.pixelformat;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.dataformat;
++
++	return 0;
++}
++
++u32 ipu_isys_get_data_size(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.sizeimage;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
++		return av->mpix.plane_fmt[0].sizeimage;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.buffersize;
++
++	return 0;
++}
++
++u32 ipu_isys_get_bytes_per_line(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.bytesperline;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
++		return av->mpix.plane_fmt[0].bytesperline;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.bytesperline;
++
++	return 0;
++}
++
++u32 ipu_isys_get_frame_width(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.width;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
++		return av->mpix.width;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.width;
++
++	return 0;
++}
++
++u32 ipu_isys_get_frame_height(struct ipu_isys_video *av)
++{
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
++		return av->pix_fmt.height;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
++		return av->mpix.height;
++
++	if (av->aq.vbq.type == V4L2_BUF_TYPE_META_CAPTURE)
++		return av->meta_fmt.height;
++
++	return 0;
++}
+diff --git a/drivers/media/pci/intel/ipu-isys-video.h b/drivers/media/pci/intel/ipu-isys-video.h
+index 5ff2a992f05e..4f3f4415baab 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.h
++++ b/drivers/media/pci/intel/ipu-isys-video.h
+@@ -209,4 +209,10 @@ void ipu_isys_video_add_capture_done(struct ipu_isys_pipeline *ip,
+ 				      (struct ipu_isys_pipeline *ip,
+ 				       struct ipu_fw_isys_resp_info_abi *resp));
+ 
++u32 ipu_isys_get_format(struct ipu_isys_video *av);
++u32 ipu_isys_get_data_size(struct ipu_isys_video *av);
++u32 ipu_isys_get_bytes_per_line(struct ipu_isys_video *av);
++u32 ipu_isys_get_frame_width(struct ipu_isys_video *av);
++u32 ipu_isys_get_frame_height(struct ipu_isys_video *av);
++
+ #endif /* IPU_ISYS_VIDEO_H */
+-- 
+2.51.0
+

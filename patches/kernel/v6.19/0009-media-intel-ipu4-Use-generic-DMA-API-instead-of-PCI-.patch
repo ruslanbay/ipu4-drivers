@@ -1,0 +1,35 @@
+From 6a6b1d23710d0082266b06f180ff3bf26344fdc8 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:04 +0100
+Subject: [PATCH 09/56] media: intel/ipu4: Use generic DMA API instead of
+ PCI-specific functions
+
+Replace PCI-specific DMA mask functions with the generic DMA API:
+ - pci_set_dma_mask() + pci_set_consistent_dma_mask() ->
+  dma_set_mask_and_coherent()
+
+The generic DMA API is preferred for portability and consistency when
+working with device-agnostic code.
+---
+ drivers/media/pci/intel/ipu.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu.c b/drivers/media/pci/intel/ipu.c
+index bd5cc0412d20..b74e21523488 100644
+--- a/drivers/media/pci/intel/ipu.c
++++ b/drivers/media/pci/intel/ipu.c
+@@ -413,10 +413,7 @@ static int ipu_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	isys_base = isp->base + isys_ipdata.hw_variant.offset;
+ 	psys_base = isp->base + psys_ipdata.hw_variant.offset;
+ 
+-	rval = pci_set_dma_mask(pdev, DMA_BIT_MASK(dma_mask));
+-	if (!rval)
+-		rval = pci_set_consistent_dma_mask(pdev,
+-						   DMA_BIT_MASK(dma_mask));
++	rval = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(dma_mask));
+ 	if (rval) {
+ 		dev_err(&pdev->dev, "Failed to set DMA mask (%d)\n", rval);
+ 		trace_printk("E|TMWK\n");
+-- 
+2.51.0
+

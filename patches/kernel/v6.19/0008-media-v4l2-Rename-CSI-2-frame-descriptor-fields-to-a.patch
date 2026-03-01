@@ -1,0 +1,48 @@
+From 3cab00be97df56a8160f073a2a56b866efa35a9b Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:04 +0100
+Subject: [PATCH 08/56] media: v4l2: Rename CSI-2 frame descriptor fields to
+ align with media API
+
+Rename CSI-2 specific fields in v4l2_mbus_frame_desc_entry to use more
+consistent naming:
+
+ - .bus.csi2.channel -> .bus.csi2.vc (Virtual Channel)
+ - .bus.csi2.data_type -> .bus.csi2.dt (Data Type)
+
+This aligns with the official CSI-2 terminology used throughout the
+media controller framework.
+---
+ drivers/media/pci/intel/ipu-isys-csi2.c  | 2 +-
+ drivers/media/pci/intel/ipu-isys-video.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-csi2.c b/drivers/media/pci/intel/ipu-isys-csi2.c
+index dd84d58ee753..e08415a46847 100644
+--- a/drivers/media/pci/intel/ipu-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu-isys-csi2.c
+@@ -145,7 +145,7 @@ static int ipu_get_frame_desc_entry_by_dt(struct v4l2_subdev *sd,
+ 		return rval;
+ 
+ 	for (i = 0; i < desc.num_entries; i++) {
+-		if (desc.entry[i].bus.csi2.data_type != data_type)
++		if (desc.entry[i].bus.csi2.dt != data_type)
+ 			continue;
+ 		*entry = desc.entry[i];
+ 		return 0;
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index c800f411a664..64e7953eeb78 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -702,7 +702,7 @@ static int link_validate(struct media_link *link)
+ 		sd = media_entity_to_v4l2_subdev(ip->external->entity);
+ 		rval = ipu_isys_subdev_get_frame_desc(sd, &desc);
+ 		if (!rval && ip->stream_id < desc.num_entries)
+-			ip->vc = desc.entry[ip->stream_id].bus.csi2.channel;
++			ip->vc = desc.entry[ip->stream_id].bus.csi2.vc;
+ 	}
+ 
+ err_subdev:
+-- 
+2.51.0
+

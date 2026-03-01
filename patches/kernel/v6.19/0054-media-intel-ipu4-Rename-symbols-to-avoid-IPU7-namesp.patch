@@ -1,0 +1,245 @@
+From a7ed5ad831b76729339ab92d396b2e946d57c821 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:41 +0100
+Subject: [PATCH 54/56] media: intel/ipu4: Rename symbols to avoid IPU7
+ namespace collision
+
+The Intel IPU4 and IPU7 drivers both export several symbols with
+identical names (e.g., ipu_buttress_auth_done). This causes a symbol
+collision during the modpost stage when both drivers are compiled
+into the same kernel image, which is common for generic
+distro-style kernels.
+
+Rename the IPU4 buttress symbols by adding an 'ipu4_' prefix. This
+uniquely identifies the IPU4-specific exports and allows the IPU4,
+IPU6, and IPU7 drivers to co-exist in a single build without
+namespace conflicts.
+
+The following symbols are renamed:
+ - ipu_buttress_auth_done -> ipu4_buttress_auth_done
+ - ipu_buttress_start_tsc_sync -> ipu4_buttress_start_tsc_sync
+ - ipu_buttress_tsc_read -> ipu4_buttress_tsc_read
+ - ipu_buttress_tsc_ticks_to_ns -> ipu4_buttress_tsc_ticks_to_ns
+---
+ drivers/media/pci/intel/ipu-buttress.c        | 30 +++++++++----------
+ drivers/media/pci/intel/ipu-buttress.h        |  8 ++---
+ drivers/media/pci/intel/ipu-isys-queue.c      |  4 +--
+ drivers/media/pci/intel/ipu-isys.c            |  2 +-
+ drivers/media/pci/intel/ipu-psys.c            |  2 +-
+ drivers/media/pci/intel/ipu4/ipu4-isys-csi2.c |  2 +-
+ .../media/pci/intel/ipu4/ipu4p-isys-csi2.c    |  2 +-
+ 7 files changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-buttress.c b/drivers/media/pci/intel/ipu-buttress.c
+index 1106c1a76220..c5d5247eb562 100644
+--- a/drivers/media/pci/intel/ipu-buttress.c
++++ b/drivers/media/pci/intel/ipu-buttress.c
+@@ -604,7 +604,7 @@ bool ipu_buttress_get_secure_mode(struct ipu_device *isp)
+ 	return val & (1 << BUTTRESS_SECURITY_CTL_FW_SECURE_MODE_SHIFT);
+ }
+ 
+-bool ipu_buttress_auth_done(struct ipu_device *isp)
++bool ipu4_buttress_auth_done(struct ipu_device *isp)
+ {
+ 	u32 val;
+ 
+@@ -616,7 +616,7 @@ bool ipu_buttress_auth_done(struct ipu_device *isp)
+ 	return (val & BUTTRESS_SECURITY_CTL_FW_SETUP_MASK) ==
+ 	    BUTTRESS_SECURITY_CTL_AUTH_DONE;
+ }
+-EXPORT_SYMBOL(ipu_buttress_auth_done);
++EXPORT_SYMBOL(ipu4_buttress_auth_done);
+ 
+ static void ipu_buttress_set_psys_ratio(struct ipu_device *isp,
+ 					unsigned int psys_divisor,
+@@ -815,7 +815,7 @@ int ipu_buttress_authenticate(struct ipu_device *isp)
+ 		goto iunit_power_off;
+ 	}
+ 
+-	if (ipu_buttress_auth_done(isp)) {
++	if (ipu4_buttress_auth_done(isp)) {
+ 		rval = 0;
+ 		goto iunit_power_off;
+ 	}
+@@ -942,7 +942,7 @@ static int ipu_buttress_send_tsc_request(struct ipu_device *isp)
+ 	return ret;
+ }
+ 
+-int ipu_buttress_start_tsc_sync(struct ipu_device *isp)
++int ipu4_buttress_start_tsc_sync(struct ipu_device *isp)
+ {
+ 	unsigned int i;
+ 
+@@ -969,7 +969,7 @@ int ipu_buttress_start_tsc_sync(struct ipu_device *isp)
+ 
+ 	return -ETIMEDOUT;
+ }
+-EXPORT_SYMBOL(ipu_buttress_start_tsc_sync);
++EXPORT_SYMBOL(ipu4_buttress_start_tsc_sync);
+ 
+ struct clk_ipu_sensor {
+ 	struct ipu_device *isp;
+@@ -1368,7 +1368,7 @@ static void ipu_buttress_clk_exit(struct ipu_device *isp)
+ 		clk_unregister(b->pll_sensor[i]);
+ }
+ 
+-int ipu_buttress_tsc_read(struct ipu_device *isp, u64 *val)
++int ipu4_buttress_tsc_read(struct ipu_device *isp, u64 *val)
+ {
+ 	struct ipu_buttress *b = &isp->buttress;
+ 	u32 tsc_hi, tsc_lo_1, tsc_lo_2, tsc_lo_3, tsc_chk = 0;
+@@ -1415,7 +1415,7 @@ int ipu_buttress_tsc_read(struct ipu_device *isp, u64 *val)
+ 
+ 	return -EINVAL;
+ }
+-EXPORT_SYMBOL_GPL(ipu_buttress_tsc_read);
++EXPORT_SYMBOL_GPL(ipu4_buttress_tsc_read);
+ 
+ #ifdef CONFIG_DEBUG_FS
+ 
+@@ -1472,19 +1472,19 @@ static const struct file_operations ipu_buttress_reg_fops = {
+ 	.write = ipu_buttress_reg_write,
+ };
+ 
+-static int ipu_buttress_start_tsc_sync_set(void *data, u64 val)
++static int ipu4_buttress_start_tsc_sync_set(void *data, u64 val)
+ {
+ 	struct ipu_device *isp = data;
+ 
+-	return ipu_buttress_start_tsc_sync(isp);
++	return ipu4_buttress_start_tsc_sync(isp);
+ }
+ 
+-DEFINE_SIMPLE_ATTRIBUTE(ipu_buttress_start_tsc_sync_fops, NULL,
+-			ipu_buttress_start_tsc_sync_set, "%llu\n");
++DEFINE_SIMPLE_ATTRIBUTE(ipu4_buttress_start_tsc_sync_fops, NULL,
++			ipu4_buttress_start_tsc_sync_set, "%llu\n");
+ 
+ static int ipu_buttress_tsc_get(void *data, u64 *val)
+ {
+-	return ipu_buttress_tsc_read(data, val);
++	return ipu4_buttress_tsc_read(data, val);
+ }
+ DEFINE_SIMPLE_ATTRIBUTE(ipu_buttress_tsc_fops, ipu_buttress_tsc_get,
+ 			NULL, "%llu\n");
+@@ -1555,7 +1555,7 @@ int ipu_buttress_debugfs_init(struct ipu_device *isp)
+ 	}
+ 
+ 	file = debugfs_create_file("start_tsc_sync", 0200, dir, isp,
+-				   &ipu_buttress_start_tsc_sync_fops);
++				   &ipu4_buttress_start_tsc_sync_fops);
+ 	if (!file)
+ 		goto err;
+ 	file = debugfs_create_file("tsc", 0400, dir, isp,
+@@ -1585,7 +1585,7 @@ int ipu_buttress_debugfs_init(struct ipu_device *isp)
+ 
+ #endif /* CONFIG_DEBUG_FS */
+ 
+-u64 ipu_buttress_tsc_ticks_to_ns(u64 ticks)
++u64 ipu4_buttress_tsc_ticks_to_ns(u64 ticks)
+ {
+ 	u64 ns = ticks * 10000;
+ 	/*
+@@ -1599,7 +1599,7 @@ u64 ipu_buttress_tsc_ticks_to_ns(u64 ticks)
+ 
+ 	return ns;
+ }
+-EXPORT_SYMBOL_GPL(ipu_buttress_tsc_ticks_to_ns);
++EXPORT_SYMBOL_GPL(ipu4_buttress_tsc_ticks_to_ns);
+ 
+ static ssize_t
+ ipu_buttress_psys_fused_min_freq_get(struct device *dev,
+diff --git a/drivers/media/pci/intel/ipu-buttress.h b/drivers/media/pci/intel/ipu-buttress.h
+index 2c5e93af6d54..e751703eb859 100644
+--- a/drivers/media/pci/intel/ipu-buttress.h
++++ b/drivers/media/pci/intel/ipu-buttress.h
+@@ -112,10 +112,10 @@ void ipu_buttress_set_secure_mode(struct ipu_device *isp);
+ bool ipu_buttress_get_secure_mode(struct ipu_device *isp);
+ int ipu_buttress_authenticate(struct ipu_device *isp);
+ int ipu_buttress_reset_authentication(struct ipu_device *isp);
+-bool ipu_buttress_auth_done(struct ipu_device *isp);
+-int ipu_buttress_start_tsc_sync(struct ipu_device *isp);
+-int ipu_buttress_tsc_read(struct ipu_device *isp, u64 *val);
+-u64 ipu_buttress_tsc_ticks_to_ns(u64 ticks);
++bool ipu4_buttress_auth_done(struct ipu_device *isp);
++int ipu4_buttress_start_tsc_sync(struct ipu_device *isp);
++int ipu4_buttress_tsc_read(struct ipu_device *isp, u64 *val);
++u64 ipu4_buttress_tsc_ticks_to_ns(u64 ticks);
+ 
+ irqreturn_t ipu_buttress_isr(int irq, void *isp_ptr);
+ irqreturn_t ipu_buttress_isr_threaded(int irq, void *isp_ptr);
+diff --git a/drivers/media/pci/intel/ipu-isys-queue.c b/drivers/media/pci/intel/ipu-isys-queue.c
+index 14c9dc84e771..a12da54d1cbd 100644
+--- a/drivers/media/pci/intel/ipu-isys-queue.c
++++ b/drivers/media/pci/intel/ipu-isys-queue.c
+@@ -1024,13 +1024,13 @@ static u64 get_sof_ns_delta(struct ipu_isys_video *av,
+ 	struct ipu_device *isp = adev->isp;
+ 	u64 delta, tsc_now;
+ 
+-	if (!ipu_buttress_tsc_read(isp, &tsc_now))
++	if (!ipu4_buttress_tsc_read(isp, &tsc_now))
+ 		delta = tsc_now -
+ 		    ((u64) info->timestamp[1] << 32 | info->timestamp[0]);
+ 	else
+ 		delta = 0;
+ 
+-	return ipu_buttress_tsc_ticks_to_ns(delta);
++	return ipu4_buttress_tsc_ticks_to_ns(delta);
+ }
+ 
+ void
+diff --git a/drivers/media/pci/intel/ipu-isys.c b/drivers/media/pci/intel/ipu-isys.c
+index 8dedeecea032..d781a4d91256 100644
+--- a/drivers/media/pci/intel/ipu-isys.c
++++ b/drivers/media/pci/intel/ipu-isys.c
+@@ -649,7 +649,7 @@ static int isys_runtime_pm_resume(struct device *dev)
+ 
+ 	cpu_latency_qos_update_request(&isys->pm_qos, ISYS_PM_QOS_VALUE);
+ 
+-	ret = ipu_buttress_start_tsc_sync(isp);
++	ret = ipu4_buttress_start_tsc_sync(isp);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/media/pci/intel/ipu-psys.c b/drivers/media/pci/intel/ipu-psys.c
+index 1f8d1a212628..9b7dc01dba01 100644
+--- a/drivers/media/pci/intel/ipu-psys.c
++++ b/drivers/media/pci/intel/ipu-psys.c
+@@ -857,7 +857,7 @@ static int psys_runtime_pm_resume(struct device *dev)
+ 		return 0;
+ 	}
+ 
+-	if (!ipu_buttress_auth_done(adev->isp)) {
++	if (!ipu4_buttress_auth_done(adev->isp)) {
+ 		dev_err(dev, "%s: not yet authenticated, skipping\n", __func__);
+ 		return 0;
+ 	}
+diff --git a/drivers/media/pci/intel/ipu4/ipu4-isys-csi2.c b/drivers/media/pci/intel/ipu4/ipu4-isys-csi2.c
+index b973e4155ae7..ff472887e6f5 100644
+--- a/drivers/media/pci/intel/ipu4/ipu4-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu4/ipu4-isys-csi2.c
+@@ -329,7 +329,7 @@ static int update_timer_base(struct ipu_isys *isys)
+ 				"Failed to read Tunit timer.\n");
+ 			return rval;
+ 		}
+-		rval = ipu_buttress_tsc_read(isys->adev->isp,
++		rval = ipu4_buttress_tsc_read(isys->adev->isp,
+ 					     &isys->tsc_timer_base);
+ 		if (rval) {
+ 			dev_err(&isys->adev->dev,
+diff --git a/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c b/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c
+index 580a90835bbb..75d0d5c4931c 100644
+--- a/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c
+@@ -270,7 +270,7 @@ static int update_timer_base(struct ipu_isys *isys)
+ 				"Failed to read Tunit timer.\n");
+ 			return rval;
+ 		}
+-		rval = ipu_buttress_tsc_read(isys->adev->isp,
++		rval = ipu4_buttress_tsc_read(isys->adev->isp,
+ 					     &isys->tsc_timer_base);
+ 		if (rval) {
+ 			dev_err(&isys->adev->dev,
+-- 
+2.51.0
+

@@ -1,0 +1,627 @@
+From 6bb07c803e4b78b938764d8ce48e4ecd28ad21c0 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:42 +0100
+Subject: [PATCH 56/56] media: intel/ipu4: Add OV5693 debug instrumentation
+
+Add and use cross-component debug traces (ov5693 + ipu-isys-csi2 + ipu-isys-video) to characterize the ov5693/IPU4P no-frame issue.
+
+Findings from logs:
+ - Sensor stream control works: ov5693 writes stream register successfully and reads back 0x01 on stream-on, 0x00 on stream-off.
+ - ISYS firmware command path works: STREAM_OPEN_DONE, STREAM_START_AND_CAPTURE_ACK,  and STREAM_CAPTURE_ACK are received.
+ - No CSI frame ingress is observed: no SOF/EOF/pin-ready activity; CSI state remains in_frame={0,0,0,0}, receiver_errors=0x0 through start/stop timeout paths.
+ - CSI reports only ULPS clock-lane exit once after external s_stream(1), suggesting lane transition without sustained payload/frame traffic.
+ - g_mbus_config lane query returns -EINVAL in this setup; driver falls back to hostdata  lane configuration and still enables receiver.
+
+Conclusion:
+The failure is no longer in stream orchestration; it is in the sensor-to-CSI data path (or timing/PHY compatibility) where payload frames are not reaching the ISYS receiver.
+---
+ drivers/media/i2c/ov5693.c                    |  94 +++++++++++++-
+ drivers/media/pci/intel/ipu-isys-csi2.c       |  24 ++++
+ drivers/media/pci/intel/ipu-isys-queue.c      |   4 +
+ drivers/media/pci/intel/ipu-isys-video.c      | 119 +++++++++++++++---
+ .../media/pci/intel/ipu4/ipu4p-isys-csi2.c    |  23 ++++
+ 5 files changed, 245 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/media/i2c/ov5693.c b/drivers/media/i2c/ov5693.c
+index 4cc796bbee92..d8b8303add43 100644
+--- a/drivers/media/i2c/ov5693.c
++++ b/drivers/media/i2c/ov5693.c
+@@ -172,6 +172,46 @@ struct ov5693_device {
+ 	} ctrls;
+ };
+ 
++static void ov5693_log_stream_state(struct ov5693_device *ov5693, const char *tag, int enable)
++{
++	dev_dbg(ov5693->dev,
++		"%s: stream=%d fmt=%ux%u crop=[l=%d t=%d w=%u h=%u] binning[x=%d y=%d] inc[x_odd=%u y_odd=%u] vts=%u ctrls[vblank=%d exp=%d again=%d dgain=%d hflip=%d vflip=%d test_pattern=%d\n",
++		tag, enable,
++		ov5693->mode.format.width, ov5693->mode.format.height,
++		ov5693->mode.crop.left, ov5693->mode.crop.top,
++		ov5693->mode.crop.width, ov5693->mode.crop.height,
++		ov5693->mode.binning_x, ov5693->mode.binning_y,
++		ov5693->mode.inc_x_odd, ov5693->mode.inc_y_odd, ov5693->mode.vts,
++		ov5693->ctrls.vblank ? ov5693->ctrls.vblank->val : -1,
++		ov5693->ctrls.exposure ? ov5693->ctrls.exposure->val : -1,
++		ov5693->ctrls.analogue_gain ? ov5693->ctrls.analogue_gain->val : -1,
++		ov5693->ctrls.digital_gain ? ov5693->ctrls.digital_gain->val : -1,
++		ov5693->ctrls.hflip ? ov5693->ctrls.hflip->val : -1,
++		ov5693->ctrls.vflip ? ov5693->ctrls.vflip->val : -1,
++			ov5693->ctrls.test_pattern ? ov5693->ctrls.test_pattern->val : -1);
++}
++
++static void ov5693_log_hw_state(struct ov5693_device *ov5693, const char *tag)
++{
++	u64 stream_reg;
++	int ret;
++
++	ret = cci_read(ov5693->regmap, OV5693_SW_STREAM_REG, &stream_reg, NULL);
++	if (ret) {
++		dev_dbg(ov5693->dev, "%s: failed to read stream reg: %d\n", tag, ret);
++		return;
++	}
++
++	dev_dbg(ov5693->dev,
++		"%s: stream_reg=0x%02llx hts=%u vts=%u out=%ux%u crop=[x=%u..%u y=%u..%u]\n",
++		tag, stream_reg, OV5693_FIXED_PPL, ov5693->mode.vts,
++		ov5693->mode.format.width, ov5693->mode.format.height,
++		ov5693->mode.crop.left,
++		ov5693->mode.crop.left + ov5693->mode.crop.width,
++		ov5693->mode.crop.top,
++		ov5693->mode.crop.top + ov5693->mode.crop.height);
++}
++
+ static const struct cci_reg_sequence ov5693_global_regs[] = {
+ 	{CCI_REG8(0x3016), 0xf0},
+ 	{CCI_REG8(0x3017), 0xf0},
+@@ -631,6 +671,7 @@ static int ov5693_sensor_init(struct ov5693_device *ov5693)
+ {
+ 	int ret;
+ 
++	dev_dbg(ov5693->dev, "sensor_init: start\n");
+ 	ret = ov5693_sw_reset(ov5693);
+ 	if (ret)
+ 		return dev_err_probe(ov5693->dev, ret,
+@@ -643,6 +684,8 @@ static int ov5693_sensor_init(struct ov5693_device *ov5693)
+ 				     "global settings error\n");
+ 
+ 	ret = ov5693_mode_configure(ov5693);
++	if (!ret)
++		ov5693_log_stream_state(ov5693, "sensor_init configured mode", 0);
+ 	if (ret)
+ 		return dev_err_probe(ov5693->dev, ret,
+ 				     "mode configure error\n");
+@@ -650,24 +693,32 @@ static int ov5693_sensor_init(struct ov5693_device *ov5693)
+ 	ret = ov5693_enable_streaming(ov5693, false);
+ 	if (ret)
+ 		dev_err(ov5693->dev, "stop streaming error\n");
++	else
++		ov5693_log_hw_state(ov5693, "sensor_init stream-off");
+ 
+ 	return ret;
+ }
+ 
+ static void ov5693_sensor_powerdown(struct ov5693_device *ov5693)
+ {
++	dev_dbg(ov5693->dev, "powerdown: reset-gpio=%d powerdown-gpio=%d\n",
++		ov5693->reset ? 1 : 0, ov5693->powerdown ? 1 : 0);
+ 	gpiod_set_value_cansleep(ov5693->reset, 1);
+ 	gpiod_set_value_cansleep(ov5693->powerdown, 1);
+ 
+ 	regulator_bulk_disable(OV5693_NUM_SUPPLIES, ov5693->supplies);
+ 
+ 	clk_disable_unprepare(ov5693->xvclk);
++	dev_dbg(ov5693->dev, "powerdown: done\n");
+ }
+ 
+ static int ov5693_sensor_powerup(struct ov5693_device *ov5693)
+ {
+ 	int ret;
++	unsigned long xvclk_rate = clk_get_rate(ov5693->xvclk);
+ 
++	dev_dbg(ov5693->dev, "powerup: xvclk=%lu reset-gpio=%d powerdown-gpio=%d\n",
++		xvclk_rate, ov5693->reset ? 1 : 0, ov5693->powerdown ? 1 : 0);
+ 	gpiod_set_value_cansleep(ov5693->reset, 1);
+ 	gpiod_set_value_cansleep(ov5693->powerdown, 1);
+ 
+@@ -683,11 +734,13 @@ static int ov5693_sensor_powerup(struct ov5693_device *ov5693)
+ 		goto fail_power;
+ 	}
+ 
++	dev_dbg(ov5693->dev, "powerup: regulators enabled (avdd,dovdd,dvdd)\n");
+ 	gpiod_set_value_cansleep(ov5693->powerdown, 0);
+ 	gpiod_set_value_cansleep(ov5693->reset, 0);
+ 
+ 	usleep_range(5000, 7500);
+ 
++	dev_dbg(ov5693->dev, "powerup: done\n");
+ 	return 0;
+ 
+ fail_power:
+@@ -738,6 +791,9 @@ static int ov5693_detect(struct ov5693_device *ov5693)
+ 	u64 id;
+ 
+ 	ret = cci_read(ov5693->regmap, OV5693_REG_CHIP_ID, &id, NULL);
++	dev_dbg(ov5693->dev,
++		"detect: chip-id read ret=%d id=0x%04llx expected=0x%04x\n",
++		ret, id, OV5693_CHIP_ID);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -970,33 +1026,54 @@ static int ov5693_s_stream(struct v4l2_subdev *sd, int enable)
+ 	struct ov5693_device *ov5693 = to_ov5693_sensor(sd);
+ 	int ret;
+ 
++	dev_dbg(ov5693->dev, "s_stream: request enable=%d\n",
++		enable);
++	ov5693_log_stream_state(ov5693, "s_stream pre", enable);
++
+ 	if (enable) {
+ 		ret = pm_runtime_resume_and_get(ov5693->dev);
+-		if (ret)
++		if (ret) {
++			dev_err(ov5693->dev,
++				"s_stream: pm_runtime_resume_and_get failed: %d\n",
++				ret);
+ 			return ret;
++		}
+ 
+ 		mutex_lock(&ov5693->lock);
+ 		ret = __v4l2_ctrl_handler_setup(&ov5693->ctrls.handler);
+ 		if (ret) {
++			dev_err(ov5693->dev, "s_stream: ctrl setup failed: %d\n", ret);
+ 			mutex_unlock(&ov5693->lock);
+ 			goto err_power_down;
+ 		}
+ 
+ 		ret = ov5693_enable_streaming(ov5693, true);
++		dev_dbg(ov5693->dev, "s_stream: stream-on register write ret=%d\n",
++			ret);
++		if (!ret)
++			ov5693_log_hw_state(ov5693, "s_stream stream-on");
+ 		mutex_unlock(&ov5693->lock);
+ 	} else {
+ 		mutex_lock(&ov5693->lock);
+ 		ret = ov5693_enable_streaming(ov5693, false);
++		dev_dbg(ov5693->dev, "s_stream: stream-off register write ret=%d\n",
++			ret);
++		if (!ret)
++			ov5693_log_hw_state(ov5693, "s_stream stream-off");
+ 		mutex_unlock(&ov5693->lock);
+ 	}
+ 	if (ret)
+ 		goto err_power_down;
+ 
++	ov5693_log_stream_state(ov5693, "s_stream post", enable);
++
+ 	if (!enable)
+ 		pm_runtime_put(ov5693->dev);
+ 
+ 	return 0;
+ err_power_down:
++	dev_err(ov5693->dev, "s_stream: failed enable=%d ret=%d\n",
++		enable, ret);
+ 	pm_runtime_put_noidle(ov5693->dev);
+ 	return ret;
+ }
+@@ -1236,6 +1313,11 @@ static int ov5693_check_hwcfg(struct ov5693_device *ov5693)
+ 	if (ret)
+ 		return ret;
+ 
++	dev_dbg(ov5693->dev,
++		"check_hwcfg: lanes=%u nr_of_link_frequencies=%u\n",
++		bus_cfg.bus.mipi_csi2.num_data_lanes,
++		bus_cfg.nr_of_link_frequencies);
++
+ 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 2) {
+ 		dev_err(ov5693->dev, "only a 2-lane CSI2 config is supported");
+ 		ret = -EINVAL;
+@@ -1248,9 +1330,13 @@ static int ov5693_check_hwcfg(struct ov5693_device *ov5693)
+ 		goto out_free_bus_cfg;
+ 	}
+ 
+-	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
++	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
++		dev_dbg(ov5693->dev,
++			"check_hwcfg: link_frequencies[%u]=%lld\n",
++			i, bus_cfg.link_frequencies[i]);
+ 		if (bus_cfg.link_frequencies[i] == OV5693_LINK_FREQ_419_2MHZ)
+ 			break;
++	}
+ 
+ 	if (i == bus_cfg.nr_of_link_frequencies) {
+ 		dev_err(ov5693->dev, "supported link freq %ull not found\n",
+@@ -1285,6 +1371,8 @@ static int ov5693_probe(struct i2c_client *client)
+ 	if (ret)
+ 		return ret;
+ 
++	dev_dbg(&client->dev, "probe: hwcfg validated\n");
++
+ 	mutex_init(&ov5693->lock);
+ 
+ 	v4l2_i2c_subdev_init(&ov5693->sd, client, &ov5693_ops);
+@@ -1340,6 +1428,8 @@ static int ov5693_probe(struct i2c_client *client)
+ 	if (ret)
+ 		goto err_powerdown;
+ 
++	dev_dbg(&client->dev, "probe: sensor detected and runtime-pm setup starting\n");
++
+ 	pm_runtime_set_active(&client->dev);
+ 	pm_runtime_get_noresume(&client->dev);
+ 	pm_runtime_enable(&client->dev);
+diff --git a/drivers/media/pci/intel/ipu-isys-csi2.c b/drivers/media/pci/intel/ipu-isys-csi2.c
+index d720f826b749..e188ebbf7d47 100644
+--- a/drivers/media/pci/intel/ipu-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu-isys-csi2.c
+@@ -316,6 +316,11 @@ static int set_stream(struct v4l2_subdev *sd, int enable)
+ 	ext_sd = media_entity_to_v4l2_subdev(ip->external->entity);
+ 	cfg = v4l2_get_subdev_hostdata(ext_sd);
+ 
++	dev_dbg(&csi2->isys->adev->dev,
++		"csi2 set_stream(%d): stream_count=%u remote_streams=%u src=%u ext=%s\n",
++		enable, csi2->stream_count, csi2->remote_streams,
++		csi2->asd.source, ext_sd ? ext_sd->name : "<none>");
++
+ 	if (!enable) {
+ 		csi2->stream_count--;
+ 		if (csi2->stream_count)
+@@ -329,10 +334,17 @@ static int set_stream(struct v4l2_subdev *sd, int enable)
+ 
+ 	if (csi2->stream_count) {
+ 		csi2->stream_count++;
++		dev_dbg(&csi2->isys->adev->dev,
++			"csi2 set_stream(%d): receiver already enabled, bump stream_count to %u\n",
++			enable, csi2->stream_count);
+ 		return 0;
+ 	}
+ 
+ 	rval = v4l2_g_ctrl(ext_sd->ctrl_handler, &c);
++	if (cfg)
++		dev_dbg(&csi2->isys->adev->dev,
++			"csi2 lane cfg: hostdata nlanes=%u ctrl nlanes=%d ctrl_rval=%d\n",
++			cfg->nlanes, c.value, rval);
+ 	if (!rval && c.value > 0 && cfg->nlanes > c.value) {
+ 		nlanes = c.value;
+ 		dev_dbg(&csi2->isys->adev->dev, "lane nr %d.\n", nlanes);
+@@ -347,6 +359,10 @@ static int set_stream(struct v4l2_subdev *sd, int enable)
+ 	ipu_isys_csi2_set_stream(sd, timing, nlanes, enable);
+ 	csi2->stream_count++;
+ 
++	dev_dbg(&csi2->isys->adev->dev,
++		"csi2 set_stream(%d): receiver enabled, nlanes=%u stream_count=%u remote_streams=%u\n",
++		enable, nlanes, csi2->stream_count, csi2->remote_streams);
++
+ 	return 0;
+ }
+ 
+@@ -420,6 +436,9 @@ static int csi2_link_validate(struct media_link *link)
+ 
+ 	if (rval) {
+ 		csi2->remote_streams = 1;
++		dev_dbg(&csi2->isys->adev->dev,
++			"link_validate: get_routing unavailable, default remote_streams=%u\n",
++			csi2->remote_streams);
+ 		return 0;
+ 	}
+ 
+@@ -434,6 +453,11 @@ static int csi2_link_validate(struct media_link *link)
+ 		return -EINVAL;
+ 
+ 	csi2->remote_streams = active;
++	dev_dbg(&csi2->isys->adev->dev,
++		"link_validate: active routes=%u sink_stream_mask_weight=%u remote_streams=%u\n",
++		active,
++		bitmap_weight(csi2->asd.stream[link->sink->index].streams_stat, 32),
++		csi2->remote_streams);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/media/pci/intel/ipu-isys-queue.c b/drivers/media/pci/intel/ipu-isys-queue.c
+index a12da54d1cbd..ee735487bba0 100644
+--- a/drivers/media/pci/intel/ipu-isys-queue.c
++++ b/drivers/media/pci/intel/ipu-isys-queue.c
+@@ -925,6 +925,10 @@ static int start_streaming(struct vb2_queue *q, unsigned int count)
+ 		} else if (rval < 0) {
+ 			dev_dbg(&av->isys->adev->dev,
+ 				"no request available --- postponing streamon\n");
++			dev_dbg(&av->isys->adev->dev,
++				"stream postpone details: rval=%d nr_streaming=%u nr_queues=%u requests_empty=%d\n",
++				rval, ip->nr_streaming, ip->nr_queues,
++				list_empty(&av->isys->requests));
+ 			goto out;
+ 		}
+ 	}
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index 8985df24c870..51a8a80296a5 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -21,6 +21,7 @@
+ #include "ipu-bus.h"
+ #include "ipu-cpd.h"
+ #include "ipu-isys.h"
++#include "ipu-isys-csi2.h"
+ #include "ipu-isys-video.h"
+ #include "ipu-platform.h"
+ #include "ipu-platform-regs.h"
+@@ -37,6 +38,25 @@ static bool use_stream_stop;
+ module_param(use_stream_stop, bool, 0660);
+ MODULE_PARM_DESC(use_stream_stop, "Use STOP command if running in CSI capture mode");
+ 
++static void ipu_isys_log_csi2_state(struct device *dev,
++				    struct ipu_isys_pipeline *ip,
++				    const char *tag)
++{
++	struct ipu_isys_csi2 *csi2 = ip->csi2;
++
++	if (!csi2)
++		return;
++
++	dev_dbg(dev,
++		"%s: csi2 index=%u source=%u stream_handle=%d vc=%u stream_id=%u stream_count=%u remote_streams=%u receiver_errors=0x%x in_frame={%u,%u,%u,%u} wait_for_sync={%u,%u,%u,%u}\n",
++		tag, csi2->index, ip->source, ip->stream_handle, ip->vc,
++		ip->stream_id, csi2->stream_count, csi2->remote_streams,
++		csi2->receiver_errors, csi2->in_frame[0], csi2->in_frame[1],
++		csi2->in_frame[2], csi2->in_frame[3], csi2->wait_for_sync[0],
++		csi2->wait_for_sync[1], csi2->wait_for_sync[2],
++		csi2->wait_for_sync[3]);
++}
++
+ const struct ipu_isys_pixelformat ipu_isys_pfmts[] = {
+ 	{V4L2_PIX_FMT_Y10, 10, 10, 0, MEDIA_BUS_FMT_Y10_1X10,
+ 	 IPU_FW_ISYS_FRAME_FORMAT_RAW10},
+@@ -243,7 +263,7 @@ static int video_open(struct file *file)
+ 	mutex_unlock(&isys->mutex);
+ 
+ 	do {
+-	rval = ipu_buttress_authenticate(isp);
++		rval = ipu_buttress_authenticate(isp);
+ 		if (rval == 0)
+ 			break;
+ 
+@@ -1626,6 +1646,7 @@ static int start_stream_firmware(struct ipu_isys_video *av,
+ 	    IPU_ISYS_SHORT_PACKET_FROM_RECEIVER)
+ 		csi_short_packet_prepare_firmware_stream_cfg(ip, stream_cfg);
+ 
++	dev_dbg(dev, "stream cfg before set_params:\n");
+ 	ipu_fw_isys_dump_stream_cfg(dev, stream_cfg);
+ 
+ 	ip->nr_output_pins = stream_cfg->nof_output_pins;
+@@ -1639,6 +1660,8 @@ static int start_stream_firmware(struct ipu_isys_video *av,
+ 	reinit_completion(&ip->stream_open_completion);
+ 
+ 	ipu_fw_isys_set_params(stream_cfg);
++	dev_dbg(dev, "stream cfg after set_params:\n");
++	ipu_fw_isys_dump_stream_cfg(dev, stream_cfg);
+ 
+ 	rval = ipu_fw_isys_complex_cmd(av->isys,
+ 				       ip->stream_handle,
+@@ -1658,7 +1681,9 @@ static int start_stream_firmware(struct ipu_isys_video *av,
+ 	tout = wait_for_completion_timeout(&ip->stream_open_completion,
+ 					   IPU_LIB_CALL_TIMEOUT_JIFFIES);
+ 	if (!tout) {
+-		dev_err(dev, "stream open time out\n");
++		dev_err(dev,
++			"stream open time out (source=%u handle=%d vc=%u stream_id=%u)\n",
++			ip->source, ip->stream_handle, ip->vc, ip->stream_id);
+ 		rval = -ETIMEDOUT;
+ 		goto out_put_stream_opened;
+ 	}
+@@ -1716,7 +1741,10 @@ static int start_stream_firmware(struct ipu_isys_video *av,
+ 	tout = wait_for_completion_timeout(&ip->stream_start_completion,
+ 					   IPU_LIB_CALL_TIMEOUT_JIFFIES);
+ 	if (!tout) {
+-		dev_err(dev, "stream start time out\n");
++		dev_err(dev,
++			"stream start time out (source=%u handle=%d vc=%u stream_id=%u output_pins=%u)\n",
++			ip->source, ip->stream_handle, ip->vc, ip->stream_id,
++			ip->nr_output_pins);
+ 		rval = -ETIMEDOUT;
+ 		goto out_stream_close;
+ 	}
+@@ -1726,6 +1754,7 @@ static int start_stream_firmware(struct ipu_isys_video *av,
+ 		goto out_stream_close;
+ 	}
+ 	dev_dbg(dev, "start stream: complete\n");
++	ipu_isys_log_csi2_state(dev, ip, "start stream complete state");
+ 
+ 	return 0;
+ 
+@@ -1742,12 +1771,18 @@ static int start_stream_firmware(struct ipu_isys_video *av,
+ 
+ 	tout = wait_for_completion_timeout(&ip->stream_close_completion,
+ 					   IPU_LIB_CALL_TIMEOUT_JIFFIES);
+-	if (!tout)
+-		dev_err(dev, "stream close time out\n");
+-	else if (ip->error)
++	if (!tout) {
++		dev_err(dev,
++			"stream close time out (source=%u handle=%d vc=%u stream_id=%u)\n",
++			ip->source, ip->stream_handle, ip->vc, ip->stream_id);
++		if (ip->csi2)
++			ipu_isys_csi2_error(ip->csi2);
++		ipu_isys_log_csi2_state(dev, ip, "stream close timeout state");
++	} else if (ip->error) {
+ 		dev_err(dev, "stream close error: %d\n", ip->error);
+-	else
++	} else {
+ 		dev_dbg(dev, "stream close complete\n");
++	}
+ 
+ out_put_stream_opened:
+ 	put_stream_opened(av);
+@@ -1782,12 +1817,19 @@ static void stop_streaming_firmware(struct ipu_isys_video *av)
+ 
+ 	tout = wait_for_completion_timeout(&ip->stream_stop_completion,
+ 					   IPU_LIB_CALL_TIMEOUT_JIFFIES);
+-	if (!tout)
+-		dev_err(dev, "stream stop time out\n");
+-	else if (ip->error)
++	if (!tout) {
++		dev_err(dev,
++			"stream stop time out (source=%u handle=%d vc=%u stream_id=%u send_type=%u)\n",
++			ip->source, ip->stream_handle, ip->vc, ip->stream_id,
++			send_type);
++		if (ip->csi2)
++			ipu_isys_csi2_error(ip->csi2);
++		ipu_isys_log_csi2_state(dev, ip, "stream stop timeout state");
++	} else if (ip->error) {
+ 		dev_err(dev, "stream stop error: %d\n", ip->error);
+-	else
++	} else {
+ 		dev_dbg(dev, "stop stream: complete\n");
++	}
+ }
+ 
+ static void close_streaming_firmware(struct ipu_isys_video *av)
+@@ -1808,12 +1850,18 @@ static void close_streaming_firmware(struct ipu_isys_video *av)
+ 
+ 	tout = wait_for_completion_timeout(&ip->stream_close_completion,
+ 					   IPU_LIB_CALL_TIMEOUT_JIFFIES);
+-	if (!tout)
+-		dev_err(dev, "stream close time out\n");
+-	else if (ip->error)
++	if (!tout) {
++		dev_err(dev,
++			"stream close time out (source=%u handle=%d vc=%u stream_id=%u)\n",
++			ip->source, ip->stream_handle, ip->vc, ip->stream_id);
++		if (ip->csi2)
++			ipu_isys_csi2_error(ip->csi2);
++		ipu_isys_log_csi2_state(dev, ip, "stream close timeout state");
++	} else if (ip->error) {
+ 		dev_err(dev, "stream close error: %d\n", ip->error);
+-	else
++	} else {
+ 		dev_dbg(dev, "close stream: complete\n");
++	}
+ 
+ 	put_stream_opened(av);
+ 	put_stream_handle(av);
+@@ -2016,6 +2064,10 @@ int ipu_isys_video_set_streaming(struct ipu_isys_video *av,
+ 		dev_err(dev, "s_stream %s (ext)\n", ip->external->entity->name);
+ 
+ 		if (ip->csi2) {
++			dev_dbg(dev,
++				"stream off ext: %s stream_count=%u remote_streams=%u\n",
++				ip->external->entity->name, ip->csi2->stream_count,
++				ip->csi2->remote_streams);
+ 			if (ip->csi2->stream_count == 1) {
+ 				v4l2_subdev_call(esd, video, s_stream, state);
+ #if defined(CONFIG_VIDEO_INTEL_IPU4) || defined(CONFIG_VIDEO_INTEL_IPU4P)
+@@ -2063,6 +2115,12 @@ int ipu_isys_video_set_streaming(struct ipu_isys_video *av,
+ 
+ 	/* Oh crap */
+ 	if (state) {
++		if (ip->csi2)
++			dev_dbg(dev,
++				"stream on pre-fw: source=%u stream_count=%u remote_streams=%u vc=%u stream_id=%u\n",
++				ip->source, ip->csi2->stream_count,
++				ip->csi2->remote_streams, ip->vc, ip->stream_id);
++
+ 		if (ipu_isys_csi2_skew_cal_required(ip->csi2) &&
+ 		    ip->csi2->remote_streams == ip->csi2->stream_count)
+ 			perform_skew_cal(ip);
+@@ -2079,10 +2137,37 @@ int ipu_isys_video_set_streaming(struct ipu_isys_video *av,
+ 			ip->external->entity->name);
+ 
+ 		if (ip->csi2 &&
+-		    ip->csi2->remote_streams == ip->csi2->stream_count)
++		    ip->csi2->remote_streams == ip->csi2->stream_count) {
++			ipu_isys_csi2_error(ip->csi2);
++			dev_dbg(dev,
++				"stream on ext: calling s_stream(1) for %s (remote_streams=%u stream_count=%u)\n",
++				ip->external->entity->name,
++				ip->csi2->remote_streams, ip->csi2->stream_count);
+ 			rval = v4l2_subdev_call(esd, video, s_stream, state);
+-		else if (!ip->csi2)
++		} else if (!ip->csi2) {
++			dev_dbg(dev,
++				"stream on ext: calling s_stream(1) for non-csi2 path %s\n",
++				ip->external->entity->name);
+ 			rval = v4l2_subdev_call(esd, video, s_stream, state);
++		} else {
++			dev_warn(dev,
++				"stream on ext: SKIP s_stream(1) for %s due to remote_streams(%u) != stream_count(%u), source=%u vc=%u stream_id=%u\n",
++				ip->external->entity->name,
++				ip->csi2->remote_streams, ip->csi2->stream_count,
++				ip->source, ip->vc, ip->stream_id);
++		}
++		if (!rval) {
++			dev_dbg(dev,
++				"stream on ext: s_stream(1) succeeded for %s\n",
++				ip->external->entity->name);
++			if (ip->csi2)
++				ipu_isys_csi2_error(ip->csi2);
++		} else {
++			dev_err(dev,
++				"stream on ext: s_stream(1) failed for %s: %d\n",
++				ip->external->entity->name, rval);
++		}
++		ipu_isys_log_csi2_state(dev, ip, "post ext s_stream state");
+ 		if (rval)
+ 			goto out_media_entity_stop_streaming_firmware;
+ 	} else {
+diff --git a/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c b/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c
+index 75d0d5c4931c..b7923dbef5d5 100644
+--- a/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu4/ipu4p-isys-csi2.c
+@@ -23,6 +23,24 @@ static int ipu4p_csi2_ev_correction_params(struct ipu_isys_csi2
+ 	return 0;
+ }
+ 
++
++static void ipu4p_csi2_log_rx_state(struct ipu_isys_csi2 *csi2, const char *tag)
++{
++	u32 enable = readl(csi2->base + CSI2_REG_CSI_RX_ENABLE);
++	u32 lanes = readl(csi2->base + CSI2_REG_CSI_RX_NOF_ENABLED_LANES);
++	u32 config = readl(csi2->base + CSI2_REG_CSI_RX_CONFIG);
++	u32 status = readl(csi2->base + CSI2_REG_CSI_RX_STATUS);
++	u32 hs = readl(csi2->base + CSI2_REG_CSI_RX_STATUS_DLANE_HS);
++	u32 lp = readl(csi2->base + CSI2_REG_CSI_RX_STATUS_DLANE_LP);
++	u32 ctermen = readl(csi2->base + CSI2_REG_CSI_RX_DLY_CNT_TERMEN_CLANE);
++	u32 csettle = readl(csi2->base + CSI2_REG_CSI_RX_DLY_CNT_SETTLE_CLANE);
++
++	dev_dbg(&csi2->isys->adev->dev,
++		"csi %u %s: rx enable=0x%x lanes=%u config=0x%x status=0x%x hs=0x%x lp=0x%x ctermen=%u csettle=%u receiver_errors=0x%x\n",
++		csi2->index, tag, enable, lanes, config, status, hs, lp,
++		ctermen, csettle, csi2->receiver_errors);
++}
++
+ static void ipu4p_isys_register_errors(struct ipu_isys_csi2 *csi2)
+ {
+ 	u32 status;
+@@ -74,6 +92,7 @@ void ipu_isys_csi2_error(struct ipu_isys_csi2 *csi2)
+ 
+ 	/* Register errors once more in case of error interrupts are disabled */
+ 	ipu4p_isys_register_errors(csi2);
++	ipu4p_csi2_log_rx_state(csi2, "error snapshot");
+ 	status = csi2->receiver_errors;
+ 	csi2->receiver_errors = 0;
+ 
+@@ -103,7 +122,9 @@ int ipu_isys_csi2_set_stream(struct v4l2_subdev *sd,
+ 	u32 val, csi2part = 0;
+ 
+ 	dev_dbg(&csi2->isys->adev->dev, "csi2 s_stream %d\n", enable);
++	ipu4p_csi2_log_rx_state(csi2, "set_stream entry");
+ 	if (!enable) {
++		ipu4p_csi2_log_rx_state(csi2, "set_stream disable pre-error");
+ 		ipu_isys_csi2_error(csi2);
+ 
+ 		val = readl(csi2->base + CSI2_REG_CSI_RX_CONFIG);
+@@ -124,6 +145,7 @@ int ipu_isys_csi2_set_stream(struct v4l2_subdev *sd,
+ 		writel
+ 		    (0, isys_base +
+ 		     IPU_REG_ISYS_CSI_IRQ_CTRL0_BASE(csi2->index) + 0x10);
++		ipu4p_csi2_log_rx_state(csi2, "set_stream disable done");
+ 		return 0;
+ 	}
+ 
+@@ -184,6 +206,7 @@ int ipu_isys_csi2_set_stream(struct v4l2_subdev *sd,
+ 	writel(csi2part, isys_base +
+ 		   IPU_REG_ISYS_CSI_IRQ_CTRL0_BASE(csi2->index) + 0x10);
+ 
++	ipu4p_csi2_log_rx_state(csi2, "set_stream enable done");
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+

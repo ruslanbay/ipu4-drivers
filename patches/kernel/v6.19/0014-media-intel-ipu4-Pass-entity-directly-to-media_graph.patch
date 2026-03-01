@@ -1,0 +1,47 @@
+From 8ad598acbd059e7b00f3d098c18b00889d787d64 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 26 Feb 2026 17:21:07 +0100
+Subject: [PATCH 14/56] media: intel/ipu4: Pass entity directly to
+ media_graph_walk_start()
+
+Update media graph walk initialization to pass the entity directly instead
+of the first pad. This aligns with the media controller API's preferred usage
+pattern where the starting entity encompasses all its pads.
+---
+ drivers/media/pci/intel/ipu-isys-video.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu-isys-video.c b/drivers/media/pci/intel/ipu-isys-video.c
+index 0b454eab44b7..0ecad41bb7fd 100644
+--- a/drivers/media/pci/intel/ipu-isys-video.c
++++ b/drivers/media/pci/intel/ipu-isys-video.c
+@@ -1790,7 +1790,7 @@ int ipu_isys_video_prepare_streaming(struct ipu_isys_video *av,
+ 
+ 	/* Gather all entities in the graph. */
+ 	mutex_lock(&mdev->graph_mutex);
+-	media_graph_walk_start(&graph, &av->vdev.entity.pads[0]);
++	media_graph_walk_start(&graph, &av->vdev.entity);
+ 	while ((entity = media_graph_walk_next(&graph)))
+ 		media_entity_enum_set(&ip->entity_enum, entity);
+ 
+@@ -1903,7 +1903,7 @@ int ipu_isys_video_set_streaming(struct ipu_isys_video *av,
+ 	mutex_lock(&mdev->graph_mutex);
+ 
+ 	media_graph_walk_start(&ip->graph,
+-				      &av->vdev.entity.pads[0]);
++				      &av->vdev.entity);
+ 
+ 	while ((entity = media_graph_walk_next(&ip->graph))) {
+ 		sd = media_entity_to_v4l2_subdev(entity);
+@@ -1979,7 +1979,7 @@ int ipu_isys_video_set_streaming(struct ipu_isys_video *av,
+ 	mutex_lock(&mdev->graph_mutex);
+ 
+ 	media_graph_walk_start(&ip->graph,
+-				      &av->vdev.entity.pads[0]);
++				      &av->vdev.entity);
+ 
+ 	while (state && (entity2 = media_graph_walk_next(&ip->graph)) &&
+ 	       entity2 != entity) {
+-- 
+2.51.0
+
