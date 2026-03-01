@@ -1,0 +1,34 @@
+Format: 1.8
+Date: Sun, 01 Mar 2026 19:32:54 +0100
+Source: linux-upstream
+Binary: linux-headers-6.19.3-surface linux-image-6.19.3-surface linux-libc-dev
+Built-For-Profiles: noudeb
+Architecture: amd64
+Version: 6.19.3-g2e3511514602-104
+Distribution: resolute
+Urgency: low
+Maintainer: user <user@pc>
+Changed-By: user <user@pc>
+Description:
+ linux-headers-6.19.3-surface - Linux kernel headers for 6.19.3-surface on amd64
+ linux-image-6.19.3-surface - Linux kernel, version 6.19.3-surface
+ linux-libc-dev - Linux support headers for userspace development
+Changes:
+ linux-upstream (6.19.3-g2e3511514602-104) resolute; urgency=low
+ .
+   * Custom built Linux kernel.
+Checksums-Sha1:
+ ee6630e54ea1a9601fd5ea88a8717996a577a406 9945464 linux-headers-6.19.3-surface_6.19.3-g2e3511514602-104_amd64.deb
+ 1a029a09a873ad40d0c77536191f872b36b855ab 26124984 linux-image-6.19.3-surface_6.19.3-g2e3511514602-104_amd64.deb
+ f2b27f6af6b6f62e6f40abcb99831858fa0d9c9c 1532602 linux-libc-dev_6.19.3-g2e3511514602-104_amd64.deb
+ ef9f9f0fb4756dd8d3eb79937e36032451a1ff59 7841 linux-upstream_6.19.3-g2e3511514602-104_amd64.buildinfo
+Checksums-Sha256:
+ cc4d078bca735a4d3970e4b4790c7dbb26c0fa965c88218feb0c36e767678fe4 9945464 linux-headers-6.19.3-surface_6.19.3-g2e3511514602-104_amd64.deb
+ 85e2e44f1b53c77cfd4d9a8eaa6eea59d5205ec71f0b6dd3127af7a9a0f0484b 26124984 linux-image-6.19.3-surface_6.19.3-g2e3511514602-104_amd64.deb
+ 3e80836ce9e8b3287db16af0d8ccc23e0e96135d002f3cb47ce970af818afa8c 1532602 linux-libc-dev_6.19.3-g2e3511514602-104_amd64.deb
+ de683f4d6939f60d2eaa5cd5771519bf31254d832a948416a5ea3dd20196f8dc 7841 linux-upstream_6.19.3-g2e3511514602-104_amd64.buildinfo
+Files:
+ eb2888bfb34c5a9652723b844c92b6b2 9945464 kernel optional linux-headers-6.19.3-surface_6.19.3-g2e3511514602-104_amd64.deb
+ 0dd08992bab56383be5223740507ecf2 26124984 kernel optional linux-image-6.19.3-surface_6.19.3-g2e3511514602-104_amd64.deb
+ 4286917a8546da52a72b2a98f687935a 1532602 devel optional linux-libc-dev_6.19.3-g2e3511514602-104_amd64.deb
+ 947f3b58583ff9217bed2db05ef420d6 7841 kernel optional linux-upstream_6.19.3-g2e3511514602-104_amd64.buildinfo
