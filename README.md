@@ -251,7 +251,7 @@ DMAR: [DMA Read NO_PASID] Request device [00:05.0] fault addr 0x0 [fault reason 
 Workaround:
 
 ```bash
-echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT intel_iommu=on iommu=pt"' | sudo tee /etc/default/grub.d/99-iommu.cfg
+echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT iommu=pt"' | sudo tee /etc/default/grub.d/99-iommu.cfg
 
 sudo update-grub
 ```
