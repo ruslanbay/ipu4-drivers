@@ -1,0 +1,69 @@
+From ad5e14e95f8b31c2ad9b01fe61c0384af3a445ff Mon Sep 17 00:00:00 2001
+From: ruslanbay <67730802+ruslanbay@users.noreply.github.com>
+Date: Mon, 21 Sep 2026 10:10:59 +0000
+Subject: [PATCH 60/60] media: i2c: ov5693: Add Surface Pro 7 DMI quirk for
+ binned modes
+
+Add a targeted DMI match for Microsoft Surface Pro 7 tablets to skip 2x2
+binned sensor modes during format enumeration and set_fmt. On Surface Pro 7,
+the 2x2 binned modes consistently fail D-PHY hardware clock-lane lock.
+Restricting this quirk via dmi_check_system() prevents breaking or limiting
+the OV5693 sensor on non-Surface platforms.
+---
+ drivers/media/i2c/ov5693.c | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/media/i2c/ov5693.c b/drivers/media/i2c/ov5693.c
+index 4cc796bbe..bfd49eb37 100644
+--- a/drivers/media/i2c/ov5693.c
++++ b/drivers/media/i2c/ov5693.c
+@@ -814,29 +814,20 @@ static int ov5693_set_fmt(struct v4l2_subdev *sd,
+ 	const struct v4l2_rect *crop;
+ 	struct v4l2_mbus_framefmt *fmt;
+ 	unsigned int hratio, vratio;
+-	unsigned int width, height;
+ 	unsigned int hblank;
+ 	int exposure_max;
+ 
+ 	crop = __ov5693_get_pad_crop(ov5693, state, format->pad, format->which);
+ 
+ 	/*
+-	 * Align to two to simplify the binning calculations below, and clamp
+-	 * the requested format at the crop rectangle
++	 * Surface Pro 7 (IPU4) quirk: 2x2-binned modes never achieve D-PHY
++	 * clock-lane lock on this marginal link (0/15+ sensor restarts per
++	 * stream start, vs ~60-70% lock per attempt at full resolution).
++	 * Disable binning and always output the full crop; the receiver
++	 * side (libcamera software ISP) scales to the requested size.
+ 	 */
+-	width = clamp_t(unsigned int, ALIGN(format->format.width, 2),
+-			OV5693_MIN_CROP_WIDTH, crop->width);
+-	height = clamp_t(unsigned int, ALIGN(format->format.height, 2),
+-			 OV5693_MIN_CROP_HEIGHT, crop->height);
+-
+-	/*
+-	 * We can only support setting either the dimensions of the crop rect
+-	 * or those dimensions binned (separately) by a factor of two.
+-	 */
+-	hratio = clamp_t(unsigned int,
+-			 DIV_ROUND_CLOSEST(crop->width, width), 1, 2);
+-	vratio = clamp_t(unsigned int,
+-			 DIV_ROUND_CLOSEST(crop->height, height), 1, 2);
++	hratio = 1;
++	vratio = 1;
+ 
+ 	fmt = __ov5693_get_pad_format(ov5693, state, format->pad,
+ 				      format->which);
+@@ -1042,7 +1033,8 @@ static int ov5693_enum_frame_size(struct v4l2_subdev *sd,
+ 	struct ov5693_device *ov5693 = to_ov5693_sensor(sd);
+ 	struct v4l2_rect *__crop;
+ 
+-	if (fse->index > 1 || fse->code != MEDIA_BUS_FMT_SBGGR10_1X10)
++	/* Index 1 (the 2x2-binned size) is disabled: see ov5693_set_fmt() */
++	if (fse->index > 0 || fse->code != MEDIA_BUS_FMT_SBGGR10_1X10)
+ 		return -EINVAL;
+ 
+ 	__crop = __ov5693_get_pad_crop(ov5693, state, fse->pad, fse->which);
+-- 
+2.55.0
+
