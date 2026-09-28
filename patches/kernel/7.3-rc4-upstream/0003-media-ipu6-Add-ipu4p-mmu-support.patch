@@ -1,16 +1,22 @@
-From 9738fa71980ef4c654f27cc021955af1933e4d50 Mon Sep 17 00:00:00 2001
+From 3228f51035663549e0be5ca8f1e8f1e63abd898b Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 27 Sep 2026 18:23:30 +0000
-Subject: [PATCH 3/5] media: ipu6: Add ipu4p mmu support
+Date: Mon, 28 Sep 2026 10:56:36 +0000
+Subject: [PATCH 3/4] media: ipu6: Add ipu4p mmu support
 
+The ipu4p MMU uses the same MMUv2 page tables and register programming
+model as ipu6, but differs in register offsets, number of MMU instances,
+and stream block allocations.
+
+Add ipu4p-specific ISYS and PSYS MMU hardware initialization data and
+wire up ipu4p MMU ops in ipu6_mmu_init().
 ---
- drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c | 95 +++++++++++++++++++++-
- drivers/media/pci/intel/ipu6/ipu6-mmu.c    |  7 +-
- drivers/media/pci/intel/ipu6/ipu6-mmu.h    |  1 +
- 3 files changed, 99 insertions(+), 4 deletions(-)
+ drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c | 109 +++++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu6-mmu.c    |   7 +-
+ drivers/media/pci/intel/ipu6/ipu6-mmu.h    |   1 +
+ 3 files changed, 116 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c b/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
-index 2b395fbd5..b065b6de1 100644
+index 2b395fbd5..7a21d9b32 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
 @@ -158,6 +158,65 @@ static struct ipu6_mmu_hw ipu6_psys_mmu_hwdata[] = {
@@ -97,41 +103,41 @@ index 2b395fbd5..b065b6de1 100644
  static int __ipu6_mmu_hw_init(struct ipu6_mmu *mmu)
  {
  	struct ipu6_mmu_info *mmu_info = mmu->dmap->mmu_info;
-@@ -256,8 +326,9 @@ static int __ipu6_mmu_hw_init(struct ipu6_mmu *mmu)
+@@ -289,8 +359,47 @@ static int __ipu6_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
  	return 0;
  }
  
--static int __ipu6_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
--				   void __iomem *base)
-+static int __ipu_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
-+				  void __iomem *base,
-+				  const struct ipu6_mmu_hwdata *hwdata_lookup)
- {
- 	const struct ipu6_mmu_hwdata *lookup;
- 	struct ipu6_mmu_hw *mmu_hw, *src;
-@@ -266,7 +337,7 @@ static int __ipu6_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
- 	if (mmu->mmid >= IPU_SUBSYS_NUM)
- 		return -EINVAL;
- 
--	lookup = &ipu6_mmu_hwdata_lookup[mmu->mmid];
-+	lookup = &hwdata_lookup[mmu->mmid];
- 	src = lookup->hwdata;
- 	nr_mmus = lookup->nr_mmus;
- 
-@@ -289,8 +360,26 @@ static int __ipu6_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
- 	return 0;
- }
- 
-+static int __ipu6_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
-+				   void __iomem *base)
-+{
-+	return __ipu_mmu_init_hw_data(mmu, dev, base, ipu6_mmu_hwdata_lookup);
-+}
-+
 +static int __ipu4p_mmu_init_hw_data(struct ipu6_mmu *mmu, struct device *dev,
 +				    void __iomem *base)
 +{
-+	return __ipu_mmu_init_hw_data(mmu, dev, base, ipu4p_mmu_hwdata_lookup);
++	const struct ipu6_mmu_hwdata *lookup;
++	struct ipu6_mmu_hw *mmu_hw, *src;
++	unsigned int i, nr_mmus;
++
++	if (mmu->mmid >= IPU_SUBSYS_NUM)
++		return -EINVAL;
++
++	lookup = &ipu4p_mmu_hwdata_lookup[mmu->mmid];
++	src = lookup->hwdata;
++	nr_mmus = lookup->nr_mmus;
++
++	mmu_hw = devm_kcalloc(dev, nr_mmus, sizeof(*mmu_hw), GFP_KERNEL);
++	if (!mmu_hw)
++		return -ENOMEM;
++
++	for (i = 0; i < nr_mmus; i++) {
++		if (src[i].nr_l1streams > IPU4P_MMU_MAX_TLB_L1_STREAMS ||
++		    src[i].nr_l2streams > IPU4P_MMU_MAX_TLB_L2_STREAMS)
++			return -EINVAL;
++
++		mmu_hw[i] = src[i];
++		mmu_hw[i].base = base + src[i].offset;
++	}
++
++	mmu->nr_mmus = nr_mmus;
++	mmu->ipu6_mmu_hw = mmu_hw;
++
++	return 0;
 +}
 +
  const struct ipu6_mmu_hw_ops ipu6_mmu_ops = {

@@ -1,7 +1,7 @@
-From a0aa1bb4910856eb26edd9d444c53b786a93ca58 Mon Sep 17 00:00:00 2001
+From fa45a353791a69b2308cc9da8cc1b7ed2ec43c25 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 27 Sep 2026 18:38:06 +0000
-Subject: [PATCH 4/5] media: ipu6: Use IPU4P CPD metadata size
+Date: Mon, 28 Sep 2026 10:59:03 +0000
+Subject: [PATCH 4/4] media: ipu6: Use ipu4p cpd metadata size
 
 IPU4P firmware metadata uses a 32-byte component hash, matching the IPU6SE layout. Select that component size so legacy CPD metadata validation walks entries correctly.
 ---

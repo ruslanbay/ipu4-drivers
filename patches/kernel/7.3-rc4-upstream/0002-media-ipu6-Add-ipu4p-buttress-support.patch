@@ -1,7 +1,7 @@
 From 7d2095f5fed00b0cebccbf09535b622efb3dd64b Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 18:20:45 +0000
-Subject: [PATCH 2/5] media: ipu6: Add ipu4p buttress support
+Subject: [PATCH 2/4] media: ipu6: Add ipu4p buttress support
 
 The ipu4p (Ice Lake) differs from ipu6 in power management: the
 hardware FSM-based power state bits must be used instead of the
