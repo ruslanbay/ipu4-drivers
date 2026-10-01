@@ -1,7 +1,7 @@
 From 6ec6ac7ce992c7989c1784018298cdef2e3f221a Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 17:23:58 +0000
-Subject: [PATCH 1/4] media: ipu6: Add helper to identify ipu4
+Subject: [PATCH 1/7] media: ipu6: Add helper to identify ipu4
 
 The ipu4 comes in two flavors, ipu4 and ipu4p.
 ---
