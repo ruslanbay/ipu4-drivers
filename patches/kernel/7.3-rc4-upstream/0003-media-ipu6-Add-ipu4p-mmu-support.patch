@@ -1,7 +1,7 @@
-From 3228f51035663549e0be5ca8f1e8f1e63abd898b Mon Sep 17 00:00:00 2001
+From c5938a84efff0d98b9c57d03a81668d728bd8b1a Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 28 Sep 2026 10:56:36 +0000
-Subject: [PATCH 3/7] media: ipu6: Add ipu4p mmu support
+Subject: [PATCH 03/10] media: ipu6: Add ipu4p mmu support
 
 The ipu4p MMU uses the same MMUv2 page tables and register programming
 model as ipu6, but differs in register offsets, number of MMU instances,
