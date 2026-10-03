@@ -1,28 +1,28 @@
-From 35cf4b7474ca06e943584a751dfc9bba054feffe Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Thu, 1 Oct 2026 12:26:23 +0000
+From 3efffa631d80212647be6bf15dfde9e626e6ae96 Mon Sep 17 00:00:00 2001
+From: constitution-admin
+ <209932570+constitution-admin@users.noreply.github.com>
+Date: Sat, 3 Oct 2026 10:51:40 +0000
 Subject: [PATCH 5/7] media: ipu6: Add IPU4P ISYS firmware ABI definitions
 
-Add definitions for IPU4P ISYS firmware communication structures,
-tokens, and command/response enumerations based on the downstream
-firmware interface.
 ---
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h | 407 +++++++++++++++++++
- 1 file changed, 407 insertions(+)
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h | 408 +++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu6-isys.h     |   6 +
+ 2 files changed, 414 insertions(+)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
 new file mode 100644
-index 000000000..dd05f4afb
+index 000000000..1b148d041
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
-@@ -0,0 +1,407 @@
+@@ -0,0 +1,408 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/* Copyright (C) 2026 Intel Corporation */
 +
 +#ifndef IPU4P_FW_ISYS_H
 +#define IPU4P_FW_ISYS_H
 +
++#include <linux/bits.h>
 +#include <linux/types.h>
 +
 +struct ipu6_bus_device;
@@ -424,6 +424,37 @@ index 000000000..dd05f4afb
 +extern const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops;
 +
 +#endif /* IPU4P_FW_ISYS_H */
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.h b/drivers/media/pci/intel/ipu6/ipu6-isys.h
+index 8674c041b..7d652a068 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys.h
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys.h
+@@ -19,6 +19,7 @@
+ #include "ipu6.h"
+ #include "ipu6-fw-isys.h"
+ #include "ipu7-fw-isys.h"
++#include "ipu4p-fw-isys.h"
+ #include "ipu6-isys-csi2.h"
+ #include "ipu6-isys-video.h"
+ 
+@@ -179,6 +180,10 @@ struct isys_fw_msgs {
+ 			struct ipu7_fw_isys_frame_buff_set frame;
+ 			struct ipu7_fw_isys_stream_cfg stream;
+ 		} ipu7;
++		union {
++			struct ipu4p_fw_isys_frame_buff_set frame;
++			struct ipu4p_fw_isys_stream_cfg stream;
++		} ipu4p;
+ 	};
+ 	struct list_head head;
+ 	dma_addr_t dma_addr;
+@@ -187,6 +192,7 @@ struct isys_fw_msgs {
+ struct ipu6_fw_isys_ops {
+ 	int (*init)(struct ipu6_isys *isys, unsigned int num_streams);
+ 	int (*close)(struct ipu6_isys *isys);
++	int (*isr_one)(struct ipu6_bus_device *adev);
+ 	int (*send_cmd)(struct ipu6_isys *isys,
+ 			const unsigned int stream_handle,
+ 			void *cpu_mapped_buf,
 -- 
 2.55.0
 
