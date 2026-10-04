@@ -1,17 +1,17 @@
-From 47834bd6f74c244e25d1eb5a825485b7ba42f2a2 Mon Sep 17 00:00:00 2001
+From 1407fcef0c9710d6d72c5ed2c651109c8d3b5cb5 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sat, 3 Oct 2026 16:43:53 +0000
-Subject: [PATCH 10/10] media: ipu6: Add ipu4p csi phy driver
+Date: Sun, 4 Oct 2026 19:10:14 +0000
+Subject: [PATCH] media: ipu6: Add ipu4p csi phy driver
 
 ---
  drivers/media/pci/intel/ipu6/Makefile         |   1 +
- .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 252 ++++++++++++++++++
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 253 ++++++++++++++++++
  .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |   4 +
  drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   8 +
  drivers/media/pci/intel/ipu6/ipu6-isys.c      |   3 +
  drivers/media/pci/intel/ipu6/ipu6-isys.h      |   6 +
  .../intel/ipu6/ipu6-platform-buttress-regs.h  |  17 ++
- 7 files changed, 291 insertions(+)
+ 7 files changed, 292 insertions(+)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
 
 diff --git a/drivers/media/pci/intel/ipu6/Makefile b/drivers/media/pci/intel/ipu6/Makefile
@@ -28,10 +28,10 @@ index 54b543ec5..43bc57ff1 100644
  obj-$(CONFIG_VIDEO_INTEL_IPU6)	+= intel-ipu6-isys.o
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
 new file mode 100644
-index 000000000..b9829e99d
+index 000000000..a971f8717
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
-@@ -0,0 +1,252 @@
+@@ -0,0 +1,253 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/* Copyright (C) 2026 Intel Corporation */
 +
@@ -42,6 +42,7 @@ index 000000000..b9829e99d
 +#include <linux/module.h>
 +
 +#include "ipu6.h"
++#include "ipu6-bus.h"
 +#include "ipu6-isys.h"
 +#include "ipu6-platform-buttress-regs.h"
 +#include "ipu4p-isys-csi2-regs.h"
