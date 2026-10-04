@@ -1,4 +1,4 @@
-From 0ed184bedbd5ae3d0699f85de435e782e806587e Mon Sep 17 00:00:00 2001
+From b41735ffa959435bc0f5aada0b7729f1a4977d53 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 18:20:45 +0000
 Subject: [PATCH 02/10] media: ipu6: Add ipu4p buttress support
@@ -35,7 +35,7 @@ https://lore.kernel.org/all/20260907113004.2489993-13-sakari.ailus@linux.intel.c
  6 files changed, 125 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-buttress.c b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
-index 105de1744..99dd7f843 100644
+index 105de1744..a58da61a2 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-buttress.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
 @@ -601,6 +601,43 @@ static int __ipu6_power(struct device *dev,
@@ -43,7 +43,7 @@ index 105de1744..99dd7f843 100644
  }
  
 +static int __ipu4p_power(struct device *dev,
-+			const struct ipu6_buttress_ctrl *ctrl, bool on)
++			 const struct ipu6_buttress_ctrl *ctrl, bool on)
 +{
 +	struct ipu6_device *isp = to_ipu6_bus_device(dev)->isp;
 +	u32 pwr_sts, val;

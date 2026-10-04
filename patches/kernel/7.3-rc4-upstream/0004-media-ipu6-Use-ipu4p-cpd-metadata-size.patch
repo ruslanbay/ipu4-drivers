@@ -1,9 +1,10 @@
-From caec30179779fcaa60ae086e66b355395b3e245b Mon Sep 17 00:00:00 2001
+From 269f276758dd83e94198ce59aed3d9497bd21ee3 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 28 Sep 2026 10:59:03 +0000
 Subject: [PATCH 04/10] media: ipu6: Use ipu4p cpd metadata size
 
-IPU4P firmware metadata uses a 32-byte component hash, matching the IPU6SE layout. Select that component size so legacy CPD metadata validation walks entries correctly.
+Use the 32-byte component hash size for IPU4P firmware metadata,
+matching IPU6SE and ensuring CPD metadata entries are parsed correctly.
 ---
  drivers/media/pci/intel/ipu6/ipu6.c | 2 ++
  1 file changed, 2 insertions(+)

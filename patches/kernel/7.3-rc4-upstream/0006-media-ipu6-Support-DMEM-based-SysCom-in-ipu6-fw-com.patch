@@ -1,8 +1,10 @@
-From 9f722323c3dd23d71bd77a2cb32bba5576b2a21d Mon Sep 17 00:00:00 2001
+From 2797aa6e7aaf8d384bd0cd4330b351c60eca34ab Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 10:52:18 +0000
 Subject: [PATCH 06/10] media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
 
+Handle the IPU4P DMEM-based SysCom register layout and lifecycle in the
+existing firmware communication layer.
 ---
  drivers/media/pci/intel/ipu6/ipu6-fw-com.c | 51 ++++++++++++++++++++--
  drivers/media/pci/intel/ipu6/ipu6-fw-com.h |  1 +

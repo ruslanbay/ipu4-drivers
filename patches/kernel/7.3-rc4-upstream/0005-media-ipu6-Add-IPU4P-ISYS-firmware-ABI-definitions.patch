@@ -1,8 +1,10 @@
-From fcf0e5435f6cb89494a0512b717f7c795b576741 Mon Sep 17 00:00:00 2001
+From 8f166f21ece7e49f2e4056287c1b12b8254b357e Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 10:51:40 +0000
 Subject: [PATCH 05/10] media: ipu6: Add IPU4P ISYS firmware ABI definitions
 
+Add the IPU4P ISYS firmware ABI structures, enums, constants, and limits
+used by the firmware interface.
 ---
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h | 435 +++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu6-isys.h     |   6 +

@@ -1,8 +1,10 @@
-From f14c2f9b8a85c631775a9766533355f9da7d001d Mon Sep 17 00:00:00 2001
+From 6409f0846b6c15b13e5283f3fea71fc7e2747a42 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 16:07:59 +0000
 Subject: [PATCH 09/10] media: ipu6: Add IPU4P ISYS ISR handling
 
+Handle IPU4P CSI-2 frame start and frame end interrupts and dispatch
+events to the corresponding ISYS streams.
 ---
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 90 +++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |  2 +
@@ -14,7 +16,7 @@ Subject: [PATCH 09/10] media: ipu6: Add IPU4P ISYS ISR handling
  7 files changed, 240 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
-index ea3e31d4d..42b39174e 100644
+index 855250a20..8d38198e4 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 @@ -4,8 +4,10 @@
@@ -194,7 +196,7 @@ index eb95ae2d4..a30965ee4 100644
  #define IPU4P_CSI2_RX_ENABLE				0x00
  #define IPU4P_CSI2_RX_ENABLE_ENABLE			BIT(0)
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-index 9e8775026..058879cea 100644
+index 9e8775026..29ff25f6d 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 @@ -25,6 +25,7 @@
@@ -265,7 +267,7 @@ index 9e8775026..058879cea 100644
 +
 +		if (status & IPU4P_CSI2_IRQ_FS_VC(vc)) {
 +			stream = ipu6_isys_query_stream_by_source(csi2->isys,
-+								 csi2->asd.source, vc);
++								  csi2->asd.source, vc);
 +			if (stream) {
 +				ipu6_isys_csi2_sof_event_by_stream(stream);
 +				ipu6_isys_put_stream(stream);
@@ -274,7 +276,7 @@ index 9e8775026..058879cea 100644
 +
 +		if (status & IPU4P_CSI2_IRQ_FE_VC(vc)) {
 +			stream = ipu6_isys_query_stream_by_source(csi2->isys,
-+								 csi2->asd.source, vc);
++								  csi2->asd.source, vc);
 +			if (stream) {
 +				ipu6_isys_csi2_eof_event_by_stream(stream);
 +				ipu6_isys_put_stream(stream);

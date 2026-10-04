@@ -1,17 +1,18 @@
-From 1407fcef0c9710d6d72c5ed2c651109c8d3b5cb5 Mon Sep 17 00:00:00 2001
+From d41626c9d78fb1382d93d666245767eb398d7193 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
-Date: Sun, 4 Oct 2026 19:10:14 +0000
-Subject: [PATCH] media: ipu6: Add ipu4p csi phy driver
+Date: Sun, 4 Oct 2026 20:38:04 +0000
+Subject: [PATCH 10/10] media: ipu6: Add ipu4p csi phy driver
 
+Add IPU4P CSI PHY setup, power management, and interrupt handling.
 ---
  drivers/media/pci/intel/ipu6/Makefile         |   1 +
- .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 253 ++++++++++++++++++
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 254 ++++++++++++++++++
  .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |   4 +
  drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   8 +
  drivers/media/pci/intel/ipu6/ipu6-isys.c      |   3 +
  drivers/media/pci/intel/ipu6/ipu6-isys.h      |   6 +
  .../intel/ipu6/ipu6-platform-buttress-regs.h  |  17 ++
- 7 files changed, 292 insertions(+)
+ 7 files changed, 293 insertions(+)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
 
 diff --git a/drivers/media/pci/intel/ipu6/Makefile b/drivers/media/pci/intel/ipu6/Makefile
@@ -28,10 +29,10 @@ index 54b543ec5..43bc57ff1 100644
  obj-$(CONFIG_VIDEO_INTEL_IPU6)	+= intel-ipu6-isys.o
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
 new file mode 100644
-index 000000000..a971f8717
+index 000000000..c068fe6d0
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
-@@ -0,0 +1,253 @@
+@@ -0,0 +1,254 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/* Copyright (C) 2026 Intel Corporation */
 +
@@ -181,7 +182,7 @@ index 000000000..a971f8717
 +}
 +
 +static void ipu4p_isys_csi_irq_enable(struct ipu6_isys *isys,
-+					       unsigned int port)
++				      unsigned int port)
 +{
 +	void __iomem *base = isys->pdata->base;
 +	u32 offset = IPU4P_ISYS_CSI_IRQ_CTRL_BASE(port);
@@ -205,7 +206,7 @@ index 000000000..a971f8717
 +}
 +
 +static void ipu4p_isys_csi_irq_disable(struct ipu6_isys *isys,
-+						unsigned int port)
++				       unsigned int port)
 +{
 +	void __iomem *base = isys->pdata->base;
 +	u32 offset = IPU4P_ISYS_CSI_IRQ_CTRL_BASE(port);
@@ -302,7 +303,7 @@ index a30965ee4..3c4126fb1 100644
  #define IPU4P_CSI2_RX_ENABLE				0x00
  #define IPU4P_CSI2_RX_ENABLE_ENABLE			BIT(0)
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-index 058879cea..ca1fcf07a 100644
+index 29ff25f6d..2d85b42f2 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 @@ -328,6 +328,11 @@ static void ipu6_isys_csi2_stream_disable(struct ipu6_isys_csi2 *csi2)

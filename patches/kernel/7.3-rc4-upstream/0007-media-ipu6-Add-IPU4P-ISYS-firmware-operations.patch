@@ -1,8 +1,10 @@
-From e180a137abfe51e989f4cf183ec41a01398f4106 Mon Sep 17 00:00:00 2001
+From 4e6ae41cbaf5f850f36fbc94406b8e97419e2d61 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 10:54:38 +0000
 Subject: [PATCH 07/10] media: ipu6: Add IPU4P ISYS firmware operations
 
+Add IPU4P ISYS firmware operations for stream configuration, buffer
+management, and proxy communication with the firmware.
 ---
  drivers/media/pci/intel/ipu6/Makefile         |   1 +
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 586 ++++++++++++++++++
@@ -31,7 +33,7 @@ index 676bc978b..54b543ec5 100644
  				ipu6-isys-queue.o \
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 new file mode 100644
-index 000000000..ea3e31d4d
+index 000000000..855250a20
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 @@ -0,0 +1,586 @@
@@ -301,8 +303,8 @@ index 000000000..ea3e31d4d
 +}
 +
 +static int ipu4p_send_proxy_token(struct ipu6_isys *isys,
-+				 unsigned int req_id,
-+				 unsigned int region_index, u32 value)
++				  unsigned int req_id,
++				  unsigned int region_index, u32 value)
 +{
 +	struct ipu6_fw_com_context *ctx = isys->fwctx;
 +	struct ipu4p_fw_isys_proxy_send_token *send_token;
@@ -330,13 +332,12 @@ index 000000000..ea3e31d4d
 +			continue;
 +		}
 +
-+		if (recv_token->proxy_resp_info.request_id != req_id) {
++		if (recv_token->proxy_resp_info.request_id != req_id)
 +			ret = -EIO;
-+		} else if (recv_token->proxy_resp_info.error_info.error) {
++		else if (recv_token->proxy_resp_info.error_info.error)
 +			ret = -EIO;
-+		} else {
++		else
 +			ret = 0;
-+		}
 +
 +		ipu6_recv_put_token(ctx, IPU4P_BASE_PROXY_RECV_QUEUES);
 +		break;
@@ -345,8 +346,9 @@ index 000000000..ea3e31d4d
 +	return ret;
 +}
 +
-+static int ipu4p_fw_isys_set_iwake_register(
-+	struct ipu6_isys *isys, enum ipu6_isys_iwake_register reg, u32 value)
++static int ipu4p_fw_isys_set_iwake_register(struct ipu6_isys *isys,
++					    enum ipu6_isys_iwake_register reg,
++					    u32 value)
 +{
 +	switch (reg) {
 +	case IPU6_ISYS_IWAKE_GDA_THRESHOLD:
