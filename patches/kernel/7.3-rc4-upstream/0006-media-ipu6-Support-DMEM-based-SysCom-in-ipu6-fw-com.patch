@@ -1,6 +1,5 @@
-From af229c911d565115062c8ff16d3cfd3fbea655e5 Mon Sep 17 00:00:00 2001
-From: constitution-admin
- <209932570+constitution-admin@users.noreply.github.com>
+From 9f722323c3dd23d71bd77a2cb32bba5576b2a21d Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 10:52:18 +0000
 Subject: [PATCH 06/10] media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
 

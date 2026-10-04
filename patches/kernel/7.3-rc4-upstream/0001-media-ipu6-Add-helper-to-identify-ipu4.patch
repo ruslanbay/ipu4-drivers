@@ -1,4 +1,4 @@
-From a1c4976764cd235b6cdaf1eb59671848b6b08460 Mon Sep 17 00:00:00 2001
+From ceff483421321adf3efc9716cb2865650d96a010 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 17:23:58 +0000
 Subject: [PATCH 01/10] media: ipu6: Add helper to identify ipu4

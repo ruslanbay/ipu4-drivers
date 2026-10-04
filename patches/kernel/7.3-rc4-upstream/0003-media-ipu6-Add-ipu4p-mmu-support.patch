@@ -1,4 +1,4 @@
-From c5938a84efff0d98b9c57d03a81668d728bd8b1a Mon Sep 17 00:00:00 2001
+From be10aaa1c2100bd8f8b1c4a6a52fa90c10a3e434 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 28 Sep 2026 10:56:36 +0000
 Subject: [PATCH 03/10] media: ipu6: Add ipu4p mmu support
@@ -10,13 +10,14 @@ and stream block allocations.
 Add ipu4p-specific ISYS and PSYS MMU hardware initialization data and
 wire up ipu4p MMU ops in ipu6_mmu_init().
 ---
- drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c | 109 +++++++++++++++++++++
- drivers/media/pci/intel/ipu6/ipu6-mmu.c    |   7 +-
- drivers/media/pci/intel/ipu6/ipu6-mmu.h    |   1 +
- 3 files changed, 116 insertions(+), 1 deletion(-)
+ drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c    | 109 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu6-mmu.c       |   7 +-
+ drivers/media/pci/intel/ipu6/ipu6-mmu.h       |   1 +
+ .../media/pci/intel/ipu6/ipu6-platform-regs.h |   1 +
+ 4 files changed, 117 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c b/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
-index 2b395fbd5..7a21d9b32 100644
+index 2b395fbd5..ca2b23741 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
 @@ -158,6 +158,65 @@ static struct ipu6_mmu_hw ipu6_psys_mmu_hwdata[] = {
@@ -26,7 +27,7 @@ index 2b395fbd5..7a21d9b32 100644
 +static struct ipu6_mmu_hw ipu4p_isys_mmu_hwdata[] = {
 +	{
 +		.offset = IPU4P_ISYS_IOMMU0_OFFSET,
-+		.info_bits = BIT(4),
++		.info_bits = IPU4P_INFO_REQUEST_DESTINATION_PRIMARY,
 +		.nr_l1streams = 0,
 +		.nr_l2streams = 0,
 +		.insert_read_before_invalidate = true,
@@ -49,7 +50,7 @@ index 2b395fbd5..7a21d9b32 100644
 +static struct ipu6_mmu_hw ipu4p_psys_mmu_hwdata[] = {
 +	{
 +		.offset = IPU4P_PSYS_IOMMU0_OFFSET,
-+		.info_bits = BIT(4),
++		.info_bits = IPU4P_INFO_REQUEST_DESTINATION_PRIMARY,
 +		.nr_l1streams = 0,
 +		.nr_l2streams = 0,
 +		.insert_read_before_invalidate = true,
@@ -181,6 +182,18 @@ index 44880478d..455604eb8 100644
  extern const struct ipu6_mmu_hw_ops ipu7_mmu_ops;
  
  struct ipu6_mmu *ipu6_mmu_init(struct device *dev,
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h b/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h
+index e8fbefbfa..724b23997 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h
++++ b/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h
+@@ -31,6 +31,7 @@
+ #define IPU4P_MMU_L2_STREAM_ID_REG_OFFSET	0x4c
+ #define IPU4P_MMU_MAX_TLB_L1_STREAMS		16
+ #define IPU4P_MMU_MAX_TLB_L2_STREAMS		16
++#define IPU4P_INFO_REQUEST_DESTINATION_PRIMARY	BIT(4)
+ 
+ #define IPU6_ISYS_IOMMU0_OFFSET		0x2e0000
+ #define IPU6_ISYS_IOMMU1_OFFSET		0x2e0500
 -- 
 2.55.0
 

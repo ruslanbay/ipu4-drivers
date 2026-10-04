@@ -1,0 +1,394 @@
+From 47834bd6f74c244e25d1eb5a825485b7ba42f2a2 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sat, 3 Oct 2026 16:43:53 +0000
+Subject: [PATCH 10/10] media: ipu6: Add ipu4p csi phy driver
+
+---
+ drivers/media/pci/intel/ipu6/Makefile         |   1 +
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 252 ++++++++++++++++++
+ .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |   4 +
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |   8 +
+ drivers/media/pci/intel/ipu6/ipu6-isys.c      |   3 +
+ drivers/media/pci/intel/ipu6/ipu6-isys.h      |   6 +
+ .../intel/ipu6/ipu6-platform-buttress-regs.h  |  17 ++
+ 7 files changed, 291 insertions(+)
+ create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+
+diff --git a/drivers/media/pci/intel/ipu6/Makefile b/drivers/media/pci/intel/ipu6/Makefile
+index 54b543ec5..43bc57ff1 100644
+--- a/drivers/media/pci/intel/ipu6/Makefile
++++ b/drivers/media/pci/intel/ipu6/Makefile
+@@ -25,6 +25,7 @@ intel-ipu6-isys-y		:= ipu6-isys.o \
+ 				ipu6-isys-mcd-phy.o \
+ 				ipu6-isys-jsl-phy.o \
+ 				ipu6-isys-dwc-phy.o \
++				ipu4p-isys-csi-phy.o \
+ 				ipu7-isys-csi-phy.o
+ 
+ obj-$(CONFIG_VIDEO_INTEL_IPU6)	+= intel-ipu6-isys.o
+diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+new file mode 100644
+index 000000000..b9829e99d
+--- /dev/null
++++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+@@ -0,0 +1,252 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2026 Intel Corporation */
++
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/errno.h>
++#include <linux/io.h>
++#include <linux/module.h>
++
++#include "ipu6.h"
++#include "ipu6-isys.h"
++#include "ipu6-platform-buttress-regs.h"
++#include "ipu4p-isys-csi2-regs.h"
++
++struct ipu4p_phy_bb_config {
++	u8 bb;
++	u8 crc;
++	u8 drc;
++	u8 afe;
++};
++
++#define IPU4P_CSI2_GPREG_CR_PORT_CONFIG_DEFAULT	0x3895
++#define IPU4P_CSI_BSCAN_EXCLUDE			(BIT(9) | BIT(18) | BIT(27))
++
++static const struct ipu4p_phy_bb_config ipu4p_phy_bb_configs[] = {
++	{ 4, 13, 32, 0x0f },
++	{ 6, 13, 32, 0x15 },
++	/* BB10 is part of the verified IPU4P PHY baseline. */
++	{ 10, 13, 32, 0x15 },
++	{ 12, 13, 32, 0x0f },
++	{ 14, 13, 32, 0x15 },
++};
++
++/* Runtime bring-up controls for IPU4P PHY building blocks. */
++static int phy_bb_extra[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
++module_param_array(phy_bb_extra, int, NULL, 0644);
++MODULE_PARM_DESC(phy_bb_extra,
++		 "Extra IPU4P PHY building blocks to configure (-1 = none)");
++
++static int phy_afe_extra[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
++module_param_array(phy_afe_extra, int, NULL, 0644);
++MODULE_PARM_DESC(phy_afe_extra,
++		 "AFE config value per extra IPU4P PHY building block (-1 = alternate 0xf/0x15)");
++
++static bool phy_jsl_bits;
++module_param(phy_jsl_bits, bool, 0644);
++MODULE_PARM_DESC(phy_jsl_bits,
++		 "Set JSL-style CPHY_RX_CONTROL1/DPHY_CFG bits on IPU4P PHY building blocks");
++
++static int csi2_csettle = -1;
++module_param(csi2_csettle, int, 0644);
++MODULE_PARM_DESC(csi2_csettle,
++		 "Override IPU4P clock-lane settle count (-1 = calculated)");
++
++static int csi2_dsettle = -1;
++module_param(csi2_dsettle, int, 0644);
++MODULE_PARM_DESC(csi2_dsettle,
++		 "Override IPU4P data-lane settle count (-1 = calculated)");
++
++static void ipu4p_isys_configure_phy_bb(struct ipu6_device *isp,
++					const struct ipu4p_phy_bb_config *config)
++{
++	void __iomem *base = isp->base;
++	u32 value;
++
++	value = readl(base + IPU4P_BUTTRESS_REG_CPHYX_DLL_OVRD(config->bb));
++	value &= ~GENMASK(6, 1);
++	value |= FIELD_PREP(GENMASK(6, 1), config->crc) | BIT(0);
++	writel(value, base + IPU4P_BUTTRESS_REG_CPHYX_DLL_OVRD(config->bb));
++
++	value = readl(base + IPU4P_BUTTRESS_REG_DPHYX_DLL_OVRD(config->bb));
++	value &= ~GENMASK(6, 1);
++	value |= FIELD_PREP(GENMASK(6, 1), config->drc) | BIT(0);
++	writel(value, base + IPU4P_BUTTRESS_REG_DPHYX_DLL_OVRD(config->bb));
++
++	value = config->afe | FIELD_PREP(GENMASK(30, 29), 2);
++	writel(value, base + IPU4P_BUTTRESS_REG_BBX_AFE_CONFIG(config->bb));
++}
++
++void ipu4p_isys_phy_setup(struct ipu6_isys *isys)
++{
++	struct ipu6_device *isp = isys->adev->isp;
++	void __iomem *isys_base = isys->pdata->base;
++	writel(IPU4P_CSI2_GPREG_CR_PORT_CONFIG_DEFAULT,
++	       isys_base + IPU4P_ISYS_GPOFFSET +
++	       IPU4P_CSI2_GPREG_CR_PORT_CONFIG);
++	writel(IPU4P_CSI2_GPREG_CR_PORT_CONFIG_DEFAULT,
++	       isys_base + IPU4P_ISYS_COMBO_GPOFFSET +
++	       IPU4P_CSI2_GPREG_CR_PORT_CONFIG);
++	writel(IPU4P_CSI_BSCAN_EXCLUDE,
++	       isp->base + IPU4P_BUTTRESS_REG_CSI_BSCAN_EXCLUDE);
++
++	for (unsigned int i = 0; i < ARRAY_SIZE(ipu4p_phy_bb_configs); i++)
++		ipu4p_isys_configure_phy_bb(isp, &ipu4p_phy_bb_configs[i]);
++
++	for (unsigned int i = 0; i < ARRAY_SIZE(phy_bb_extra); i++) {
++		int bb = phy_bb_extra[i];
++		unsigned int afe;
++
++		if (bb < 0)
++			continue;
++		if (bb >= 16 || (bb & 1)) {
++			dev_warn(&isys->adev->auxdev.dev,
++				 "ignoring invalid IPU4P PHY building block %d\n", bb);
++			continue;
++		}
++
++		afe = phy_afe_extra[i] >= 0 ? phy_afe_extra[i] :
++			((i & 1) ? 0x15 : 0x0f);
++		ipu4p_isys_configure_phy_bb(isp, &(struct ipu4p_phy_bb_config){
++			.bb = bb,
++			.crc = 13,
++			.drc = 32,
++			.afe = afe,
++		});
++	}
++
++	if (phy_jsl_bits) {
++		for (unsigned int bb = 0; bb < 16; bb += 2) {
++			u32 value;
++
++			value = readl(isp->base +
++				      IPU4P_BUTTRESS_REG_CPHYX_RX_CONTROL1(bb));
++			value |= BIT(31);
++			writel(value, isp->base +
++			       IPU4P_BUTTRESS_REG_CPHYX_RX_CONTROL1(bb));
++
++			value = readl(isp->base +
++				      IPU4P_BUTTRESS_REG_DPHYX_CFG(bb));
++			value |= BIT(25) | BIT(26);
++			writel(value, isp->base +
++			       IPU4P_BUTTRESS_REG_DPHYX_CFG(bb));
++		}
++	}
++}
++
++static u32 ipu4p_isys_csi_irq_mask(void)
++{
++	u32 mask = IPU4P_ISYS_CSI_ERROR_MASK;
++
++	for (unsigned int vc = 0; vc < IPU4P_CSI2_VC_COUNT; vc++)
++		mask |= IPU4P_CSI2_IRQ_FS_VC(vc) | IPU4P_CSI2_IRQ_FE_VC(vc);
++
++	return mask;
++}
++
++static void ipu4p_isys_csi_irq_enable(struct ipu6_isys *isys,
++					       unsigned int port)
++{
++	void __iomem *base = isys->pdata->base;
++	u32 offset = IPU4P_ISYS_CSI_IRQ_CTRL_BASE(port);
++	u32 offset0 = IPU4P_ISYS_CSI_IRQ_CTRL0_BASE(port);
++	u32 mask = ipu4p_isys_csi_irq_mask();
++
++	writel(IPU4P_ISYS_CSI_IRQ_ACTIVE,
++	       base + offset);
++	writel(0, base + offset + IPU4P_ISYS_IRQ_LEVEL_NOT_PULSE_OFFSET);
++	writel(0xffffffff, base + offset + IPU4P_ISYS_IRQ_CLEAR_OFFSET);
++	writel(IPU4P_ISYS_CSI_IRQ_ACTIVE,
++	       base + offset + IPU4P_ISYS_IRQ_MASK_OFFSET);
++	writel(IPU4P_ISYS_CSI_IRQ_ACTIVE,
++	       base + offset + IPU4P_ISYS_IRQ_ENABLE_OFFSET);
++
++	writel(mask, base + offset0);
++	writel(0, base + offset0 + IPU4P_ISYS_IRQ_LEVEL_NOT_PULSE_OFFSET);
++	writel(0xffffffff, base + offset0 + IPU4P_ISYS_IRQ_CLEAR_OFFSET);
++	writel(mask, base + offset0 + IPU4P_ISYS_IRQ_MASK_OFFSET);
++	writel(mask, base + offset0 + IPU4P_ISYS_IRQ_ENABLE_OFFSET);
++}
++
++static void ipu4p_isys_csi_irq_disable(struct ipu6_isys *isys,
++						unsigned int port)
++{
++	void __iomem *base = isys->pdata->base;
++	u32 offset = IPU4P_ISYS_CSI_IRQ_CTRL_BASE(port);
++	u32 offset0 = IPU4P_ISYS_CSI_IRQ_CTRL0_BASE(port);
++
++	writel(0, base + offset + IPU4P_ISYS_IRQ_MASK_OFFSET);
++	writel(0, base + offset + IPU4P_ISYS_IRQ_ENABLE_OFFSET);
++	writel(0xffffffff, base + offset + IPU4P_ISYS_IRQ_CLEAR_OFFSET);
++
++	writel(0, base + offset0 + IPU4P_ISYS_IRQ_MASK_OFFSET);
++	writel(0, base + offset0 + IPU4P_ISYS_IRQ_ENABLE_OFFSET);
++	writel(0xffffffff, base + offset0 + IPU4P_ISYS_IRQ_CLEAR_OFFSET);
++}
++
++/* IPU4P PHY building blocks remain configured until the ISYS power cycle. */
++int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
++			     struct ipu6_isys_csi2_config *cfg,
++			     const struct ipu6_isys_csi2_timing *timing,
++			     bool on)
++{
++	struct ipu6_isys_csi2 *csi2;
++	void __iomem *base;
++	u32 ctermen, csettle, dtermen, dsettle;
++	u32 value;
++
++	if (!cfg || cfg->port >= isys->pdata->ipdata->csi2.nports)
++		return -EINVAL;
++
++	csi2 = &isys->csi2[cfg->port];
++	base = csi2->base;
++
++	if (!on) {
++		value = readl(base + IPU4P_CSI2_RX_CONFIG);
++		value &= ~(IPU4P_CSI2_RX_CONFIG_DISABLE_BYTE_CLK_GATING |
++			   IPU4P_CSI2_RX_CONFIG_RELEASE_LP11);
++		writel(value, base + IPU4P_CSI2_RX_CONFIG);
++		writel(0, base + IPU4P_CSI2_RX_ENABLE);
++
++		ipu4p_isys_csi_irq_disable(isys, cfg->port);
++
++		return 0;
++	}
++
++	if (cfg->nlanes != 1 && cfg->nlanes != 2 && cfg->nlanes != 4)
++		return -EINVAL;
++
++	if (csi2->phy_mode != PHY_MODE_DPHY)
++		return -EOPNOTSUPP;
++
++	if (!timing)
++		return -EINVAL;
++
++	ctermen = timing->ctermen;
++	csettle = csi2_csettle >= 0 ? csi2_csettle : timing->csettle;
++	dtermen = timing->dtermen;
++	dsettle = csi2_dsettle >= 0 ? csi2_dsettle : timing->dsettle;
++
++	writel(ctermen, base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_CLANE);
++	writel(csettle, base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_CLANE);
++
++	for (unsigned int lane = 0; lane < cfg->nlanes; lane++) {
++		writel(dtermen, base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_DLANE(lane));
++		writel(dsettle, base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_DLANE(lane));
++	}
++
++	value = readl(base + IPU4P_CSI2_RX_CONFIG);
++	value |= IPU4P_CSI2_RX_CONFIG_DISABLE_BYTE_CLK_GATING |
++		 IPU4P_CSI2_RX_CONFIG_RELEASE_LP11;
++	writel(value, base + IPU4P_CSI2_RX_CONFIG);
++
++	writel(cfg->nlanes, base + IPU4P_CSI2_RX_NOF_ENABLED_LANES);
++	writel(0, base + IPU4P_CSI2_RX_ENABLE);
++
++	ipu4p_isys_csi_irq_enable(isys, cfg->port);
++
++	writel(IPU4P_CSI2_RX_ENABLE_ENABLE,
++	       base + IPU4P_CSI2_RX_ENABLE);
++
++	return 0;
++}
+diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
+index a30965ee4..3c4126fb1 100644
+--- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
++++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
+@@ -47,6 +47,10 @@
+ #define IPU4P_ISYS_CSI_ERROR_MASK			GENMASK(15, 0)
+ #define IPU4P_ISYS_CSI_ERROR_BITS			16U
+ 
++/* IPU4P ISYS GPREG windows */
++#define IPU4P_ISYS_GPOFFSET				0x66800
++#define IPU4P_ISYS_COMBO_GPOFFSET			0x6e800
++
+ /* CSI receiver registers */
+ #define IPU4P_CSI2_RX_ENABLE				0x00
+ #define IPU4P_CSI2_RX_ENABLE_ENABLE			BIT(0)
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+index 058879cea..ca1fcf07a 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+@@ -328,6 +328,11 @@ static void ipu6_isys_csi2_stream_disable(struct ipu6_isys_csi2 *csi2)
+ 	cfg.port = csi2->port;
+ 	cfg.nlanes = csi2->nlanes;
+ 
++	if (IS_IPU4P(csi2->isys->adev->isp)) {
++		isys->phy_set_power(isys, &cfg, NULL, false);
++		return;
++	}
++
+ 	writel(0, csi2->base + CSI_REG_CSI_FE_ENABLE);
+ 	writel(0, csi2->base + CSI_REG_PPI2CSI_ENABLE);
+ 	writel(0, csi2->base + CSI_PORT_REG_BASE_IRQ_CSI +
+@@ -362,6 +367,9 @@ static int ipu6_isys_csi2_stream_enable(struct ipu6_isys_csi2 *csi2)
+ 	if (ret)
+ 		return ret;
+ 
++	if (IS_IPU4P(isys->adev->isp))
++		return isys->phy_set_power(isys, &cfg, &timing, true);
++
+ 	mask = isys->pdata->ipdata->csi2.irq_mask;
+ 	nports = isys->pdata->ipdata->csi2.nports;
+ 
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.c b/drivers/media/pci/intel/ipu6/ipu6-isys.c
+index fa9bddea8..a760e296c 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys.c
+@@ -866,6 +866,7 @@ static int isys_runtime_pm_resume(struct device *dev)
+ 		ipu7_isys_setup_hw(isys);
+ 	} else if (IS_IPU4P(isp)) {
+ 		ipu4p_isys_irq_setup(isys);
++		ipu4p_isys_phy_setup(isys);
+ 	} else {
+ 		ipu6_isys_setup_hw(isys);
+ 		set_iwake_ltrdid(isys, 0, 0, LTR_ISYS_ON);
+@@ -1100,6 +1101,8 @@ static int isys_probe(struct auxiliary_device *auxdev,
+ 		isys->phy_set_power = ipu6_isys_jsl_phy_set_power;
+ 	else if (IS_IPU6EP_MTL(adev->isp))
+ 		isys->phy_set_power = ipu6_isys_dwc_phy_set_power;
++	else if (IS_IPU4P(adev->isp))
++		isys->phy_set_power = ipu4p_isys_phy_set_power;
+ 	else
+ 		isys->phy_set_power = ipu6_isys_mcd_phy_set_power;
+ 
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.h b/drivers/media/pci/intel/ipu6/ipu6-isys.h
+index 9383cbefa..b62e6ed47 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys.h
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys.h
+@@ -254,4 +254,10 @@ int ipu6_isys_jsl_phy_set_power(struct ipu6_isys *isys,
+ 				struct ipu6_isys_csi2_config *cfg,
+ 				const struct ipu6_isys_csi2_timing *timing,
+ 				bool on);
++
++int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
++			     struct ipu6_isys_csi2_config *cfg,
++			     const struct ipu6_isys_csi2_timing *timing,
++			     bool on);
++void ipu4p_isys_phy_setup(struct ipu6_isys *isys);
+ #endif /* IPU6_ISYS_H */
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h b/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h
+index 0a2633749..a1470b338 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h
++++ b/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h
+@@ -6,6 +6,23 @@
+ 
+ #include <linux/bits.h>
+ 
++/* IPU4P CSI PHY building-block registers */
++#define IPU4P_BUTTRESS_REG_CSI_BSCAN_EXCLUDE		0x100d8
++#define IPU4P_BUTTRESS_REG_CPHY0_DLL_OVRD		0x10100
++#define IPU4P_BUTTRESS_REG_CPHY0_RX_CONTROL1		0x10110
++#define IPU4P_BUTTRESS_REG_DPHY0_DLL_OVRD		0x1014c
++#define IPU4P_BUTTRESS_REG_BB0_AFE_CONFIG		0x10174
++#define IPU4P_BUTTRESS_REG_CPHYX_DLL_OVRD(bb)		\
++	(IPU4P_BUTTRESS_REG_CPHY0_DLL_OVRD + ((bb) >> 1) * 0x100)
++#define IPU4P_BUTTRESS_REG_CPHYX_RX_CONTROL1(bb)	\
++	(IPU4P_BUTTRESS_REG_CPHY0_RX_CONTROL1 + ((bb) >> 1) * 0x100)
++#define IPU4P_BUTTRESS_REG_DPHYX_DLL_OVRD(bb)		\
++	(IPU4P_BUTTRESS_REG_DPHY0_DLL_OVRD + ((bb) >> 1) * 0x100)
++#define IPU4P_BUTTRESS_REG_DPHYX_CFG(bb)			\
++	(IPU4P_BUTTRESS_REG_DPHYX_DLL_OVRD(bb) - 4)
++#define IPU4P_BUTTRESS_REG_BBX_AFE_CONFIG(bb)		\
++	(IPU4P_BUTTRESS_REG_BB0_AFE_CONFIG + ((bb) >> 1) * 0x100)
++
+ /* IS_WORKPOINT_REQ */
+ #define IPU6_BUTTRESS_REG_IS_FREQ_CTL		0x34
+ /* PS_WORKPOINT_REQ */
+-- 
+2.55.0
+

@@ -1,6 +1,5 @@
-From c3c04cdef34ca68235a86f40769a44c5853c211b Mon Sep 17 00:00:00 2001
-From: constitution-admin
- <209932570+constitution-admin@users.noreply.github.com>
+From 48c8095541a4609283a4ce4c7de0bafabf910dc8 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 15:39:02 +0000
 Subject: [PATCH 08/10] media: ipu6: Add IPU4P CSI-2 register definitions
 

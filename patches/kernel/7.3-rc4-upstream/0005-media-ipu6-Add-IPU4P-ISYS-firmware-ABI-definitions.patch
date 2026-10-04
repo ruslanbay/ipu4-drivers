@@ -1,21 +1,20 @@
-From 3efffa631d80212647be6bf15dfde9e626e6ae96 Mon Sep 17 00:00:00 2001
-From: constitution-admin
- <209932570+constitution-admin@users.noreply.github.com>
+From fcf0e5435f6cb89494a0512b717f7c795b576741 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 10:51:40 +0000
 Subject: [PATCH 05/10] media: ipu6: Add IPU4P ISYS firmware ABI definitions
 
 ---
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h | 408 +++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h | 435 +++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu6-isys.h     |   6 +
- 2 files changed, 414 insertions(+)
+ 2 files changed, 441 insertions(+)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
 new file mode 100644
-index 000000000..1b148d041
+index 000000000..7ab30c528
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
-@@ -0,0 +1,408 @@
+@@ -0,0 +1,435 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/* Copyright (C) 2026 Intel Corporation */
 +
@@ -23,6 +22,9 @@ index 000000000..1b148d041
 +#define IPU4P_FW_ISYS_H
 +
 +#include <linux/bits.h>
++#include <linux/build_bug.h>
++#include <linux/irqreturn.h>
++#include <linux/stddef.h>
 +#include <linux/types.h>
 +
 +struct ipu6_bus_device;
@@ -306,6 +308,14 @@ index 000000000..1b148d041
 +	u8 mapped_dt;
 +};
 +
++/**
++ * struct ipu4p_fw_isys_output_pin_info - IPU4P output pin configuration
++ *
++ * Unlike the IPU6 ABI, IPU4P ends this structure at reserve_compression;
++ * snoopable and sensor_type are not part of the IPU4P firmware wire format.
++ *
++ * @link_id: PPG link; zero selects offline capture
++ */
 +struct ipu4p_fw_isys_output_pin_info {
 +	struct ipu4p_fw_isys_resolution output_res;
 +	u32 stride;
@@ -420,6 +430,22 @@ index 000000000..1b148d041
 +	u32 num_send_queues[IPU4P_ISYS_QUEUE_TYPE_MAX];
 +	u32 num_recv_queues[IPU4P_ISYS_QUEUE_TYPE_MAX];
 +};
++
++/*
++ * These structures are copied directly to and from the IPU4P firmware queues.
++ * Keep their natural-alignment layout unchanged; the firmware ABI depends on
++ * the exact sizes and offsets below.
++ */
++static_assert(sizeof(struct ipu4p_fw_isys_output_pin_info) == 28);
++static_assert(offsetof(struct ipu4p_fw_isys_output_pin_info, link_id) == 24);
++static_assert(offsetof(struct ipu4p_fw_isys_output_pin_info,
++		       reserve_compression) == 25);
++static_assert(sizeof(struct ipu4p_fw_isys_stream_cfg) == 316);
++static_assert(offsetof(struct ipu4p_fw_isys_stream_cfg, output_pins) == 132);
++static_assert(offsetof(struct ipu4p_fw_isys_stream_cfg, compfmt) == 300);
++static_assert(offsetof(struct ipu4p_fw_isys_stream_cfg, src) == 310);
++static_assert(sizeof(struct ipu4p_fw_isys_frame_buff_set) == 120);
++static_assert(sizeof(struct ipu4p_fw_isys_resp_info) == 64);
 +
 +extern const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops;
 +

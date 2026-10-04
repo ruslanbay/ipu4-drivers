@@ -1,4 +1,4 @@
-From 6f363b8eba47b701a7d6d7b89879131754fd98b8 Mon Sep 17 00:00:00 2001
+From 0ed184bedbd5ae3d0699f85de435e782e806587e Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 18:20:45 +0000
 Subject: [PATCH 02/10] media: ipu6: Add ipu4p buttress support
@@ -27,22 +27,22 @@ Mirrors the approach used for IPU7 in:
 https://lore.kernel.org/all/20260907113004.2489993-13-sakari.ailus@linux.intel.com/
 ---
  drivers/media/pci/intel/ipu6/ipu6-buttress.c  | 48 +++++++++++++++++--
- .../intel/ipu6/ipu6-platform-buttress-regs.h  | 20 ++++++++
+ .../intel/ipu6/ipu6-platform-buttress-regs.h  | 21 ++++++++
  .../media/pci/intel/ipu6/ipu6-platform-regs.h | 18 +++++++
  drivers/media/pci/intel/ipu6/ipu6.c           | 38 +++++++++++++++
  drivers/media/pci/intel/ipu6/ipu6.h           |  1 +
  include/media/ipu6-pci-table.h                |  2 +
- 6 files changed, 124 insertions(+), 3 deletions(-)
+ 6 files changed, 125 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-buttress.c b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
-index 105de1744..9b4776c7c 100644
+index 105de1744..99dd7f843 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-buttress.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
 @@ -601,6 +601,43 @@ static int __ipu6_power(struct device *dev,
  	return ret;
  }
  
-+static int __ipu4_power(struct device *dev,
++static int __ipu4p_power(struct device *dev,
 +			const struct ipu6_buttress_ctrl *ctrl, bool on)
 +{
 +	struct ipu6_device *isp = to_ipu6_bus_device(dev)->isp;
@@ -86,8 +86,8 @@ index 105de1744..9b4776c7c 100644
  	if (IS_IPU7(isp))
  		ret = on ? __ipu7_power_on(dev, ctrl) :
  			   __ipu7_power_off(dev, ctrl);
-+	else if (IS_IPU4(isp))
-+		ret = __ipu4_power(dev, ctrl, on);
++	else if (IS_IPU4P(isp))
++		ret = __ipu4p_power(dev, ctrl, on);
  	else
  		ret = __ipu6_power(dev, ctrl, on);
  
@@ -115,14 +115,14 @@ index 105de1744..9b4776c7c 100644
  		writel(b->regs->irq_all, isp->base + b->regs->irq_clear);
  		writel(b->regs->irq_all, isp->base + b->regs->irq_enable);
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h b/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h
-index 57e661cc2..1455582e6 100644
+index 57e661cc2..0a2633749 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h
 +++ b/drivers/media/pci/intel/ipu6/ipu6-platform-buttress-regs.h
-@@ -330,4 +330,24 @@ enum {
+@@ -330,4 +330,25 @@ enum {
  /* IPU7.5 */
  #define IPU7_BUTTRESS_SEL_PB_TIMESTAMP		BIT(9)
  
-+/* IPU4 / IPU4P */
++/* IPU4P */
 +#define IPU4P_BUTTRESS_PWR_STATE_IS_PWR_FSM_SHIFT	20
 +#define IPU4P_BUTTRESS_PWR_STATE_IS_PWR_FSM_MASK	GENMASK(24, 20)
 +#define IPU4P_BUTTRESS_PWR_STATE_IS_PWR_FSM_IDLE	0x0
@@ -137,9 +137,10 @@ index 57e661cc2..1455582e6 100644
 +#define IPU4P_BUTTRESS_PS_FREQ_CTL_OVRD_SHIFT		7
 +#define IPU4P_BUTTRESS_PS_FREQ_CTL_RATIO_SHIFT		8
 +
-+#define IPU4_IS_FREQ_CTL_DIVISOR			4
-+#define IPU4_PS_FREQ_CTL_DEFAULT_RATIO			0x12
++#define IPU4P_IS_FREQ_CTL_DIVISOR			4
++#define IPU4P_PS_FREQ_CTL_DEFAULT_RATIO			0x12
 +
++/* IPU4 and IPU4P */
 +#define IPU4_BOOTLOADER_STATUS_OFFSET			0x8000
 +
  #endif /* IPU6_PLATFORM_BUTTRESS_REGS_H */
@@ -173,7 +174,7 @@ index b883385ad..e8fbefbfa 100644
  #define IPU6_ISYS_IOMMU1_OFFSET		0x2e0500
  #define IPU6_ISYS_IOMMUI_OFFSET		0x2e0a00
 diff --git a/drivers/media/pci/intel/ipu6/ipu6.c b/drivers/media/pci/intel/ipu6/ipu6.c
-index 43d951735..e35942a0f 100644
+index 43d951735..aa2bfe9e0 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6.c
 @@ -140,6 +140,28 @@ static const struct ipu6_buttress_ctrl ipu7_psys_buttress_ctrl = {
@@ -182,7 +183,7 @@ index 43d951735..e35942a0f 100644
  
 +static const struct ipu6_buttress_ctrl ipu4p_isys_buttress_ctrl = {
 +	.subsys_id = IPU_ISYS,
-+	.ratio = IPU4_IS_FREQ_CTL_DIVISOR,
++	.ratio = IPU4P_IS_FREQ_CTL_DIVISOR,
 +	.qos_floor = 0,
 +	.freq_ctl = BUTTRESS_REG_IS_FREQ_CTL,
 +	.pwr_sts_shift = IPU4P_BUTTRESS_PWR_STATE_IS_PWR_FSM_SHIFT,
@@ -193,7 +194,7 @@ index 43d951735..e35942a0f 100644
 +
 +static const struct ipu6_buttress_ctrl ipu4p_psys_buttress_ctrl = {
 +	.subsys_id = IPU_PSYS,
-+	.ratio = IPU4_PS_FREQ_CTL_DEFAULT_RATIO,
++	.ratio = IPU4P_PS_FREQ_CTL_DEFAULT_RATIO,
 +	.qos_floor = 0,
 +	.freq_ctl = BUTTRESS_REG_PS_FREQ_CTL,
 +	.pwr_sts_shift = IPU4P_BUTTRESS_PWR_STATE_PS_PWR_FSM_SHIFT,

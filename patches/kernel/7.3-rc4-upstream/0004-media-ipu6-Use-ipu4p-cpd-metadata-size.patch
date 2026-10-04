@@ -1,4 +1,4 @@
-From 1353789520fa0dce7a037ef4afb963d26bde322a Mon Sep 17 00:00:00 2001
+From caec30179779fcaa60ae086e66b355395b3e245b Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Mon, 28 Sep 2026 10:59:03 +0000
 Subject: [PATCH 04/10] media: ipu6: Use ipu4p cpd metadata size
@@ -9,7 +9,7 @@ IPU4P firmware metadata uses a 32-byte component hash, matching the IPU6SE layou
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu6.c b/drivers/media/pci/intel/ipu6/ipu6.c
-index e35942a0f..ab65b385e 100644
+index aa2bfe9e0..789477e38 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6.c
 @@ -665,6 +665,8 @@ static int ipu6_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)

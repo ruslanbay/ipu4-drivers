@@ -1,21 +1,20 @@
-From c7dff32069fbf1dd469b7558048a84ce1ef73beb Mon Sep 17 00:00:00 2001
-From: constitution-admin
- <209932570+constitution-admin@users.noreply.github.com>
+From f14c2f9b8a85c631775a9766533355f9da7d001d Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 16:07:59 +0000
 Subject: [PATCH 09/10] media: ipu6: Add IPU4P ISYS ISR handling
 
 ---
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 89 +++++++++++++++++++
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |  3 +
- .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     | 44 +++++++++
- drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 87 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 90 +++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |  2 +
+ .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     | 43 +++++++++
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 89 ++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu6-isys-csi2.h |  2 +
  drivers/media/pci/intel/ipu6/ipu6-isys.c      | 14 ++-
  drivers/media/pci/intel/ipu6/ipu6.c           |  2 +
- 7 files changed, 239 insertions(+), 2 deletions(-)
+ 7 files changed, 240 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
-index cc19a292b..3dcbce6bb 100644
+index ea3e31d4d..42b39174e 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 @@ -4,8 +4,10 @@
@@ -37,7 +36,7 @@ index cc19a292b..3dcbce6bb 100644
  
  static void start_sp(struct ipu6_bus_device *adev)
  {
-@@ -581,3 +584,89 @@ const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops = {
+@@ -584,3 +587,90 @@ const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops = {
  	.dump_stream_cfg = ipu4p_dump_stream_cfg,
  	.dump_frame_buf_set = ipu4p_dump_frame_buf_set,
  };
@@ -59,8 +58,8 @@ index cc19a292b..3dcbce6bb 100644
 +		{ IPU4P_ISYS_UNISPART_IRQ_EDGE, isys_irq_mask },
 +		{ IPU4P_ISYS_ISA_ACC_IRQ_CTRL_BASE, 0 },
 +		{ IPU4P_ISYS_A_IRQ_CTRL_BASE, 0 },
-+		{ IPU4P_ISYS_SIP0_IRQ_CTRL_BASE, 0xf },
-+		{ IPU4P_ISYS_SIP1_IRQ_CTRL_BASE, 0xf },
++		{ IPU4P_ISYS_SIP0_IRQ_CTRL_BASE, IPU4P_ISYS_SIP0_CSI2_IRQ },
++		{ IPU4P_ISYS_SIP1_IRQ_CTRL_BASE, IPU4P_ISYS_SIP1_CSI2_IRQ_MASK },
 +	};
 +	void __iomem *base = isys->pdata->base;
 +
@@ -100,7 +99,8 @@ index cc19a292b..3dcbce6bb 100644
 +		writel(sip0_status, base + IPU4P_ISYS_SIP0_IRQ_CTRL_CLEAR);
 +		writel(sip1_status, base + IPU4P_ISYS_SIP1_IRQ_CTRL_CLEAR);
 +
-+		for (unsigned int i = 0; i < isys->pdata->ipdata->csi2.nports; i++) {
++		for (unsigned int i = 0;
++		     i < isys->pdata->ipdata->csi2.nports; i++) {
 +			bool port_irq = i ?
 +				(sip1_status & IPU4P_ISYS_SIP1_CSI2_IRQ(i)) :
 +				(sip0_status & IPU4P_ISYS_SIP0_CSI2_IRQ);
@@ -128,19 +128,11 @@ index cc19a292b..3dcbce6bb 100644
 +	return IRQ_HANDLED;
 +}
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
-index 1b148d041..92827dc96 100644
+index 050d9d12d..a07b79d44 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
-@@ -5,6 +5,7 @@
- #define IPU4P_FW_ISYS_H
- 
- #include <linux/bits.h>
-+#include <linux/irqreturn.h>
- #include <linux/types.h>
- 
- struct ipu6_bus_device;
-@@ -404,5 +405,7 @@ struct ipu4p_fw_isys_fw_config {
- };
+@@ -432,5 +432,7 @@ static_assert(sizeof(struct ipu4p_fw_isys_frame_buff_set) == 120);
+ static_assert(sizeof(struct ipu4p_fw_isys_resp_info) == 64);
  
  extern const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops;
 +irqreturn_t ipu4p_isys_isr(struct ipu6_bus_device *adev);
@@ -148,14 +140,13 @@ index 1b148d041..92827dc96 100644
  
  #endif /* IPU4P_FW_ISYS_H */
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
-index eb95ae2d4..a0ff47df2 100644
+index eb95ae2d4..a30965ee4 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
-@@ -4,6 +4,50 @@
+@@ -4,6 +4,49 @@
  
  #include <linux/bits.h>
  
-+#define IPU4P_ISYS_CSI2_NPORTS				8U
 +#define IPU4P_CSI2_VC_COUNT				4U
 +
 +/* ISYS UNISPART and SIP interrupt registers */
@@ -203,18 +194,18 @@ index eb95ae2d4..a0ff47df2 100644
  #define IPU4P_CSI2_RX_ENABLE				0x00
  #define IPU4P_CSI2_RX_ENABLE_ENABLE			BIT(0)
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-index 160eace94..e14175690 100644
+index 9e8775026..058879cea 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-@@ -24,6 +24,7 @@
- #include "ipu6-isys-csi2.h"
+@@ -25,6 +25,7 @@
+ #include "ipu4p-fw-isys.h"
  #include "ipu6-isys-subdev.h"
  #include "ipu6-platform-isys-csi2-reg.h"
 +#include "ipu4p-isys-csi2-regs.h"
  #include "ipu7-isys-csi2-regs.h"
  
  static const u32 csi2_supported_codes[] = {
-@@ -82,6 +83,25 @@ static const struct ipu6_csi2_error dphy_rx_errors[] = {
+@@ -83,6 +84,25 @@ static const struct ipu6_csi2_error dphy_rx_errors[] = {
  	{ "HSIDLE detected", false }
  };
  
@@ -240,7 +231,7 @@ index 160eace94..e14175690 100644
  s64 ipu6_isys_csi2_get_link_freq(struct ipu6_isys_csi2 *csi2)
  {
  	struct media_pad *src_pad;
-@@ -209,6 +229,52 @@ void ipu6_isys_register_errors(struct ipu6_isys_csi2 *csi2)
+@@ -210,6 +230,54 @@ void ipu6_isys_register_errors(struct ipu6_isys_csi2 *csi2)
  	csi2->receiver_errors |= irq & mask;
  }
  
@@ -273,7 +264,8 @@ index 160eace94..e14175690 100644
 +		struct ipu6_isys_stream *stream;
 +
 +		if (status & IPU4P_CSI2_IRQ_FS_VC(vc)) {
-+			stream = ipu6_isys_query_stream_by_source(csi2->isys, csi2->asd.source, vc);
++			stream = ipu6_isys_query_stream_by_source(csi2->isys,
++								 csi2->asd.source, vc);
 +			if (stream) {
 +				ipu6_isys_csi2_sof_event_by_stream(stream);
 +				ipu6_isys_put_stream(stream);
@@ -281,7 +273,8 @@ index 160eace94..e14175690 100644
 +		}
 +
 +		if (status & IPU4P_CSI2_IRQ_FE_VC(vc)) {
-+			stream = ipu6_isys_query_stream_by_source(csi2->isys, csi2->asd.source, vc);
++			stream = ipu6_isys_query_stream_by_source(csi2->isys,
++								 csi2->asd.source, vc);
 +			if (stream) {
 +				ipu6_isys_csi2_eof_event_by_stream(stream);
 +				ipu6_isys_put_stream(stream);
@@ -293,7 +286,7 @@ index 160eace94..e14175690 100644
  void ipu6_isys_csi2_error(struct ipu6_isys_csi2 *csi2)
  {
  	struct device *dev = &csi2->isys->adev->auxdev.dev;
-@@ -216,6 +282,27 @@ void ipu6_isys_csi2_error(struct ipu6_isys_csi2 *csi2)
+@@ -217,6 +285,27 @@ void ipu6_isys_csi2_error(struct ipu6_isys_csi2 *csi2)
  	u32 status;
  	u32 i;
  
@@ -335,7 +328,7 @@ index dbaaf00af..2eda541f4 100644
  				   struct ipu6_isys_csi2 *csi2,
  				   struct media_entity *source_entity,
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.c b/drivers/media/pci/intel/ipu6/ipu6-isys.c
-index d961d702e..2cee2e22c 100644
+index 6c510aef5..fa9bddea8 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-isys.c
 @@ -41,6 +41,7 @@
@@ -385,7 +378,7 @@ index d961d702e..2cee2e22c 100644
  		set_iwake_ltrdid(isys, 0, 0, LTR_ISYS_OFF);
  
  	ipu6_mmu_hw_cleanup(adev->mmu);
-@@ -1140,7 +1150,7 @@ static const struct ipu6_auxdrv_data ipu6_isys_auxdrv_data = {
+@@ -1141,7 +1151,7 @@ static const struct ipu6_auxdrv_data ipu6_isys_auxdrv_data = {
  };
  
  static const struct ipu6_auxdrv_data ipu4p_isys_auxdrv_data = {
@@ -395,7 +388,7 @@ index d961d702e..2cee2e22c 100644
  	.wake_isr_thread = false,
  	.fw_ops = &ipu4p_fw_isys_ops,
 diff --git a/drivers/media/pci/intel/ipu6/ipu6.c b/drivers/media/pci/intel/ipu6/ipu6.c
-index 10021068d..aadfa506c 100644
+index 41608adde..08032dd9d 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6.c
 @@ -34,6 +34,7 @@

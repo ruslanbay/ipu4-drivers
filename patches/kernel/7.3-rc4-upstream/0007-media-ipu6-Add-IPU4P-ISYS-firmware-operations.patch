@@ -1,19 +1,20 @@
-From 1b43321ca50277f31bbdb4256b2af6da057fb9b8 Mon Sep 17 00:00:00 2001
-From: constitution-admin
- <209932570+constitution-admin@users.noreply.github.com>
+From e180a137abfe51e989f4cf183ec41a01398f4106 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Sat, 3 Oct 2026 10:54:38 +0000
 Subject: [PATCH 07/10] media: ipu6: Add IPU4P ISYS firmware operations
 
 ---
  drivers/media/pci/intel/ipu6/Makefile         |   1 +
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 583 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 586 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |   1 +
  drivers/media/pci/intel/ipu6/ipu6-fw-isys.c   |  41 +-
  drivers/media/pci/intel/ipu6/ipu6-fw-isys.h   |   3 +-
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |  11 +-
  .../media/pci/intel/ipu6/ipu6-isys-video.c    |   8 +-
- drivers/media/pci/intel/ipu6/ipu6-isys.c      |  75 ++-
+ drivers/media/pci/intel/ipu6/ipu6-isys.c      |  76 ++-
  drivers/media/pci/intel/ipu6/ipu6-isys.h      |  10 +
  drivers/media/pci/intel/ipu6/ipu6.c           |   4 +
- 8 files changed, 692 insertions(+), 33 deletions(-)
+ 10 files changed, 707 insertions(+), 34 deletions(-)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 
 diff --git a/drivers/media/pci/intel/ipu6/Makefile b/drivers/media/pci/intel/ipu6/Makefile
@@ -30,10 +31,10 @@ index 676bc978b..54b543ec5 100644
  				ipu6-isys-queue.o \
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 new file mode 100644
-index 000000000..cc19a292b
+index 000000000..ea3e31d4d
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
-@@ -0,0 +1,583 @@
+@@ -0,0 +1,586 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (C) 2026 Intel Corporation
@@ -406,12 +407,15 @@ index 000000000..cc19a292b
 +	struct v4l2_mbus_framefmt fmt;
 +	const struct ipu6_isys_pixelformat *pfmt =
 +		ipu6_isys_get_isys_format(ipu6_isys_get_format(av), 0);
-+	int input_pins = cfg->nof_input_pins++;
-+	int output_pins;
++	unsigned int input_pins;
++	unsigned int output_pins;
 +	u32 src_stream;
 +
-+	if (input_pins >= IPU4P_MAX_IPINS || cfg->nof_output_pins >= IPU4P_MAX_OPINS)
++	if (cfg->nof_input_pins >= IPU4P_MAX_IPINS ||
++	    cfg->nof_output_pins >= IPU4P_MAX_OPINS)
 +		return -EINVAL;
++
++	input_pins = cfg->nof_input_pins++;
 +
 +	src_stream = ipu6_isys_get_src_stream_by_src_pad(sd, src_pad->index);
 +	fmt = *v4l2_subdev_state_get_format(state, src_pad->index, src_stream);
@@ -421,7 +425,7 @@ index 000000000..cc19a292b
 +	input_pin->input_res.height = fmt.height;
 +	input_pin->dt = av->dt;
 +	input_pin->bits_per_pix = pfmt->bpp_packed;
-+	input_pin->mapped_dt = 0x40;
++	input_pin->mapped_dt = N_IPU4P_FW_ISYS_MIPI_DATA_TYPE;
 +	input_pin->mipi_store_mode = (pfmt->bpp == pfmt->bpp_packed) ?
 +		IPU4P_FW_ISYS_MIPI_STORE_MODE_DISCARD_LONG_HEADER :
 +		IPU4P_FW_ISYS_MIPI_STORE_MODE_NORMAL;
@@ -617,6 +621,18 @@ index 000000000..cc19a292b
 +	.dump_stream_cfg = ipu4p_dump_stream_cfg,
 +	.dump_frame_buf_set = ipu4p_dump_frame_buf_set,
 +};
+diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
+index 7ab30c528..050d9d12d 100644
+--- a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
++++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
+@@ -19,6 +19,7 @@ struct ipu6_isys_buffer_list;
+ struct isys_fw_msgs;
+ 
+ #define IPU4P_ISYS_MAX_STREAMS			8U
++#define IPU4P_ISYS_CSI2_NPORTS			8U
+ #define IPU4P_MAX_IPINS				4U
+ #define IPU4P_MAX_OPINS				6U
+ #define IPU4P_NOF_SRAM_BLOCKS_MAX		8U
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu6-fw-isys.c
 index 3cad7d8f9..ae4576025 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-fw-isys.c
@@ -734,6 +750,42 @@ index 2a679d995..de4608a18 100644
  irqreturn_t ipu6_isys_isr(struct ipu6_bus_device *adev);
  
  #endif
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+index 160eace94..9e8775026 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+@@ -22,6 +22,7 @@
+ #include "ipu6-bus.h"
+ #include "ipu6-isys.h"
+ #include "ipu6-isys-csi2.h"
++#include "ipu4p-fw-isys.h"
+ #include "ipu6-isys-subdev.h"
+ #include "ipu6-platform-isys-csi2-reg.h"
+ #include "ipu7-isys-csi2-regs.h"
+@@ -621,6 +622,10 @@ void ipu6_isys_csi2_cleanup(struct ipu6_isys_csi2 *csi2)
+ 	csi2->isys = NULL;
+ }
+ 
++static const u8 ipu4p_csi2_fw_sources[IPU4P_ISYS_CSI2_NPORTS] = {
++	3, 6, 7, 8, 9, 10, 11, 12,
++};
++
+ int ipu6_isys_csi2_init(struct ipu6_isys_csi2 *csi2,
+ 			struct ipu6_isys *isys,
+ 			void __iomem *base, unsigned int index)
+@@ -639,7 +644,11 @@ int ipu6_isys_csi2_init(struct ipu6_isys_csi2 *csi2,
+ 	if (ret)
+ 		goto fail;
+ 
+-	csi2->asd.source = IPU6_FW_ISYS_STREAM_SRC_CSI2_PORT0 + index;
++	if (IS_IPU4P(isys->adev->isp))
++		csi2->asd.source = IPU6_FW_ISYS_STREAM_SRC_CSI2_PORT0 +
++				      ipu4p_csi2_fw_sources[index];
++	else
++		csi2->asd.source = IPU6_FW_ISYS_STREAM_SRC_CSI2_PORT0 + index;
+ 	csi2->asd.supported_codes = csi2_supported_codes;
+ 	snprintf(csi2->asd.sd.name, sizeof(csi2->asd.sd.name),
+ 		 IPU6_ISYS_ENTITY_PREFIX " CSI2 %u", index);
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c b/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
 index 9634b4f23..d9cab5b5d 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
@@ -767,7 +819,7 @@ index 9634b4f23..d9cab5b5d 100644
  				isys->streams_ref_count[i]++;
  				stream = &isys->streams[i];
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.c b/drivers/media/pci/intel/ipu6/ipu6-isys.c
-index 08f29b678..d961d702e 100644
+index 08f29b678..6c510aef5 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-isys.c
 @@ -361,18 +361,46 @@ static void get_lut_ltrdid(struct ipu6_isys *isys, struct ltr_did *pltr_did)
@@ -886,7 +938,15 @@ index 08f29b678..d961d702e 100644
  			   iwake_critical_threshold);
  
  	writel(VAL_PKGC_PMON_CFG_RESET,
-@@ -1006,8 +1038,12 @@ static int isys_probe(struct auxiliary_device *auxdev,
+@@ -987,6 +1019,7 @@ void ipu6_put_fw_msg_buf(struct ipu6_isys *isys, struct isys_fw_msgs *msg)
+ }
+ 
+ static const struct ipu6_auxdrv_data ipu6_isys_auxdrv_data;
++static const struct ipu6_auxdrv_data ipu4p_isys_auxdrv_data;
+ static const struct ipu6_auxdrv_data ipu7_isys_auxdrv_data;
+ 
+ static int isys_probe(struct auxiliary_device *auxdev,
+@@ -1006,8 +1039,12 @@ static int isys_probe(struct auxiliary_device *auxdev,
  	if (!isys)
  		return -ENOMEM;
  
@@ -901,7 +961,7 @@ index 08f29b678..d961d702e 100644
  	adev->auxdrv = to_auxiliary_drv(auxdev->dev.driver);
  	isys->adev = adev;
  	isys->pdata = adev->pdata;
-@@ -1103,6 +1139,13 @@ static const struct ipu6_auxdrv_data ipu6_isys_auxdrv_data = {
+@@ -1103,6 +1140,13 @@ static const struct ipu6_auxdrv_data ipu6_isys_auxdrv_data = {
  	.fw_ops = &ipu6_fw_isys_ops,
  };
  
@@ -944,7 +1004,7 @@ index 7d652a068..9383cbefa 100644
  			const unsigned int stream_handle,
  			void *cpu_mapped_buf,
 diff --git a/drivers/media/pci/intel/ipu6/ipu6.c b/drivers/media/pci/intel/ipu6/ipu6.c
-index ab65b385e..10021068d 100644
+index 789477e38..41608adde 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6.c
 @@ -399,6 +399,10 @@ static void ipu6_internal_pdata_init(struct ipu6_device *isp)
