@@ -116,6 +116,7 @@ index 000000000..a971f8717
 +{
 +	struct ipu6_device *isp = isys->adev->isp;
 +	void __iomem *isys_base = isys->pdata->base;
++
 +	writel(IPU4P_CSI2_GPREG_CR_PORT_CONFIG_DEFAULT,
 +	       isys_base + IPU4P_ISYS_GPOFFSET +
 +	       IPU4P_CSI2_GPREG_CR_PORT_CONFIG);
