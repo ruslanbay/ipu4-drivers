@@ -1,10 +1,12 @@
 From fff49c45ae291ef9f98512dee87432c4251ae6a4 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sat, 3 Oct 2026 16:07:59 +0000
 Subject: [PATCH 08/10] media: ipu6: Add IPU4P ISYS ISR handling
 
 Handle IPU4P ISYS software and CSI interrupts and dispatch firmware
 responses and CSI receiver errors to the appropriate handlers.
+
+Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 90 +++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |  2 +

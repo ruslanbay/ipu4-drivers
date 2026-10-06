@@ -1,5 +1,5 @@
 From ce3969c71cef2d5d8865f49730c6230584a427ef Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Tue, 6 Oct 2026 13:28:13 +0000
 Subject: [PATCH 10/10] media: ipu6: Apply Surface Pro 7 front camera receiver
  timing
@@ -9,6 +9,20 @@ sequence matching the Windows ConfigMipiClk programming. Apply it only
 to the Surface Pro 7, IPU4P CSI-2 port 2, firmware source 7, two-lane
 configuration; other IPU generations and ports retain the generic
 calculated timing.
+
+Co-developed-by: supermepsipax <supermepsipax@github>
+Signed-off-by: supermepsipax <supermepsipax@github>
+
+Co-developed-by: thisiscamk <thisiscamk@github>
+Signed-off-by: thisiscamk <thisiscamk@github>
+
+Co-developed-by: ConsultingFuture4200 <ConsultingFuture4200@github>
+Signed-off-by: ConsultingFuture4200 <ConsultingFuture4200@github>
+
+Co-developed-by: georgemihaila <georgemihaila@github>
+Signed-off-by: georgemihaila <georgemihaila@github>
+
+Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 66 ++++++++++++++++---
  1 file changed, 58 insertions(+), 8 deletions(-)

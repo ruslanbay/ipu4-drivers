@@ -1,5 +1,5 @@
 From aaf6dc372273a80deca642a5c3f8ff83fa9564e4 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sun, 27 Sep 2026 18:20:45 +0000
 Subject: [PATCH 02/10] media: ipu6: Add IPU4P buttress support
 
@@ -8,6 +8,8 @@ placement from IPU6, and has a different bootloader status register.
 
 Add IPU4P-specific power management and firmware authentication handling
 to the IPU6 buttress driver.
+
+Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  drivers/media/pci/intel/ipu6/ipu6-buttress.c  | 48 +++++++++++++++++--
  .../intel/ipu6/ipu6-platform-buttress-regs.h  | 21 ++++++++

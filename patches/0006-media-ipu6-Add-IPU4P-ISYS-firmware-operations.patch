@@ -1,10 +1,12 @@
 From 7f9899c77cf42419e8b2de03271ced215bf33e0a Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sat, 3 Oct 2026 10:54:38 +0000
 Subject: [PATCH 06/10] media: ipu6: Add IPU4P ISYS firmware operations
 
 Add IPU4P ISYS firmware operations for stream configuration, buffer
 management, and proxy communication with the firmware.
+
+Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  drivers/media/pci/intel/ipu6/Makefile         |   1 +
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 598 ++++++++++++++++++

@@ -1,9 +1,11 @@
 From a671f964b36cb9bc209d32b0033c8df3098bd01f Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sun, 27 Sep 2026 17:23:58 +0000
 Subject: [PATCH 01/10] media: ipu6: Add helper to identify IPU4
 
 The IPU4 comes in two flavors, IPU4 and IPU4P.
+
+Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  drivers/media/pci/intel/ipu6/ipu6.h | 6 ++++++
  1 file changed, 6 insertions(+)

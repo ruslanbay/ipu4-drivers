@@ -1,10 +1,12 @@
 From a67275e5525e6d9a948ca7489221125e91cc3391 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sat, 3 Oct 2026 15:39:02 +0000
 Subject: [PATCH 07/10] media: ipu6: Add IPU4P CSI-2 register definitions
 
 Define the IPU4P CSI-2 receiver, interrupt, and PHY sideband registers
 needed by the ISYS driver.
+
+Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     | 143 ++++++++++++++++++
  1 file changed, 143 insertions(+)
