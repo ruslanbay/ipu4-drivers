@@ -8,6 +8,10 @@ Build Linux `v7.3-rc6` with IPU4P support on top of the upstream IPU6/IPU7 drive
 
 https://docs.kernel.org/admin-guide/quickly-build-trimmed-linux.html
 
+## Requirements
+
+Fedora 44
+
 ## Build dependencies
 
 ```bash
