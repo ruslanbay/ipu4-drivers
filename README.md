@@ -54,7 +54,7 @@ curl -L -o .config \
 make olddefconfig
 ```
 
-Optional: trim the configuration to modules currently used by this machine:
+Optional: reduce the build to modules currently used by this machine:
 
 ```bash
 make localmodconfig
@@ -116,7 +116,7 @@ Download the Intel camera driver package for:
 
 https://www.catalog.update.microsoft.com/Search.aspx?q=42.17134.3.10471
 
-Extract the CAB file using the archive tool available on your system.
+Extract the CAB file with an archive tool of your choice.
 
 Install the firmware:
 
@@ -196,3 +196,26 @@ LIBCAMERA_LOG_LEVELS=*:DEBUG \
 
 ls -lh /tmp/ipu4p-*
 ```
+
+Disable the additional IPU6 ISYS debug output when finished:
+
+```bash
+echo 'module intel_ipu6_isys -p' |
+    sudo tee /sys/kernel/debug/dynamic_debug/control
+```
+
+## Undo the DNF changes
+
+To review the transactions performed by DNF:
+
+```bash
+dnf history list
+```
+
+Identify the transaction you want to reverse, then:
+
+```bash
+sudo dnf history undo <ID>
+```
+
+`history undo` reverses the package operations performed by that specific transaction.
