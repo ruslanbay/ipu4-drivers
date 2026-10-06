@@ -2,7 +2,7 @@
 [Wiki](https://github.com/linux-surface/linux-surface/wiki/Camera-Support) | 
 [Downstream IPU4/IPU4P driver](https://github.com/intel/linux-intel-lts/tree/lts-v5.15.195-android_t-251103T063840Z/drivers/media/pci/intel)
 
-# Intel IPU4P / IPU6 / IPU7
+# Intel IPU4P
 
 Build Linux `v7.3-rc6` with IPU4P support on top of the upstream IPU6/IPU7 driver.
 
