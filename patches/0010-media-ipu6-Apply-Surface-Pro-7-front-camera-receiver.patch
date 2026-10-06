@@ -1,0 +1,124 @@
+From ce3969c71cef2d5d8865f49730c6230584a427ef Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Tue, 6 Oct 2026 13:28:13 +0000
+Subject: [PATCH 10/10] media: ipu6: Apply Surface Pro 7 front camera receiver
+ timing
+
+The Surface Pro 7 front OV5693 uses a fixed CSI-2 receiver timing
+sequence matching the Windows ConfigMipiClk programming. Apply it only
+to the Surface Pro 7, IPU4P CSI-2 port 2, firmware source 7, two-lane
+configuration; other IPU generations and ports retain the generic
+calculated timing.
+---
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 66 ++++++++++++++++---
+ 1 file changed, 58 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+index 2404655999c6..3f19019dddb9 100644
+--- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
++++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/errno.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -41,7 +42,44 @@ MODULE_PARM_DESC(phy_bb_extra,
+ static int phy_afe_extra[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+ module_param_array(phy_afe_extra, int, NULL, 0644);
+ MODULE_PARM_DESC(phy_afe_extra,
+-		 "AFE config value per extra IPU4P PHY building block (-1 = alternate 0xf/0x15)");
++		"AFE config value per extra IPU4P PHY building block (-1 = alternate 0xf/0x15)");
++
++static const struct dmi_system_id ipu4p_sp7_dmi_table[] = {
++	{
++		.ident = "Microsoft Surface Pro 7",
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 7"),
++		},
++	},
++	{ }
++};
++
++static bool ipu4p_isys_sp7_front(struct ipu6_isys_csi2 *csi2,
++				 unsigned int nlanes)
++{
++	return dmi_check_system(ipu4p_sp7_dmi_table) &&
++				csi2->port == 2 && nlanes == 2 &&
++				csi2->asd.source == IPU6_FW_ISYS_STREAM_SRC_CSI2_PORT0 + 7;
++}
++
++static void ipu4p_isys_apply_sp7_front_timing(struct ipu6_isys_csi2 *csi2)
++{
++	/*
++	 * Windows ConfigMipiClk programs this fixed receiver timing sequence.
++	 * The receiver uses the TERMEN/SETTLE registers in an unusual order
++	 * here, so keep the sequence identical to the firmware programming.
++	 */
++	writel(0, csi2->base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_CLANE);
++	writel(1155, csi2->base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_DLANE(0));
++
++	for (unsigned int i = 0; i < 8; i++) {
++		writel(0,
++		       csi2->base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_DLANE(i));
++		writel(1269,
++		       csi2->base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_DLANE(i + 1));
++	}
++}
+ 
+ static bool phy_jsl_bits;
+ module_param(phy_jsl_bits, bool, 0644);
+@@ -186,6 +224,7 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+ 	void __iomem *base;
+ 	u32 ctermen, csettle, dtermen, dsettle;
+ 	u32 value;
++	bool sp7_front;
+ 
+ 	if (!cfg || cfg->port >= isys->pdata->ipdata->csi2.nports)
+ 		return -EINVAL;
+@@ -219,12 +258,23 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+ 	dtermen = timing->dtermen;
+ 	dsettle = csi2_dsettle >= 0 ? csi2_dsettle : timing->dsettle;
+ 
+-	writel(ctermen, base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_CLANE);
+-	writel(csettle, base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_CLANE);
++	sp7_front = ipu4p_isys_sp7_front(csi2, cfg->nlanes);
++
++	if (sp7_front) {
++		ipu4p_isys_apply_sp7_front_timing(csi2);
+ 
+-	for (unsigned int lane = 0; lane < cfg->nlanes; lane++) {
+-		writel(dtermen, base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_DLANE(lane));
+-		writel(dsettle, base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_DLANE(lane));
++		/* Windows programs the lane count before RX_CONFIG. */
++		writel(cfg->nlanes, base + IPU4P_CSI2_RX_NOF_ENABLED_LANES);
++	} else {
++		writel(ctermen, base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_CLANE);
++		writel(csettle, base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_CLANE);
++
++		for (unsigned int lane = 0; lane < cfg->nlanes; lane++) {
++			writel(dtermen,
++			       base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_DLANE(lane));
++			writel(dsettle,
++			       base + IPU4P_CSI2_RX_DLY_CNT_SETTLE_DLANE(lane));
++		}
+ 	}
+ 
+ 	value = readl(base + IPU4P_CSI2_RX_CONFIG);
+@@ -232,8 +282,8 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+ 		 IPU4P_CSI2_RX_CONFIG_RELEASE_LP11;
+ 	writel(value, base + IPU4P_CSI2_RX_CONFIG);
+ 
+-	writel(cfg->nlanes, base + IPU4P_CSI2_RX_NOF_ENABLED_LANES);
+-	writel(0, base + IPU4P_CSI2_RX_ENABLE);
++	if (!sp7_front)
++		writel(cfg->nlanes, base + IPU4P_CSI2_RX_NOF_ENABLED_LANES);
+ 
+ 	ipu4p_isys_csi_irq_enable(isys, cfg->port);
+ 
+-- 
+2.55.0
+
