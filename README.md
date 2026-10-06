@@ -208,7 +208,7 @@ echo 'module intel_ipu6_isys -p' |
     sudo tee /sys/kernel/debug/dynamic_debug/control
 ```
 
-## Undo the DNF changes
+## Uninstall packages
 
 To review the transactions performed by DNF:
 
