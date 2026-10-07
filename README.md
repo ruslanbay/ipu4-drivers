@@ -76,6 +76,11 @@ Enable the IPU stack:
 ./scripts/config --enable CONFIG_VIDEO_INTEL_IPU6_IPU7
 ./scripts/config --module CONFIG_IPU_BRIDGE
 
+./scripts/config --module CONFIG_VIDEO_OV5693
+./scripts/config --module CONFIG_VIDEO_OV7251
+./scripts/config --module CONFIG_VIDEO_OV8865
+./scripts/config --module CONFIG_VIDEO_OV9734
+
 make olddefconfig
 ```
 
