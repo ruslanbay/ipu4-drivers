@@ -1,5 +1,5 @@
 From 5b55d6e020612f9f0417cdc2758e3037e612c57b Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sat, 10 Oct 2026 13:06:39 +0200
 Subject: [PATCH 09/13] media: ipu6: Add IPU4P ISYS ISR handling
 
