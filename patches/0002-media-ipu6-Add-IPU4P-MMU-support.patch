@@ -1,7 +1,7 @@
-From 41458535d7f19b466291ecdfd74ff198a435a86a Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Mon, 28 Sep 2026 10:56:36 +0000
-Subject: [PATCH 03/10] media: ipu6: Add IPU4P MMU support
+From f28b33377250017b0080e3ba8597f690186d5f8b Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Fri, 9 Oct 2026 22:53:01 +0200
+Subject: [PATCH 02/13] media: ipu6: Add IPU4P MMU support
 
 The IPU4P MMU uses the same MMUv2 page tables and register programming
 model as IPU6, but differs in register offsets, number of MMU instances,
@@ -15,8 +15,9 @@ Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
  drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c    | 109 ++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu6-mmu.c       |   7 +-
  drivers/media/pci/intel/ipu6/ipu6-mmu.h       |   1 +
- .../media/pci/intel/ipu6/ipu6-platform-regs.h |   1 +
- 4 files changed, 117 insertions(+), 1 deletion(-)
+ .../media/pci/intel/ipu6/ipu6-platform-regs.h |  11 ++
+ drivers/media/pci/intel/ipu6/ipu6.h           |   2 +
+ 5 files changed, 129 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c b/drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c
 index 2b395fbd5969..ca2b23741585 100644
@@ -185,17 +186,40 @@ index 44880478d242..455604eb8b64 100644
  
  struct ipu6_mmu *ipu6_mmu_init(struct device *dev,
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h b/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h
-index e8fbefbfa3c8..724b23997e91 100644
+index b883385adb44..f08e7e8fd87d 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h
 +++ b/drivers/media/pci/intel/ipu6/ipu6-platform-regs.h
-@@ -31,6 +31,7 @@
- #define IPU4P_MMU_L2_STREAM_ID_REG_OFFSET	0x4c
- #define IPU4P_MMU_MAX_TLB_L1_STREAMS		16
- #define IPU4P_MMU_MAX_TLB_L2_STREAMS		16
-+#define IPU4P_INFO_REQUEST_DESTINATION_PRIMARY	BIT(4)
+@@ -14,6 +14,17 @@
+  */
+ #define IPU6_UNIFIED_OFFSET			0
  
++#define IPU4P_ISYS_IOMMU0_OFFSET		0x000e0000
++#define IPU4P_ISYS_IOMMU1_OFFSET		0x000e0100
++
++#define IPU4P_PSYS_IOMMU0_OFFSET		0x000b0000
++#define IPU4P_PSYS_IOMMU1_OFFSET		0x000b0100
++#define IPU4P_PSYS_IOMMU1R_OFFSET		0x000b0600
++
++#define IPU4P_MMU_L1_STREAM_ID_REG_OFFSET	0x0c
++#define IPU4P_MMU_L2_STREAM_ID_REG_OFFSET	0x4c
++#define IPU4P_INFO_REQUEST_DESTINATION_PRIMARY	BIT(4)
++
  #define IPU6_ISYS_IOMMU0_OFFSET		0x2e0000
  #define IPU6_ISYS_IOMMU1_OFFSET		0x2e0500
+ #define IPU6_ISYS_IOMMUI_OFFSET		0x2e0a00
+diff --git a/drivers/media/pci/intel/ipu6/ipu6.h b/drivers/media/pci/intel/ipu6/ipu6.h
+index 321ca1d57157..2afbd70cae74 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6.h
++++ b/drivers/media/pci/intel/ipu6/ipu6.h
+@@ -93,6 +93,8 @@ struct ipu6_device {
+ 
+ #define IPU6_MMU_MAX_TLB_L1_STREAMS	32
+ #define IPU6_MMU_MAX_TLB_L2_STREAMS	32
++#define IPU4P_MMU_MAX_TLB_L1_STREAMS	16
++#define IPU4P_MMU_MAX_TLB_L2_STREAMS	16
+ #define IPU6_MAX_LI_BLOCK_ADDR		128
+ #define IPU6_MAX_L2_BLOCK_ADDR		64
+ 
 -- 
 2.55.0
 

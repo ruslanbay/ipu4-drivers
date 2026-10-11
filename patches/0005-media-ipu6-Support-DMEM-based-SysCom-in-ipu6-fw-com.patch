@@ -1,7 +1,7 @@
-From 1b0f32f0da04214e174588bccf88cc43ed1757c2 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Sat, 3 Oct 2026 10:52:18 +0000
-Subject: [PATCH 05/10] media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
+From b019135d0987aa4c99290ab7f6506da99e3c0156 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Sat, 10 Oct 2026 13:06:23 +0200
+Subject: [PATCH 05/13] media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
 
 Handle the IPU4P DMEM-based SysCom register layout and lifecycle in the
 existing firmware communication layer.

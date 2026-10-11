@@ -237,8 +237,8 @@ In a separate terminal:
 journalctl -f
 ```
 
-[ov5693 journalctl log](assets/journalctl-ov5693.txt)
-[ov8865 journalctl log](assets/journalctl-ov8865.txt)
+- [ov5693 journalctl log](assets/journalctl-ov5693.txt)
+- [ov8865 journalctl log](assets/journalctl-ov8865.txt)
 
 Copy Libcamera tuning files:
 
@@ -257,8 +257,8 @@ LIBCAMERA_LOG_LEVELS=*:DEBUG \
 ls -lh /tmp/ipu4p-*
 ```
 
-[ov5693 libcamera log](assets/libcamera-ov5693.txt)
-[ov8865 libcamera log](assets/libcamera-ov8865.txt)
+- [ov5693 libcamera log](assets/libcamera-ov5693.txt)
+- [ov8865 libcamera log](assets/libcamera-ov8865.txt)
 
 Disable the additional IPU6 ISYS debug output when finished:
 
