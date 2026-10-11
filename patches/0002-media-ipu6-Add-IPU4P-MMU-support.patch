@@ -1,5 +1,5 @@
 From f28b33377250017b0080e3ba8597f690186d5f8b Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Fri, 9 Oct 2026 22:53:01 +0200
 Subject: [PATCH 02/13] media: ipu6: Add IPU4P MMU support
 
