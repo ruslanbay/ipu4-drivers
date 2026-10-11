@@ -1,0 +1,796 @@
+echo 'module intel_ipu6_isys +pfl' |     sudo tee /sys/kernel/debug/dynamic_debug/control
+
+journalctl -f
+
+Oct 11 12:19:29 mac kernel: csi2_subscribe_event:131: intel_ipu6_isys.isys intel_ipu6.isys.40: csi2 subscribe event(type 4 id 0)
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:29 mac kernel: buf_queue:316: intel_ipu6_isys.isys intel_ipu6.isys.40: start_streaming hasn't been called yet on Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: start_streaming:487: intel_ipu6_isys.isys intel_ipu6.isys.40: stream: Intel IPU6 ISYS Capture 0: width 3264, height 2448, css pixelformat 24
+Oct 11 12:19:29 mac kernel: link_validate:399: intel_ipu6_isys.isys intel_ipu6.isys.40: validating link "Intel IPU6 CSI2 0":1 -> "Intel IPU6 ISYS Capture 0"
+Oct 11 12:19:29 mac kernel: ipu6_isys_video_prepare_stream:642: intel_ipu6_isys.isys intel_ipu6.isys.40: prepare stream: external entity ov8865 2-0010
+Oct 11 12:19:29 mac kernel: start_streaming:533: intel_ipu6_isys.isys intel_ipu6.isys.40: queue 1 of 1
+Oct 11 12:19:29 mac kernel: update_watermark_setting:652: intel_ipu6_isys.isys intel_ipu6.isys.40: threshold: 64 critical: 96
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000df6d5a39, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu6_isys_video_set_streaming:910: intel_ipu6_isys.isys intel_ipu6.isys.40: set stream: 1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_stream_cfg:436: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P ISYS stream cfg: src=3 vc=0 in_pins=1 out_pins=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_stream_cfg:440: intel_ipu6_isys.isys intel_ipu6.isys.40:   input[0]: 3264x2448 dt=0x2b bpp=10
+Oct 11 12:19:29 mac kernel: ipu4p_dump_stream_cfg:447: intel_ipu6_isys.isys intel_ipu6.isys.40:   output[0]: 3264x2448 stride=6528 pt=3 ft=24
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 00 STREAM_OPEN_DONE, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: start_stream_firmware:500: intel_ipu6_isys.isys intel_ipu6.isys.40: start stream: open complete
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000df6d5a39 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 02 STREAM_START_AND_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: start_stream_firmware:536: intel_ipu6_isys.isys intel_ipu6.isys.40: start stream: complete
+Oct 11 12:19:29 mac kernel: ipu6_isys_video_set_streaming:947: intel_ipu6_isys.isys intel_ipu6.isys.40: stream on Intel IPU6 CSI2 0 pad 1 mask 0x1
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_calc_timing:213: intel_ipu6_isys.isys intel_ipu6.isys.40: ctermen 0 csettle 672 dtermen 0 dsettle 658
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000053f51799, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=1 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e01000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000053f51799 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000005a4fd685, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=2 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e09000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000005a4fd685 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000008ecc6b6b, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=3 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e11000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000008ecc6b6b flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c3233ae5, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 0, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 0), timestamp 0x00000003c3233ae5
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c34a37c1, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 1
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 0), timestamp 0x00000003c34a37c1
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c3233ae5, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 0 for ts 16158767845
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:414627939157, sequence:0
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:414521313995
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_error:283: intel_ipu6_isys.isys intel_ipu6.isys.40: csi2-0 info: Escape mode ultra-low power state exit for clock lane
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 11 STREAM_START_AND_CAPTURE_DONE, stream 0, ts 0x00000003c3233ae5, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c34a4e47, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 1, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 1), timestamp 0x00000003c34a4e47
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000006c972c06, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=4 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e19000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000006c972c06 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c3714c23, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 2
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 0), timestamp 0x00000003c3714c23
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c34a4e47, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 1 for ts 16161328711
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:414694686741, sequence:1
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:414587968856
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c34a4e47, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c37161d0, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 2, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 2), timestamp 0x00000003c37161d0
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000038ce4b41, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=5 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e21000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000038ce4b41 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c3985ec3, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 3
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 1), timestamp 0x00000003c3985ec3
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c37161d0, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 2 for ts 16163889616
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:414761314559, sequence:2
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:414654696262
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c37161d0, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c398754c, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 3, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 3), timestamp 0x00000003c398754c
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000004d7e1d0d, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=6 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e29000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000004d7e1d0d flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c3bf725e, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 4
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 2), timestamp 0x00000003c3bf725e
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c398754c, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 3 for ts 16166450508
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:414828187314, sequence:3
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:414721276524
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c398754c, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c3bf88d4, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 4, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 4), timestamp 0x00000003c3bf88d4
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000c4d3ebc3, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=7 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e31000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000c4d3ebc3 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c3e685e4, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 5
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 3), timestamp 0x00000003c3e685e4
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c3bf88d4, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 4 for ts 16169011412
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:414894954962, sequence:4
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:414787920194
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c3bf88d4, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c3e69cd3, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 5, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 5), timestamp 0x00000003c3e69cd3
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000eff092d4, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=8 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e39000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000eff092d4 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c40d9969, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 6
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 4), timestamp 0x00000003c40d9969
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c3e69cd3, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 5 for ts 16171572435
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:414961655807, sequence:5
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:414854608870
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c3e69cd3, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c40db01b, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 6, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 6), timestamp 0x00000003c40db01b
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000084d481e5, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=9 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e41000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000084d481e5 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c434acd8, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 7
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 5), timestamp 0x00000003c434acd8
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c40db01b, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 6 for ts 16174133275
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415028294843, sequence:6
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:414921327198
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c40db01b, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c434c350, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 7, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 7), timestamp 0x00000003c434c350
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:29 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:29 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:29 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:29 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000060468a24, 1 buffers
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=10 outputs=1
+Oct 11 12:19:29 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e49000
+Oct 11 12:19:29 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000060468a24 flags 2, s 0, 1 bufs
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c45bc055, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 8
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 6), timestamp 0x00000003c45bc055
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c434c350, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:29 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 7 for ts 16176694096
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415095041520, sequence:7
+Oct 11 12:19:29 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:414987980273
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c434c350, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c45bd721, pin 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 8, vc: 0
+Oct 11 12:19:29 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 8), timestamp 0x00000003c45bd721
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000006c972c06, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=11 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e51000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000006c972c06 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c482d3d6, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 9
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 7), timestamp 0x00000003c482d3d6
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c45bd721, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 8 for ts 16179255073
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415161667442, sequence:8
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:415054711973
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c45bd721, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c482ea95, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 9, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 9), timestamp 0x00000003c482ea95
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000087df57f3, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=12 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e59000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000087df57f3 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c4a9e744, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 10
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 8), timestamp 0x00000003c4a9e744
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c482ea95, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 9 for ts 16181815957
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415228110921, sequence:9
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:415121549459
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c482ea95, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c4a9fdc9, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 10, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 10), timestamp 0x00000003c4a9fdc9
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000007c93c23b, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=13 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e61000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000007c93c23b flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c4d0fada, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 11
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 9), timestamp 0x00000003c4d0fada
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c4a9fdc9, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 10 for ts 16184376777
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415295114125, sequence:10
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:415188048249
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c4a9fdc9, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c4d111d4, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 11, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 11), timestamp 0x00000003c4d111d4
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000060468a24, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=14 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e69000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000060468a24 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c4f80e4d, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 12
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 10), timestamp 0x00000003c4f80e4d
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c4d111d4, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 11 for ts 16186937812
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415361598118, sequence:11
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:415254867839
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c4d111d4, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c4f824f0, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 12, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 12), timestamp 0x00000003c4f824f0
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000001cb5d0b0, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=15 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e71000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000001cb5d0b0 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c51f2a85, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 13
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 11), timestamp 0x00000003c51f2a85
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c4f824f0, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 12 for ts 16189498608
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415428540347, sequence:12
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:415321402290
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c4f824f0, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c51f38b4, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 13, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 13), timestamp 0x00000003c51f38b4
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000001028f3be, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=16 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e79000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000001028f3be flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c546356e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 14
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 12), timestamp 0x00000003c546356e
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c51f38b4, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 13 for ts 16192059572
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415495119348, sequence:13
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:415388161768
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c51f38b4, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c5464c18, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 14, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 14), timestamp 0x00000003c5464c18
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000306a9b0d, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=17 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080703000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000306a9b0d flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c56d48d0, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 15
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 13), timestamp 0x00000003c56d48d0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c5464c18, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 14 for ts 16194620440
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415561872367, sequence:14
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:415454812608
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c5464c18, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c56d5f58, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 15, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 15), timestamp 0x00000003c56d5f58
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000084d481e5, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=18 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080705000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000084d481e5 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c5946516, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 16
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 14), timestamp 0x00000003c5946516
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c56d5f58, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 15 for ts 16197181272
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415628607753, sequence:15
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:415521472887
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c56d5f58, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c5947309, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 16, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 16), timestamp 0x00000003c5947309
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000001720e786, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=19 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080707000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000001720e786 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c5bb6fc1, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 17
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 15), timestamp 0x00000003c5bb6fc1
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c5947309, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 16 for ts 16199742217
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415695008114, sequence:16
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:415588338806
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c5947309, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c5bb864e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 17, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 17), timestamp 0x00000003c5bb864e
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000080cf408d, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=20 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080df9000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000080cf408d flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c5e2864c, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 18
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 16), timestamp 0x00000003c5e2864c
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c5bb864e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 17 for ts 16202303054
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415761722322, sequence:17
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:415655011621
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c5bb864e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c5e299e8, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 18, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 18), timestamp 0x00000003c5e299e8
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000008af0b834, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=21 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e01000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000008af0b834 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c60996e2, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 19
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 17), timestamp 0x00000003c60996e2
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c5e299e8, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 18 for ts 16204863976
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415828586383, sequence:18
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:415721597981
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c5e299e8, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c609ad6c, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 19, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 19), timestamp 0x00000003c609ad6c
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000046e76f6d, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=22 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e09000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000046e76f6d flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c630aa5e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 20
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 18), timestamp 0x00000003c630aa5e
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c609ad6c, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 19 for ts 16207424876
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415895101521, sequence:19
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:415788393632
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c609ad6c, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c630c0e5, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 20, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 20), timestamp 0x00000003c630c0e5
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000355b8d5b, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=23 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e11000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000355b8d5b flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c657bde7, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 21
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 19), timestamp 0x00000003c657bde7
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c630c0e5, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 20 for ts 16209985765
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:415961961887, sequence:20
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:415854981070
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c630c0e5, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c657d45e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 21, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 21), timestamp 0x00000003c657d45e
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000008e081630, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=24 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e19000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000008e081630 flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c67ed16a, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 22
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 20), timestamp 0x00000003c67ed16a
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c657d45e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 21 for ts 16212546654
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416028427883, sequence:21
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:415921805077
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c657d45e, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c67ee7f6, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 22, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 22), timestamp 0x00000003c67ee7f6
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:30 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:30 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:30 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:30 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000008ecc6b6b, 1 buffers
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=25 outputs=1
+Oct 11 12:19:30 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e21000
+Oct 11 12:19:30 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000008ecc6b6b flags 2, s 0, 1 bufs
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c6a5e4c6, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 23
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 21), timestamp 0x00000003c6a5e4c6
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c67ee7f6, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:30 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 22 for ts 16215107574
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416095177143, sequence:22
+Oct 11 12:19:30 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:415988460642
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c67ee7f6, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c6a5fb3f, pin 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 23, vc: 0
+Oct 11 12:19:30 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 23), timestamp 0x00000003c6a5fb3f
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000008ddf729c, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=26 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e29000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000008ddf729c flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c6ccf844, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 24
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 22), timestamp 0x00000003c6ccf844
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c6a5fb3f, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 23 for ts 16217668415
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416161837547, sequence:23
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:416055165985
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c6a5fb3f, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c6cd0ecc, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 24, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 24), timestamp 0x00000003c6cd0ecc
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000f268b611, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=27 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e31000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000f268b611 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c6f40bd2, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 25
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 23), timestamp 0x00000003c6f40bd2
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c6cd0ecc, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 24 for ts 16220229324
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416228761661, sequence:24
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:416121715875
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c6cd0ecc, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c6f422ca, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 25, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 25), timestamp 0x00000003c6f422ca
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000002cb9b064, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=28 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e39000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000002cb9b064 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c71b1f65, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 26
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 24), timestamp 0x00000003c71b1f65
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c6f422ca, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 25 for ts 16222790346
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416295425187, sequence:25
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:416188427132
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c6f422ca, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c71b3602, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 26, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 26), timestamp 0x00000003c71b3602
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000008af0b834, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=29 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e41000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000008af0b834 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c74232db, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 27
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 25), timestamp 0x00000003c74232db
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c71b3602, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 26 for ts 16225351170
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416361901843, sequence:26
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:416255241984
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c71b3602, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c742495e, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 27, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 27), timestamp 0x00000003c742495e
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000007d206a2, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=30 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e49000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000007d206a2 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c7694f06, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 28
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 26), timestamp 0x00000003c7694f06
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c742495e, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 27 for ts 16227912030
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416428892048, sequence:27
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:416321750458
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c742495e, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c7695d04, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 28, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 28), timestamp 0x00000003c7695d04
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000005c6fa809, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=31 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e51000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000005c6fa809 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c7906284, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 29
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 27), timestamp 0x00000003c7906284
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c7695d04, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 28 for ts 16230472964
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416495586304, sequence:28
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:416388439730
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c7695d04, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c7907079, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 29, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 29), timestamp 0x00000003c7907079
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000005a4fd685, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=32 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e59000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000005a4fd685 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c7b76d53, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 30
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 28), timestamp 0x00000003c7b76d53
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c7907079, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 29 for ts 16233033849
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416561976530, sequence:29
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:416455308843
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c7907079, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c7b783fb, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 30, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 30), timestamp 0x00000003c7b783fb
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 000000007c93c23b, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=33 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080e61000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 000000007c93c23b flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c7de8564, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 31
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 29), timestamp 0x00000003c7de8564
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c7b783fb, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 30 for ts 16235594747
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416628703725, sequence:30
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:416521976766
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c7b783fb, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c7de9749, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 31, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 31), timestamp 0x00000003c7de9749
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000007d206a2, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=34 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080e69000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000007d206a2 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c80599e9, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 32
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 30), timestamp 0x00000003c80599e9
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c7de9749, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fb2f4000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 31 for ts 16238155593
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416695417698, sequence:31
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:3, vbuf timestamp:416588650308
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c7de9749, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c805ab00, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 32, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 32), timestamp 0x00000003c805ab00
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 3 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fb2f4000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 3
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 0000000050f20583, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=35 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfb2f4000 token=0xffffd24080e71000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 0000000050f20583 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c82ca845, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 33
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 31), timestamp 0x00000003c82ca845
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c805ab00, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000ff0ac000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 32 for ts 16240716544
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416762264373, sequence:32
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:0, vbuf timestamp:416655248868
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c805ab00, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c82cbe70, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 33, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 33), timestamp 0x00000003c82cbe70
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 0 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000ff0ac000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 0
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000108b3361, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=36 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xff0ac000 token=0xffffd24080e79000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000108b3361 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c853bbba, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 34
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 32), timestamp 0x00000003c853bbba
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c82cbe70, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fe16c000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 33 for ts 16243277424
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416828963461, sequence:33
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:1, vbuf timestamp:416721932383
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c82cbe70, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c853d1c8, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 34, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 34), timestamp 0x00000003c853d1c8
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 1 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fe16c000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 1
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000039dce8b, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=37 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfe16c000 token=0xffffd24080703000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000039dce8b flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 10 FRAME_EOF, stream 0, ts 0x00000003c87aceca, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_eof_event_by_stream:780: intel_ipu6_isys.isys intel_ipu6.isys.40: eof_event::csi2-0 sequence: 35
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:635: intel_ipu6_isys.isys intel_ipu6.isys.40: eof: handle 0: (index 33), timestamp 0x00000003c87aceca
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 07 PIN_DATA_READY, stream 0, ts 0x00000003c853d1c8, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_stream_buf_ready:732: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: found buffer 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: get_sof_sequence_by_timestamp:620: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: using seq nr 34 for ts 16245838280
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:665: intel_ipu6_isys.isys intel_ipu6.isys.40: buf: Intel IPU6 ISYS Capture 0: buffer done, CPU-timestamp:416895650029, sequence:34
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_calc_sequence_time:667: intel_ipu6_isys.isys intel_ipu6.isys.40: index:2, vbuf timestamp:416788622591
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 12 STREAM_CAPTURE_DONE, stream 0, ts 0x00000003c853d1c8, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 03 STREAM_CAPTURE_ACK, stream 0, ts 0x0000000000000000, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:537: intel_ipu6_isys.isys intel_ipu6.isys.40: FW resp 09 FRAME_SOF, stream 0, ts 0x00000003c87ae5ac, pin 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_csi2_sof_event_by_stream:770: intel_ipu6_isys.isys intel_ipu6.isys.40: sof_event::csi2-0 sequence: 35, vc: 0
+Oct 11 12:19:31 mac kernel: ipu6_isys_handle_response:625: intel_ipu6_isys.isys intel_ipu6.isys.40: sof: handle 0: (index 35), timestamp 0x00000003c87ae5ac
+Oct 11 12:19:31 mac kernel: ipu6_isys_buf_prepare:88: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: configured size 15987072, buffer size 15987072
+Oct 11 12:19:31 mac kernel: buf_queue:306: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buffer 2 for Intel IPU6 ISYS Capture 0
+Oct 11 12:19:31 mac kernel: buf_queue:309: intel_ipu6_isys.isys intel_ipu6.isys.40: iova: iova 0x00000000fc234000
+Oct 11 12:19:31 mac kernel: buffer_list_get:221: intel_ipu6_isys.isys intel_ipu6.isys.40: buffer: Intel IPU6 ISYS Capture 0: buffer 2
+Oct 11 12:19:31 mac kernel: buffer_list_get:231: intel_ipu6_isys.isys intel_ipu6.isys.40: get buffer list 00000000d6cd7315, 1 buffers
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:532: intel_ipu6_isys.isys intel_ipu6.isys.40: IPU4P frame buff set: fid=38 outputs=1
+Oct 11 12:19:31 mac kernel: ipu4p_dump_frame_buf_set:535: intel_ipu6_isys.isys intel_ipu6.isys.40:   pin[0]: addr=0xfc234000 token=0xffffd24080705000
+Oct 11 12:19:31 mac kernel: ipu6_isys_buffer_list_queue:136: intel_ipu6_isys.isys intel_ipu6.isys.40: queue buf list 00000000d6cd7315 flags 2, s 0, 1 bufs
+Oct 11 12:19:31 mac kernel: ipu6_isys_video_set_streaming:910: intel_ipu6_isys.isys intel_ipu6.isys.40: set stream: 0
+Oct 11 12:19:33 mac kernel: intel_ipu6_isys.isys intel_ipu6.isys.40: stream stop time out
+Oct 11 12:19:33 mac kernel: ipu6_isys_video_set_streaming:930: intel_ipu6_isys.isys intel_ipu6.isys.40: stream off entity Intel IPU6 CSI2 0 pad:1 mask:0x1
+Oct 11 12:19:35 mac kernel: intel_ipu6_isys.isys intel_ipu6.isys.40: stream close time out

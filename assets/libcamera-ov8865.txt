@@ -1,0 +1,1217 @@
+LIBCAMERA_LOG_LEVELS=DEBUG qcam
+[0:06:42.126893059] [4701]  INFO Camera camera_manager.cpp:340 libcamera v0.7.1
+[0:06:42.127170455] [4714] DEBUG Camera camera_manager.cpp:73 Starting camera manager
+[0:06:42.127288915] [4714] DEBUG IPAModule ipa_module.cpp:333 ipa_ipu3.so: IPA module /usr/lib64/libcamera/ipa/ipa_ipu3.so is signed
+[0:06:42.127311770] [4714] DEBUG IPAManager ipa_manager.cpp:240 Loaded IPA module '/usr/lib64/libcamera/ipa/ipa_ipu3.so'
+[0:06:42.127339386] [4714] DEBUG IPAModule ipa_module.cpp:333 ipa_soft_simple.so: IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so is signed
+[0:06:42.127351408] [4714] DEBUG IPAManager ipa_manager.cpp:240 Loaded IPA module '/usr/lib64/libcamera/ipa/ipa_soft_simple.so'
+[0:06:42.127367773] [4714] DEBUG IPAModule ipa_module.cpp:333 ipa_vimc.so: IPA module /usr/lib64/libcamera/ipa/ipa_vimc.so is signed
+[0:06:42.127376190] [4714] DEBUG IPAManager ipa_manager.cpp:240 Loaded IPA module '/usr/lib64/libcamera/ipa/ipa_vimc.so'
+[0:06:42.140920844] [4714] DEBUG DeviceEnumerator device_enumerator.cpp:267 New media device "intel-ipu6" created from /dev/media0
+[0:06:42.141455235] [4714] DEBUG DeviceEnumerator device_enumerator_udev.cpp:109 Defer media device /dev/media0 due to 67 missing dependencies
+[0:06:42.148005275] [4714] DEBUG DeviceEnumerator device_enumerator_udev.cpp:344 All dependencies for media device /dev/media0 found
+[0:06:42.148057481] [4714] DEBUG DeviceEnumerator device_enumerator.cpp:295 Added device /dev/media0: intel-ipu6
+[0:06:42.148776575] [4714] DEBUG Camera camera_manager.cpp:143 Found registered pipeline handler 'ipu3'
+[0:06:42.148827524] [4714] DEBUG Camera camera_manager.cpp:143 Found registered pipeline handler 'simple'
+[0:06:42.148837023] [4714] DEBUG DeviceEnumerator device_enumerator.cpp:355 Successful match for media device "intel-ipu6"
+[0:06:42.148891053] [4714] DEBUG SimplePipeline simple.cpp:1903 Sensor found for /dev/media0
+[0:06:42.148919316] [4714] DEBUG SimplePipeline simple.cpp:501 Found capture device Intel IPU6 ISYS Capture 0
+[0:06:42.148929818] [4714] DEBUG CameraSensor camera_sensor_raw.cpp:213 ov8865 2-0010: unsupported number of sinks (0) or sources (1)
+[0:06:42.148940522] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Red Balance (0x0098090e)
+[0:06:42.148988795] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Blue Balance (0x0098090f)
+[0:06:42.148993060] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Exposure (0x00980911)
+[0:06:42.149042387] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Horizontal Flip (0x00980914)
+[0:06:42.149046450] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Vertical Flip (0x00980915)
+[0:06:42.149050854] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Camera Orientation (0x009a0922)
+[0:06:42.149058189] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Camera Sensor Rotation (0x009a0923)
+[0:06:42.149062968] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Vertical Blanking (0x009e0901)
+[0:06:42.149066770] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Horizontal Blanking (0x009e0902)
+[0:06:42.149070353] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Analogue Gain (0x009e0903)
+[0:06:42.149074574] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Link Frequency (0x009f0901)
+[0:06:42.149078929] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Pixel Rate (0x009f0902)
+[0:06:42.149082530] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Test Pattern (0x009f0903)
+[0:06:42.149231534] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:547 'ov8865 2-0010': Test pattern mode 1 ignored
+[0:06:42.149237970] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:547 'ov8865 2-0010': Test pattern mode 3 ignored
+[0:06:42.149240129] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:547 'ov8865 2-0010': Test pattern mode 4 ignored
+[0:06:42.149242168] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:547 'ov8865 2-0010': Test pattern mode 5 ignored
+[0:06:42.178362887] [4714] DEBUG V4L2 v4l2_device.cpp:743 'dw9719 2-000c': Control: Focus, Absolute (0x009a090a)
+[0:06:42.178439679] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:1028 'ov8865 2-0010': Apply test pattern mode 0
+[0:06:42.178463240] [4714] DEBUG CameraSensor camera_sensor.cpp:476 Entity 'ov8865 2-0010' matched by CameraSensorLegacy
+[0:06:42.178470965] [4714]  WARN CameraSensor camera_sensor_legacy.cpp:502 'ov8865 2-0010': No sensor delays found in static properties. Assuming unverified defaults.
+[0:06:42.178496085] [4714] DEBUG DelayedControls delayed_controls.cpp:99 Set a delay of 2 and priority write flag 0 for Exposure
+[0:06:42.178505863] [4714] DEBUG DelayedControls delayed_controls.cpp:99 Set a delay of 1 and priority write flag 0 for Analogue Gain
+[0:06:42.178523616] [4714] DEBUG SimplePipeline simple.cpp:575 Found pipeline: [ov8865 2-0010|0] -> [0|Intel IPU6 CSI2 0|1] -> [0|Intel IPU6 ISYS Capture 0]
+[0:06:42.178584806] [4714] DEBUG SimplePipeline simple.cpp:501 Found capture device Intel IPU6 ISYS Capture 16
+[0:06:42.178595178] [4714] DEBUG CameraSensor camera_sensor_raw.cpp:213 ov5693 1-0036: unsupported number of sinks (0) or sources (1)
+[0:06:42.178614977] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Exposure (0x00980911)
+[0:06:42.178626603] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Horizontal Flip (0x00980914)
+[0:06:42.178636664] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Vertical Flip (0x00980915)
+[0:06:42.178649043] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Camera Orientation (0x009a0922)
+[0:06:42.178667170] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Camera Sensor Rotation (0x009a0923)
+[0:06:42.178679741] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Vertical Blanking (0x009e0901)
+[0:06:42.178690684] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Horizontal Blanking (0x009e0902)
+[0:06:42.178701647] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Analogue Gain (0x009e0903)
+[0:06:42.178712360] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Link Frequency (0x009f0901)
+[0:06:42.178725193] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Pixel Rate (0x009f0902)
+[0:06:42.178736093] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Test Pattern (0x009f0903)
+[0:06:42.178750924] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Digital Gain (0x009f0905)
+[0:06:42.178924143] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:547 'ov5693 1-0036': Test pattern mode 1 ignored
+[0:06:42.178958494] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:547 'ov5693 1-0036': Test pattern mode 3 ignored
+[0:06:42.178967367] [4714] DEBUG CameraSensor camera_sensor_legacy.cpp:1028 'ov5693 1-0036': Apply test pattern mode 0
+[0:06:42.178980818] [4714] DEBUG CameraSensor camera_sensor.cpp:476 Entity 'ov5693 1-0036' matched by CameraSensorLegacy
+[0:06:42.178989493] [4714]  WARN CameraSensor camera_sensor_legacy.cpp:502 'ov5693 1-0036': No sensor delays found in static properties. Assuming unverified defaults.
+[0:06:42.178998384] [4714] DEBUG DelayedControls delayed_controls.cpp:99 Set a delay of 2 and priority write flag 0 for Exposure
+[0:06:42.179037400] [4714] DEBUG DelayedControls delayed_controls.cpp:99 Set a delay of 1 and priority write flag 0 for Analogue Gain
+[0:06:42.179052867] [4714] DEBUG SimplePipeline simple.cpp:575 Found pipeline: [ov5693 1-0036|0] -> [0|Intel IPU6 CSI2 2|1] -> [0|Intel IPU6 ISYS Capture 16]
+[0:06:42.179085618] [4714] DEBUG V4L2 v4l2_videodevice.cpp:632 /dev/video0[30:cap]: Opened device PCI:0000:00:05.0: isys: ipu6
+[0:06:42.179156472] [4714] DEBUG V4L2 v4l2_videodevice.cpp:632 /dev/video16[31:cap]: Opened device PCI:0000:00:05.0: isys: ipu6
+[0:06:42.179230622] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Red Balance (0x0098090e)
+[0:06:42.179244034] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Blue Balance (0x0098090f)
+[0:06:42.179254706] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Exposure (0x00980911)
+[0:06:42.179265569] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Horizontal Flip (0x00980914)
+[0:06:42.179276093] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Vertical Flip (0x00980915)
+[0:06:42.179288129] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Camera Orientation (0x009a0922)
+[0:06:42.179303694] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Camera Sensor Rotation (0x009a0923)
+[0:06:42.179316550] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Vertical Blanking (0x009e0901)
+[0:06:42.179327590] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Horizontal Blanking (0x009e0902)
+[0:06:42.179338155] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Analogue Gain (0x009e0903)
+[0:06:42.179350001] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Link Frequency (0x009f0901)
+[0:06:42.179361782] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Pixel Rate (0x009f0902)
+[0:06:42.179372560] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov8865 2-0010': Control: Test Pattern (0x009f0903)
+[0:06:42.179406029] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Exposure (0x00980911)
+[0:06:42.179417915] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Horizontal Flip (0x00980914)
+[0:06:42.179428400] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Vertical Flip (0x00980915)
+[0:06:42.179439654] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Camera Orientation (0x009a0922)
+[0:06:42.179454731] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Camera Sensor Rotation (0x009a0923)
+[0:06:42.179466673] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Vertical Blanking (0x009e0901)
+[0:06:42.179476911] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Horizontal Blanking (0x009e0902)
+[0:06:42.179487814] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Analogue Gain (0x009e0903)
+[0:06:42.179499316] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Link Frequency (0x009f0901)
+[0:06:42.179510994] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Pixel Rate (0x009f0902)
+[0:06:42.179521664] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Test Pattern (0x009f0903)
+[0:06:42.179537267] [4714] DEBUG V4L2 v4l2_device.cpp:743 'ov5693 1-0036': Control: Digital Gain (0x009f0905)
+[0:06:42.179570825] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/linux,cma: No such file or directory
+[0:06:42.179593189] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/reserved: No such file or directory
+[0:06:42.179605606] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/system: Permission denied
+[0:06:42.179620793] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:112 Using /dev/udmabuf
+[0:06:42.181211542] [4714] DEBUG IPAManager ipa_manager.cpp:310 IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so signature is not valid
+[0:06:42.181236525] [4714] DEBUG IPAProxy soft_ipa_proxy.cpp:175 initializing soft proxy in isolation: loading IPA from /usr/lib64/libcamera/ipa/ipa_soft_simple.so
+[0:06:42.182323866] [4714] DEBUG Process process.cpp:173 0x7f0c6c005f80[4715:41] forked
+[0:06:42.182371056] [4714]  INFO IPAProxy ipa_proxy.cpp:184 Using tuning file /usr/share/libcamera/ipa/simple/ov8865.yaml
+[0:06:42.182417024] [4714] DEBUG Timer timer.cpp:93 Starting timer 0x7f0c7aff9870: deadline 0:06:44.182415833
+[0:06:42.182426400] [4714] DEBUG Event event_dispatcher_poll.cpp:215 next timer 0x7f0c7aff9870 expires in 1.999991348
+[0:06:42.195037542] [4715]  INFO IPAProxySoftWorker soft_ipa_proxy_worker.cpp:443 Starting worker for IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so with IPC fd = 40
+[0:06:42.195132146] [4715] DEBUG IPAModule ipa_module.cpp:333 ipa_soft_simple.so: IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so is signed
+[0:06:42.195653283] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:474 Proxy worker successfully initialized
+[0:06:42.195757407] [4715] DEBUG IPASoft soft_simple.cpp:127 IPASoft: Tuning file version 1
+[0:06:42.195765619] [4715] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'BlackLevel'
+[0:06:42.195769997] [4715] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Awb'
+[0:06:42.195778410] [4715] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Ccm'
+[0:06:42.195783935] [4715] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Adjust'
+[0:06:42.195787614] [4715] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Agc'
+[0:06:42.195823074] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:151 Done replying to init()
+[0:06:42.195938133] [4714] DEBUG MediaDevice media_device.cpp:854 /dev/media0[intel-ipu6]: 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: 0
+[0:06:42.195955498] [4714] DEBUG MediaDevice media_device.cpp:854 /dev/media0[intel-ipu6]: 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: 1
+[0:06:42.196020013] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov8865 2-0010'[0] -> 'Intel IPU6 CSI2 0'[0]: configured with format 800x600-SBGGR10_1X10/RAW
+[0:06:42.196028414] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: configured with format 800x600-SBGGR10_1X10/RAW
+[0:06:42.196038969] [4714] DEBUG SimplePipeline simple.cpp:716 Adding configuration for 800x600 in pixel formats [ BG10, pBAA ]
+[0:06:42.196067471] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov8865 2-0010'[0] -> 'Intel IPU6 CSI2 0'[0]: configured with format 1632x1224-SBGGR10_1X10/RAW
+[0:06:42.196071399] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: configured with format 1632x1224-SBGGR10_1X10/RAW
+[0:06:42.196078028] [4714] DEBUG SimplePipeline simple.cpp:716 Adding configuration for 1632x1224 in pixel formats [ BG10, pBAA ]
+[0:06:42.196114412] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov8865 2-0010'[0] -> 'Intel IPU6 CSI2 0'[0]: configured with format 3264x1836-SBGGR10_1X10/RAW
+[0:06:42.196120128] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: configured with format 3264x1836-SBGGR10_1X10/RAW
+[0:06:42.196126757] [4714] DEBUG SimplePipeline simple.cpp:716 Adding configuration for 3264x1836 in pixel formats [ BG10, pBAA ]
+[0:06:42.196150009] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov8865 2-0010'[0] -> 'Intel IPU6 CSI2 0'[0]: configured with format 3264x2448-SBGGR10_1X10/RAW
+[0:06:42.196153866] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: configured with format 3264x2448-SBGGR10_1X10/RAW
+[0:06:42.196160680] [4714] DEBUG SimplePipeline simple.cpp:716 Adding configuration for 3264x2448 in pixel formats [ BG10, pBAA ]
+[0:06:42.196190403] [4714] DEBUG SimplePipeline simple.cpp:674 Using frameStart signal from 'Intel IPU6 CSI2 0'
+[0:06:42.196202348] [4714]  INFO Camera camera_manager.cpp:223 Adding camera '\_SB_.PCI0.I2C3.CAMR' for pipeline handler simple
+[0:06:42.196220555] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/linux,cma: No such file or directory
+[0:06:42.196231435] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/reserved: No such file or directory
+[0:06:42.196237346] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/system: Permission denied
+[0:06:42.196249756] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:112 Using /dev/udmabuf
+[0:06:42.197112499] [4714] DEBUG IPAManager ipa_manager.cpp:310 IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so signature is not valid
+[0:06:42.197151081] [4714] DEBUG IPAProxy soft_ipa_proxy.cpp:175 initializing soft proxy in isolation: loading IPA from /usr/lib64/libcamera/ipa/ipa_soft_simple.so
+[0:06:42.198263400] [4714] DEBUG Process process.cpp:173 0x7f0c6c04b1a0[4718:46] forked
+[0:06:42.198316979] [4714]  INFO IPAProxy ipa_proxy.cpp:184 Using tuning file /usr/share/libcamera/ipa/simple/ov5693.yaml
+[0:06:42.198366038] [4714] DEBUG Timer timer.cpp:93 Starting timer 0x7f0c7aff9870: deadline 0:06:44.198365654
+[0:06:42.198376888] [4714] DEBUG Event event_dispatcher_poll.cpp:215 next timer 0x7f0c7aff9870 expires in 1.999989196
+[0:06:42.211514740] [4718]  INFO IPAProxySoftWorker soft_ipa_proxy_worker.cpp:443 Starting worker for IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so with IPC fd = 45
+[0:06:42.211597196] [4718] DEBUG IPAModule ipa_module.cpp:333 ipa_soft_simple.so: IPA module /usr/lib64/libcamera/ipa/ipa_soft_simple.so is signed
+[0:06:42.212152318] [4718] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:474 Proxy worker successfully initialized
+[0:06:42.212339495] [4718] DEBUG IPASoft soft_simple.cpp:127 IPASoft: Tuning file version 1
+[0:06:42.212351348] [4718] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'BlackLevel'
+[0:06:42.212356062] [4718] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Awb'
+[0:06:42.212373206] [4718] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Ccm'
+[0:06:42.212379661] [4718] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Adjust'
+[0:06:42.212383767] [4718] DEBUG IPAModuleAlgo module.h:103 IPASoft: Instantiated algorithm 'Agc'
+[0:06:42.212451225] [4718] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:151 Done replying to init()
+[0:06:42.212537778] [4714] DEBUG MediaDevice media_device.cpp:854 /dev/media0[intel-ipu6]: 'Intel IPU6 CSI2 2'[1] -> 'Intel IPU6 ISYS Capture 16'[0]: 0
+[0:06:42.212560237] [4714] DEBUG MediaDevice media_device.cpp:854 /dev/media0[intel-ipu6]: 'Intel IPU6 CSI2 2'[1] -> 'Intel IPU6 ISYS Capture 16'[0]: 1
+[0:06:42.212629308] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov5693 1-0036'[0] -> 'Intel IPU6 CSI2 2'[0]: configured with format 1296x972-SBGGR10_1X10/Unset
+[0:06:42.212639762] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 2'[1] -> 'Intel IPU6 ISYS Capture 16'[0]: configured with format 1296x972-SBGGR10_1X10/Unset
+[0:06:42.212661480] [4714] DEBUG SimplePipeline simple.cpp:716 Adding configuration for 1296x972 in pixel formats [ BG10, pBAA ]
+[0:06:42.212712595] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov5693 1-0036'[0] -> 'Intel IPU6 CSI2 2'[0]: configured with format 2592x1944-SBGGR10_1X10/Unset
+[0:06:42.212719750] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 2'[1] -> 'Intel IPU6 ISYS Capture 16'[0]: configured with format 2592x1944-SBGGR10_1X10/Unset
+[0:06:42.212733934] [4714] DEBUG SimplePipeline simple.cpp:716 Adding configuration for 2592x1944 in pixel formats [ BG10, pBAA ]
+[0:06:42.212770887] [4714] DEBUG SimplePipeline simple.cpp:674 Using frameStart signal from 'Intel IPU6 CSI2 2'
+[0:06:42.212789818] [4714]  INFO Camera camera_manager.cpp:223 Adding camera '\_SB_.PCI0.I2C2.CAMF' for pipeline handler simple
+[0:06:42.212812473] [4714] DEBUG SimplePipeline simple.cpp:2027 Matched on device: /dev/media0
+[0:06:42.212820707] [4714] DEBUG Camera camera_manager.cpp:164 Pipeline handler "simple" matched
+[0:06:42.212833534] [4714] DEBUG Camera camera_manager.cpp:143 Found registered pipeline handler 'uvcvideo'
+[0:06:42.212843067] [4714] DEBUG Camera camera_manager.cpp:143 Found registered pipeline handler 'vimc'
+[0:06:42.212853037] [4714] DEBUG Camera camera_manager.cpp:143 Found registered pipeline handler 'virtual'
+[0:06:42.212875792] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/linux,cma: No such file or directory
+[0:06:42.212894054] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/reserved: No such file or directory
+[0:06:42.212906129] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:106 Failed to open /dev/dma_heap/system: Permission denied
+[0:06:42.212921787] [4714] DEBUG DmaBufAllocator dma_buf_allocator.cpp:112 Using /dev/udmabuf
+[0:06:42.212946078] [4714] DEBUG Virtual virtual.cpp:379 Configuration file not found, skipping virtual cameras
+[0:06:54.404042497] [4714] DEBUG SimplePipeline simple.cpp:1165 Largest processed stream size is 3256x2448
+[0:06:54.404090615] [4714] DEBUG SimplePipeline simple.cpp:1167 Largest raw stream size is 0x0
+[0:06:54.404102400] [4714] DEBUG SimplePipeline simple.cpp:1243 Picked 3264x2448-SBGGR10_1X10/Unset -> 3264x2448-SBGGR10 for max processed stream size 3256x2448 and max raw stream size 0x0
+[0:06:54.404120257] [4714] DEBUG SimplePipeline simple.cpp:1325 Unspecified color space set to sRGB
+[0:06:54.404132999] [4714] DEBUG SimplePipeline simple.cpp:1389 Adjusting bufferCount from 0 to 4
+[0:06:54.404226840] [4701] DEBUG Camera camera.cpp:1151 streams configuration: (0) 3256x2448-ABGR8888/sRGB
+[0:06:54.404259424] [4701] DEBUG SimplePipeline simple.cpp:1165 Largest processed stream size is 3256x2448
+[0:06:54.404266794] [4701] DEBUG SimplePipeline simple.cpp:1167 Largest raw stream size is 0x0
+[0:06:54.404274316] [4701] DEBUG SimplePipeline simple.cpp:1243 Picked 3264x2448-SBGGR10_1X10/Unset -> 3264x2448-SBGGR10 for max processed stream size 3256x2448 and max raw stream size 0x0
+[0:06:54.404286661] [4701] DEBUG SimplePipeline simple.cpp:1165 Largest processed stream size is 3256x2448
+[0:06:54.404292111] [4701] DEBUG SimplePipeline simple.cpp:1167 Largest raw stream size is 0x0
+[0:06:54.404297751] [4701] DEBUG SimplePipeline simple.cpp:1243 Picked 3264x2448-SBGGR10_1X10/Unset -> 3264x2448-SBGGR10 for max processed stream size 3256x2448 and max raw stream size 0x0
+[0:06:54.404315765] [4701]  INFO Camera camera.cpp:1216 configuring streams: (0) 3256x2448-ABGR8888/sRGB
+[0:06:54.404400508] [4714] DEBUG MediaDevice media_device.cpp:854 /dev/media0[intel-ipu6]: 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: 0
+[0:06:54.404455639] [4714] DEBUG MediaDevice media_device.cpp:854 /dev/media0[intel-ipu6]: 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: 1
+[0:06:54.417620783] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'ov8865 2-0010'[0] -> 'Intel IPU6 CSI2 0'[0]: configured with format 3264x2448-SBGGR10_1X10/RAW
+[0:06:54.417679549] [4714] DEBUG SimplePipeline simple.cpp:870 Link 'Intel IPU6 CSI2 0'[1] -> 'Intel IPU6 ISYS Capture 0'[0]: configured with format 3264x2448-SBGGR10_1X10/RAW
+[0:06:54.417773537] [4714] DEBUG Timer timer.cpp:93 Starting timer 0x7f0c7affa1a0: deadline 0:06:56.417771913
+[0:06:54.417821139] [4714] DEBUG Event event_dispatcher_poll.cpp:215 next timer 0x7f0c7affa1a0 expires in 1.999951665
+[0:06:54.417903299] [4715]  INFO IPASoft soft_simple.cpp:258 IPASoft: Exposure 2-2462, gain 1-16 (0.15)
+[0:06:54.417959080] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:226 Done replying to configure()
+[0:06:54.418028213] [4714]  INFO SoftwareIsp software_isp.cpp:278 Input 3264x2448-BGGR-10 stride 6528
+Zero-copy enabled
+[0:06:54.431843357] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.438743739] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.445216532] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.453956510] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.454120030] [4701] DEBUG Request request.cpp:370 Created request - cookie: 0
+[0:06:54.454136486] [4701] DEBUG Request request.cpp:370 Created request - cookie: 0
+[0:06:54.454139939] [4701] DEBUG Request request.cpp:370 Created request - cookie: 0
+[0:06:54.454143032] [4701] DEBUG Request request.cpp:370 Created request - cookie: 0
+[0:06:54.454152589] [4701] DEBUG Camera camera.cpp:1408 Starting capture
+[0:06:54.456570248] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1336 /dev/video0[30:cap]: 4 buffers requested.
+[0:06:54.456595075] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.456638684] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.456643128] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.456651472] [4714] DEBUG Buffer framebuffer.cpp:358 Buffer is contiguous
+[0:06:54.456813831] [4714] DEBUG Timer timer.cpp:93 Starting timer 0x7f0c7affa600: deadline 0:06:56.456813397
+[0:06:54.456820603] [4714] DEBUG Event event_dispatcher_poll.cpp:215 next timer 0x7f0c7affa600 expires in 1.999993099
+[0:06:54.456989004] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:175 Done replying to start()
+[0:06:54.478350038] [4729]  INFO eGL egl.cpp:288 EGL: EGL_VERSION: 1.5
+[0:06:54.478372383] [4729]  INFO eGL egl.cpp:289 EGL: EGL_VENDOR: Mesa Project
+[0:06:54.478375302] [4729]  INFO eGL egl.cpp:290 EGL: EGL_CLIENT_APIS: OpenGL OpenGL_ES 
+[0:06:54.478382159] [4729]  INFO eGL egl.cpp:291 EGL: EGL_EXTENSIONS: EGL_ANDROID_blob_cache EGL_ANDROID_native_fence_sync EGL_EXT_config_select_group EGL_EXT_create_context_robustness EGL_EXT_image_dma_buf_import EGL_EXT_image_dma_buf_import_modifiers EGL_EXT_query_reset_notification_strategy EGL_EXT_surface_compression EGL_IMG_context_priority EGL_KHR_cl_event2 EGL_KHR_config_attribs EGL_KHR_context_flush_control EGL_KHR_create_context EGL_KHR_create_context_no_error EGL_KHR_fence_sync EGL_KHR_get_all_proc_addresses EGL_KHR_gl_colorspace EGL_KHR_gl_renderbuffer_image EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_3D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_image_base EGL_KHR_no_config_context EGL_KHR_partial_update EGL_KHR_reusable_sync EGL_KHR_surfaceless_context EGL_EXT_pixel_format_float EGL_KHR_wait_sync EGL_MESA_configless_context EGL_MESA_gl_interop EGL_MESA_image_dma_buf_export EGL_MESA_query_driver EGL_MESA_x11_native_visual_id 
+[0:06:54.480546266] [4729]  INFO eGL egl.cpp:332 EGL: GL_VERSION: OpenGL ES 3.2 Mesa 26.2.4
+[0:06:54.480581468] [4729] DEBUG Debayer debayer_egl.cpp:578 Available fragment shader texture units 32
+[0:06:54.485981255] [4729] DEBUG eGL egl.cpp:509 Shader length is 1720
+[0:06:54.486023799] [4729] DEBUG eGL egl.cpp:516 Shader source = #version 100
+#extension GL_OES_EGL_image_external: enable
+#define SWAP_BLUE
+#define RAW10P
+/* SPDX-License-Identifier: BSD-2-Clause */
+/*
+From http://jgt.akpeters.com/papers/McGuire08/
+
+Efficient, High-Quality Bayer Demosaic Filtering on GPUs
+
+Morgan McGuire
+
+This paper appears in issue Volume 13, Number 4.
+---------------------------------------------------------
+Copyright (c) 2008, Morgan McGuire. All rights reserved.
+
+Modified by Linaro Ltd to integrate it into libcamera.
+Copyright (C) 2021, Linaro
+*/
+
+//Vertex Shader
+
+attribute vec4 vertexIn;
+attribute vec2 textureIn;
+
+uniform mat4 proj_matrix;
+
+uniform vec2 tex_size;  /* The texture size in pixels */
+uniform vec2 tex_step;
+
+/** Pixel position of the first red pixel in the */
+/**  Bayer pattern.  [{0,1}, {0, 1}]*/
+uniform vec2            tex_bayer_first_red;
+
+/** .xy = Pixel being sampled in the fragment shader on the range [0, 1]
+    .zw = ...on the range [0, sourceSize], offset by firstRed */
+varying vec4            center;
+
+/** center.x + (-2/w, -1/w, 1/w, 2/w); These are the x-positions */
+/** of the adjacent pixels.*/
+varying vec4            xCoord;
+
+/** center.y + (-2/h, -1/h, 1/h, 2/h); These are the y-positions */
+/** of the adjacent pixels.*/
+varying vec4            yCoord;
+
+uniform float stride_factor;
+
+void main(void) {
+    center.xy = vec2(textureIn.x * stride_factor, textureIn.y);
+    center.zw = textureIn * tex_size + tex_bayer_first_red;
+
+    xCoord = center.x + vec4(-2.0 * tex_step.x,
+                             -tex_step.x, tex_step.x, 2.0 * tex_step.x);
+    yCoord = center.y + vec4(-2.0 * tex_step.y,
+                              -tex_step.y, tex_step.y, 2.0 * tex_step.y);
+
+    gl_Position = proj_matrix * vertexIn;
+}
+
+[0:06:54.486080752] [4729] DEBUG eGL egl.cpp:509 Shader length is 6307
+[0:06:54.486086033] [4729] DEBUG eGL egl.cpp:516 Shader source = #version 100
+#extension GL_OES_EGL_image_external: enable
+#define SWAP_BLUE
+#define RAW10P
+/* SPDX-License-Identifier: BSD-2-Clause */
+/*
+From http://jgt.akpeters.com/papers/McGuire08/
+
+Efficient, High-Quality Bayer Demosaic Filtering on GPUs
+
+Morgan McGuire
+
+This paper appears in issue Volume 13, Number 4.
+---------------------------------------------------------
+Copyright (c) 2008, Morgan McGuire. All rights reserved.
+
+Modified by Linaro Ltd to integrate it into libcamera.
+Copyright (C) 2021, Linaro
+*/
+
+//Pixel Shader
+#ifdef GL_ES
+precision highp float;
+#endif
+
+/** Monochrome RGBA or GL_LUMINANCE Bayer encoded texture.*/
+uniform sampler2D       tex_y;
+varying vec4            center;
+varying vec4            yCoord;
+varying vec4            xCoord;
+uniform mat3            ccm;
+uniform vec3            blacklevel;
+uniform float           gamma;
+uniform float           contrastExp;
+
+float apply_contrast(float value)
+{
+    // Apply simple S-curve
+    if (value < 0.5)
+        return 0.5 * pow(value / 0.5, contrastExp);
+    else
+        return 1.0 - 0.5 * pow((1.0 - value) / 0.5, contrastExp);
+}
+
+void main(void) {
+    vec3 rgb;
+
+    #if defined(RAW10P)
+    #define pixel(p) p.r / 4.0 + p.g * 64.0
+    #define fetch(x, y) pixel(texture2D(tex_y, vec2(x, y)))
+    #elif defined(RAW12P)
+    #define pixel(p) p.r / 16.0 + p.g * 16.0
+    #define fetch(x, y) pixel(texture2D(tex_y, vec2(x, y)))
+    #else
+    #define fetch(x, y) texture2D(tex_y, vec2(x, y)).r
+    #endif
+
+    float C = fetch(center.x, center.y); // ( 0, 0)
+    const vec4 kC = vec4( 4.0,  6.0,  5.0,  5.0) / 8.0;
+
+    // Determine which of four types of pixels we are on.
+    vec2 alternate = mod(floor(center.zw), 2.0);
+
+    vec4 Dvec = vec4(
+        fetch(xCoord[1], yCoord[1]),  // (-1,-1)
+        fetch(xCoord[1], yCoord[2]),  // (-1, 1)
+        fetch(xCoord[2], yCoord[1]),  // ( 1,-1)
+        fetch(xCoord[2], yCoord[2])); // ( 1, 1)
+
+    vec4 PATTERN = (kC.xyz * C).xyzz;
+
+    // Can also be a dot product with (1,1,1,1) on hardware where that is
+    // specially optimized.
+    // Equivalent to: D = Dvec[0] + Dvec[1] + Dvec[2] + Dvec[3];
+    Dvec.xy += Dvec.zw;
+    Dvec.x  += Dvec.y;
+
+    vec4 value = vec4(
+        fetch(center.x, yCoord[0]),   // ( 0,-2)
+        fetch(center.x, yCoord[1]),   // ( 0,-1)
+        fetch(xCoord[0], center.y),   // (-2, 0)
+        fetch(xCoord[1], center.y));  // (-1, 0)
+
+    vec4 temp = vec4(
+        fetch(center.x, yCoord[3]),   // ( 0, 2)
+        fetch(center.x, yCoord[2]),   // ( 0, 1)
+        fetch(xCoord[3], center.y),   // ( 2, 0)
+        fetch(xCoord[2], center.y));  // ( 1, 0)
+
+    // Even the simplest compilers should be able to constant-fold these to
+    // avoid the division.
+    // Note that on scalar processors these constants force computation of some
+    // identical products twice.
+    const vec4 kA = vec4(-1.0, -1.5,  0.5, -1.0) / 8.0;
+    const vec4 kB = vec4( 2.0,  0.0,  0.0,  4.0) / 8.0;
+    const vec4 kD = vec4( 0.0,  2.0, -1.0, -1.0) / 8.0;
+
+    // Conserve constant registers and take advantage of free swizzle on load
+    #define kE (kA.xywz)
+    #define kF (kB.xywz)
+
+    value += temp;
+
+    // There are five filter patterns (identity, cross, checker,
+    // theta, phi).  Precompute the terms from all of them and then
+    // use swizzles to assign to color channels.
+    //
+    // Channel   Matches
+    //   x       cross   (e.g., EE G)
+    //   y       checker (e.g., EE B)
+    //   z       theta   (e.g., EO R)
+    //   w       phi     (e.g., EO R)
+    #define A (value[0])
+    #define B (value[1])
+    #define D (Dvec.x)
+    #define E (value[2])
+    #define F (value[3])
+
+    // Avoid zero elements. On a scalar processor this saves two MADDs
+    // and it has no effect on a vector processor.
+    PATTERN.yzw += (kD.yz * D).xyy;
+
+    PATTERN += (kA.xyz * A).xyzx + (kE.xyw * E).xyxz;
+    PATTERN.xw  += kB.xw * B;
+    PATTERN.xz  += kF.xz * F;
+
+    rgb =  (alternate.y == 0.0) ?
+        ((alternate.x == 0.0) ?
+            vec3(C, PATTERN.xy) :
+            vec3(PATTERN.z, C, PATTERN.w)) :
+        ((alternate.x == 0.0) ?
+            vec3(PATTERN.w, C, PATTERN.z) :
+            vec3(PATTERN.yx, C));
+
+    rgb = rgb - blacklevel;
+
+    /*
+     *   CCM is a 3x3 in the format
+     *
+     *   +--------------+----------------+---------------+
+     *   | RedRedGain   | RedGreenGain   | RedBlueGain   |
+     *   +--------------+----------------+---------------+
+     *   | GreenRedGain | GreenGreenGain | GreenBlueGain |
+     *   +--------------+----------------+---------------+
+     *   | BlueRedGain  |  BlueGreenGain | BlueBlueGain  |
+     *   +--------------+----------------+---------------+
+     *
+     *   Rout = RedRedGain * Rin + RedGreenGain * Gin + RedBlueGain * Bin
+     *   Gout = GreenRedGain * Rin + GreenGreenGain * Gin + GreenBlueGain * Bin
+     *   Bout = BlueRedGain * Rin + BlueGreenGain * Gin + BlueBlueGain * Bin
+     *
+     *   We upload to the GPU without transposition glUniformMatrix3f(.., .., GL_FALSE, ccm);
+     *
+     *   CPU
+     *   float ccm [] = {
+     *             RedRedGain,   RedGreenGain,   RedBlueGain,
+     *             GreenRedGain, GreenGreenGain, GreenBlueGain,
+     *             BlueRedGain,  BlueGreenGain,  BlueBlueGain,
+     *   };
+     *
+     *   GPU
+     *   ccm = {
+     *             RedRedGain,   GreenRedGain,   BlueRedGain,
+     *             RedGreenGain, GreenGreenGain, BlueGreenGain,
+     *             RedBlueGain,  GreenBlueGain,  BlueBlueGain,
+     *   }
+     *
+     *   However the indexing for the mat data-type is column major hence
+     *   ccm[0][0] = RedRedGain, ccm[0][1] = RedGreenGain, ccm[0][2] = RedBlueGain
+     *
+     */
+    float rin, gin, bin;
+    rin = rgb.r;
+    gin = rgb.g;
+    bin = rgb.b;
+
+    rgb.r = (rin * ccm[0][0]) + (gin * ccm[0][1]) + (bin * ccm[0][2]);
+    rgb.g = (rin * ccm[1][0]) + (gin * ccm[1][1]) + (bin * ccm[1][2]);
+    rgb.b = (rin * ccm[2][0]) + (gin * ccm[2][1]) + (bin * ccm[2][2]);
+
+    /*
+     * Contrast
+     */
+    rgb = clamp(rgb, 0.0, 1.0);
+    rgb.r = apply_contrast(rgb.r);
+    rgb.g = apply_contrast(rgb.g);
+    rgb.b = apply_contrast(rgb.b);
+
+    /* Apply gamma after colour correction */
+    rgb = pow(rgb, vec3(gamma));
+
+#if defined (SWAP_BLUE)
+    gl_FragColor = vec4(rgb.bgr, 1.0);
+#else
+    gl_FragColor = vec4(rgb, 1.0);
+#endif
+}
+
+[0:06:54.486247090] [4729] DEBUG Debayer debayer_egl.cpp:113 vertexIn 0 textureIn 1 tex_y 5 ccm 6 blacklevel 7 gamma 8 contrastExp 9 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3 proj_matrix 0
+[0:06:54.486274569] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:54.560235345] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:54.560374902] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:54.560399396] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:54.561330251] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 0 started
+[0:06:54.628032000] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:54.628145266] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 1 started
+[0:06:54.628159858] [4714] DEBUG DelayedControls delayed_controls.cpp:277 Queue is empty, auto queue no-op.
+[0:06:54.628191908] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:54.637204069] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:54.637245666] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:54.637273647] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] }
+[0:06:54.637290731] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:54.637300543] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 1
+[0:06:54.637312440] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:54.662848240] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 0
+[0:06:54.662888554] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 32 at index 0
+[0:06:54.663138936] [4715] DEBUG IPASoftBL blc.cpp:110 Auto-set black level: 0/64 (0% below, 48% at or below)
+[0:06:54.663168273] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.981632, 1, 1.00116  }; temperature: 8686
+[0:06:54.663190132] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:54.663196924] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:54.663202403] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:54.663207266] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:54.663211981] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:54.663216954] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 35 again 1
+[0:06:54.663242873] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:54.663279264] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:54.663398970] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 35 at index 2
+[0:06:54.663426800] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 2
+[0:06:54.663443323] [4714] DEBUG Request request.cpp:137 Request(0:C:0/1:0)
+[0:06:54.663474532] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:54.694810565] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:54.694915533] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 2 started
+[0:06:54.694927319] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 35 at index 2
+[0:06:54.695045351] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:54.698755188] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:54.698792355] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:54.698821998] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] }
+[0:06:54.698839864] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0.0627451, 0.0627451, 0.0627451  }
+[0:06:54.698882372] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:54.698893934] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:54.718457964] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 0
+[0:06:54.718506205] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 32 at index 0
+[0:06:54.718569670] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:54.718655591] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:54.718692240] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:54.718692285] [4714] DEBUG Request request.cpp:137 Request(1:C:0/1:0)
+[0:06:54.718738805] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 35 at index 3
+[0:06:54.718748542] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 3
+[0:06:54.761432508] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:54.761548125] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 3 started
+[0:06:54.761563583] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 2
+[0:06:54.761595164] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 35 at index 3
+[0:06:54.761642865] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:54.765610974] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:54.765659615] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:54.765703986] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.981632, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00116 ] }
+[0:06:54.765730484] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:54.765765950] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:54.765780396] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:54.785040797] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 0
+[0:06:54.785090512] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 32 at index 0
+[0:06:54.785149553] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:54.785272049] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:54.785307228] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:54.785304851] [4714] DEBUG Request request.cpp:137 Request(2:C:0/1:0)
+[0:06:54.785352912] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 35 at index 4
+[0:06:54.785363935] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 4
+[0:06:54.828313799] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:54.828458068] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 4 started
+[0:06:54.828476167] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 3
+[0:06:54.828492648] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 35 at index 4
+[0:06:54.828593648] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:54.833028578] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:54.833070833] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:54.833097180] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.981632, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00116 ] }
+[0:06:54.833114669] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:54.833124313] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:54.833132236] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:54.846480175] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 1
+[0:06:54.846530254] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 32 at index 1
+[0:06:54.846582404] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:54.846713026] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:54.846741474] [4714] DEBUG Request request.cpp:137 Request(3:C:0/1:0)
+[0:06:54.846751983] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:54.846792294] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 35 at index 5
+[0:06:54.846803106] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 5
+[0:06:54.895103491] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:54.895223604] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 5 started
+[0:06:54.895244969] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 4
+[0:06:54.895262271] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 35 at index 5
+[0:06:54.895284293] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:54.900106622] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:54.900159465] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:54.900194059] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.981632, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00116 ] }
+[0:06:54.900220107] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:54.900233881] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:54.900248250] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:54.922163605] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 2
+[0:06:54.922203682] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 35 at index 2
+[0:06:54.922353664] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.924084, 1, 1.00296  }; temperature: 8069
+[0:06:54.922397462] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:54.922404594] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:54.922409797] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:54.922414835] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:54.922419547] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:54.922424103] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 38 again 1
+[0:06:54.922451018] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:54.922466849] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:54.922599817] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 38 at index 6
+[0:06:54.922625872] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 6
+[0:06:54.922767204] [4714] DEBUG Request request.cpp:137 Request(4:C:0/1:0)
+[0:06:54.922820793] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:54.961798152] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:54.961911484] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 6 started
+[0:06:54.961937443] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 5
+[0:06:54.961953854] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 38 at index 6
+[0:06:54.961964583] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:54.966886277] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:54.966941458] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:54.966981151] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.981632, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00116 ] }
+[0:06:54.967056328] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:54.967073907] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:54.967088068] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:54.985151382] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 3
+[0:06:54.985200095] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 35 at index 3
+[0:06:54.985250937] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:54.985388575] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:54.985424267] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:54.985420739] [4714] DEBUG Request request.cpp:137 Request(5:C:0/1:0)
+[0:06:54.985476278] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 38 at index 7
+[0:06:54.985489422] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 7
+[0:06:55.028447143] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:55.028565322] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 7 started
+[0:06:55.028603943] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 6
+[0:06:55.028630743] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 38 at index 7
+[0:06:55.028640369] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.033149892] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.033195718] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.033224426] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924084, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00296 ] }
+[0:06:55.033243031] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.033253861] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.033262143] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.049120624] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 4
+[0:06:55.049168473] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 35 at index 4
+[0:06:55.049216126] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:55.049328454] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.049362942] [4714] DEBUG Request request.cpp:137 Request(6:C:0/1:0)
+[0:06:55.049374389] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.049411424] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 38 at index 8
+[0:06:55.049421692] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 8
+[0:06:55.095191505] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:55.095312597] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 8 started
+[0:06:55.095336744] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 7
+[0:06:55.095353708] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 38 at index 8
+[0:06:55.095383484] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.099828135] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.099872963] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.099898016] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924084, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00296 ] }
+[0:06:55.099914192] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.099922417] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.099943671] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.119355408] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 5
+[0:06:55.119405673] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 35 at index 5
+[0:06:55.119473854] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:55.119576214] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.119624708] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.119694572] [4714] DEBUG Request request.cpp:137 Request(7:C:0/1:0)
+[0:06:55.119769541] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 38 at index 9
+[0:06:55.119790241] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 9
+[0:06:55.161807645] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:55.161906530] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 9 started
+[0:06:55.161920598] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 8
+[0:06:55.161946745] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 38 at index 9
+[0:06:55.162065311] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.166426171] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.166473526] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.166504660] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924084, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00296 ] }
+[0:06:55.166521443] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.166530212] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.166539017] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.189580230] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 6
+[0:06:55.189622396] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 38 at index 6
+[0:06:55.189734926] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.980488, 1, 1.00473  }; temperature: 8553
+[0:06:55.189786780] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:55.189797832] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:55.189806603] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:55.189815259] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:55.189823818] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:55.189832442] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 41 again 1
+[0:06:55.189873666] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.189897613] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.190030525] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 41 at index 10
+[0:06:55.190065304] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 10
+[0:06:55.190405474] [4714] DEBUG Request request.cpp:137 Request(8:C:0/1:0)
+[0:06:55.190466801] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:55.228229176] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:55.228318926] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 10 started
+[0:06:55.228331703] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 9
+[0:06:55.228342487] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 41 at index 10
+[0:06:55.228455468] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.232931238] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.232970103] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.232995211] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924084, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00296 ] }
+[0:06:55.233028011] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.233037953] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.233046465] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.251650902] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 7
+[0:06:55.251692215] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 38 at index 7
+[0:06:55.251756556] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:55.251830849] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.251874399] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.251864418] [4714] DEBUG Request request.cpp:137 Request(9:C:0/1:0)
+[0:06:55.251928808] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 41 at index 11
+[0:06:55.251943897] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 11
+[0:06:55.295251488] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:55.295350024] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 11 started
+[0:06:55.295366868] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 10
+[0:06:55.295390735] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 41 at index 11
+[0:06:55.295466526] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.300170297] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.300216772] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.300245716] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.980488, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00473 ] }
+[0:06:55.300264186] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.300273885] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.300282399] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.316217572] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 8
+[0:06:55.316265975] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 38 at index 8
+[0:06:55.316316764] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:55.316430863] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.316468711] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.316473279] [4714] DEBUG Request request.cpp:137 Request(10:C:0/1:0)
+[0:06:55.316542847] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 41 at index 12
+[0:06:55.316555764] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 12
+[0:06:55.361719739] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:55.361812816] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 12 started
+[0:06:55.361823849] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 11
+[0:06:55.361841723] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 41 at index 12
+[0:06:55.361907989] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.366489358] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.366537576] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.366575281] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.980488, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00473 ] }
+[0:06:55.366598566] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.366612464] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.366625109] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.383832937] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 9
+[0:06:55.383872936] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 38 at index 9
+[0:06:55.383932389] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:55.384070103] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.384106329] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.384103816] [4714] DEBUG Request request.cpp:137 Request(11:C:0/1:0)
+[0:06:55.384168610] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 41 at index 13
+[0:06:55.384184378] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 13
+[0:06:55.428666660] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:55.428778286] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 13 started
+[0:06:55.428801389] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 12
+[0:06:55.428826768] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 41 at index 13
+[0:06:55.428887784] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.433614688] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.433659670] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.433686217] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.980488, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00473 ] }
+[0:06:55.433704275] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.433712847] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.433719570] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.456801925] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 10
+[0:06:55.456842818] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 41 at index 10
+[0:06:55.456957784] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.98087, 1, 0.947505  }; temperature: 11187
+[0:06:55.457026264] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:55.457039364] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:55.457048706] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:55.457068284] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:55.457081534] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:55.457091959] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 45 again 1
+[0:06:55.457135826] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.457159426] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.457231302] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 45 at index 14
+[0:06:55.457300902] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 14
+[0:06:55.457372869] [4714] DEBUG Request request.cpp:137 Request(12:C:0/1:0)
+[0:06:55.457438967] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:55.495260652] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:55.495364328] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 14 started
+[0:06:55.495422632] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 13
+[0:06:55.495442862] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 45 at index 14
+[0:06:55.495541289] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.500573516] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.500620774] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.500648792] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.980488, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.00473 ] }
+[0:06:55.500665725] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.500674176] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.500683860] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.517478499] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 11
+[0:06:55.517527929] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 41 at index 11
+[0:06:55.517589898] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:55.517675615] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.517710956] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.517728576] [4714] DEBUG Request request.cpp:137 Request(13:C:0/1:0)
+[0:06:55.517790004] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 45 at index 15
+[0:06:55.517809919] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 15
+[0:06:55.562052107] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:55.562167754] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 15 started
+[0:06:55.562189492] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 14
+[0:06:55.562207827] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 45 at index 15
+[0:06:55.562275331] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.566359573] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.566415487] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.566451351] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98087, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.947505 ] }
+[0:06:55.566478234] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.566496509] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.566508750] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.584634122] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 12
+[0:06:55.584682633] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 41 at index 12
+[0:06:55.584732337] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:55.584834245] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.584865168] [4714] DEBUG Request request.cpp:137 Request(14:C:0/1:0)
+[0:06:55.584872530] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.584912888] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 45 at index 16
+[0:06:55.584923019] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 16
+[0:06:55.628746013] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:55.628863937] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 16 started
+[0:06:55.628887252] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 15
+[0:06:55.628902423] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 45 at index 16
+[0:06:55.628980201] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.633173657] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.633227817] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.633269218] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98087, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.947505 ] }
+[0:06:55.633300254] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.633317247] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.633331183] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.650996965] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 13
+[0:06:55.651060838] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 41 at index 13
+[0:06:55.651112967] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:55.651227192] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.651261374] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.651258508] [4714] DEBUG Request request.cpp:137 Request(15:C:0/1:0)
+[0:06:55.651307650] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 45 at index 17
+[0:06:55.651323981] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 17
+[0:06:55.695064904] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:55.695194153] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 17 started
+[0:06:55.695231820] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 16
+[0:06:55.695236626] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.695256544] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 45 at index 17
+[0:06:55.699222117] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.699267638] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.699302523] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98087, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.947505 ] }
+[0:06:55.699327994] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.699344848] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.699358007] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.721599614] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 14
+[0:06:55.721650085] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 45 at index 14
+[0:06:55.721773372] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.924981, 1, 1.01071  }; temperature: 7837
+[0:06:55.721817835] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:55.721826752] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:55.721832071] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:55.721836972] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:55.721843158] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:55.721850627] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 49 again 1
+[0:06:55.721880867] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.721902497] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.721993373] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 49 at index 18
+[0:06:55.722040366] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 18
+[0:06:55.722063809] [4714] DEBUG Request request.cpp:137 Request(16:C:0/1:0)
+[0:06:55.722092111] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:55.761853427] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:55.762023774] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 18 started
+[0:06:55.762048614] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 17
+[0:06:55.762075919] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 49 at index 18
+[0:06:55.762128166] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.766067244] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.766112293] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.766149232] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98087, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.947505 ] }
+[0:06:55.766173374] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.766190528] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.766204216] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.784767019] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 15
+[0:06:55.784812433] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 45 at index 15
+[0:06:55.784867452] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:55.784974702] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.785026986] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.785029807] [4714] DEBUG Request request.cpp:137 Request(17:C:0/1:0)
+[0:06:55.785110930] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 49 at index 19
+[0:06:55.785128717] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 19
+[0:06:55.828721290] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:55.828832481] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 19 started
+[0:06:55.828854310] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 18
+[0:06:55.828869939] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 49 at index 19
+[0:06:55.828902407] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.832789856] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.832833384] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.832859257] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924981, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01071 ] }
+[0:06:55.832875590] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.832883735] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.832896764] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.850748168] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 16
+[0:06:55.850796157] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 45 at index 16
+[0:06:55.850841632] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:55.850942905] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.850974201] [4714] DEBUG Request request.cpp:137 Request(18:C:0/1:0)
+[0:06:55.850983928] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.851050285] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 49 at index 20
+[0:06:55.851068296] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 20
+[0:06:55.895239424] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:55.895350543] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 20 started
+[0:06:55.895371833] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 19
+[0:06:55.895388396] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 49 at index 20
+[0:06:55.895429378] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.899404087] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.899449892] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.899474424] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924981, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01071 ] }
+[0:06:55.899491710] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.899499918] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.899516257] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.919435465] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 17
+[0:06:55.919483821] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 45 at index 17
+[0:06:55.919532569] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:55.919592585] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.919629002] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.919640855] [4714] DEBUG Request request.cpp:137 Request(19:C:0/1:0)
+[0:06:55.919688975] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 49 at index 21
+[0:06:55.919699351] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 21
+[0:06:55.962112291] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:55.962234052] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 21 started
+[0:06:55.962258225] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 20
+[0:06:55.962277187] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 49 at index 21
+[0:06:55.962349210] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:55.966437996] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:55.966489636] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:55.966537076] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924981, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01071 ] }
+[0:06:55.966569325] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:55.966585959] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:55.966599144] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:55.986744893] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 18
+[0:06:55.986766940] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 49 at index 18
+[0:06:55.986854827] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.98211, 1, 0.953714  }; temperature: 10827
+[0:06:55.986875785] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:55.986879608] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:55.986881724] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:55.986886549] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:55.986889739] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:55.986893412] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 53 again 1
+[0:06:55.986898385] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:55.986910752] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:55.986922261] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:55.986987928] [4714] DEBUG Request request.cpp:137 Request(20:C:0/1:0)
+[0:06:55.987021483] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 53 at index 22
+[0:06:55.987040811] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 22
+[0:06:56.028563020] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:56.028673756] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 22 started
+[0:06:56.028694084] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 21
+[0:06:56.028709580] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 53 at index 22
+[0:06:56.028761945] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.032619268] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.032660485] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.032686248] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.924981, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01071 ] }
+[0:06:56.032702894] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.032711414] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.032718146] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.051101508] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 19
+[0:06:56.051149303] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 49 at index 19
+[0:06:56.051212299] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:56.051309144] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.051343139] [4714] DEBUG Request request.cpp:137 Request(21:C:0/1:0)
+[0:06:56.051350701] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.051388786] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 53 at index 23
+[0:06:56.051399606] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 23
+[0:06:56.095309414] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:56.095430985] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 23 started
+[0:06:56.095454537] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 22
+[0:06:56.095470039] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 53 at index 23
+[0:06:56.095554497] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.099478620] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.099520040] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.099544584] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98211, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.953714 ] }
+[0:06:56.099562003] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.099570376] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.099581342] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.118757647] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 20
+[0:06:56.118808284] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 49 at index 20
+[0:06:56.118877414] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:56.119042466] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.119088694] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.119105044] [4714] DEBUG Request request.cpp:137 Request(22:C:0/1:0)
+[0:06:56.119176778] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 53 at index 24
+[0:06:56.119195705] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 24
+[0:06:56.161969089] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:56.162091191] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 24 started
+[0:06:56.162114515] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 23
+[0:06:56.162130362] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 53 at index 24
+[0:06:56.162187070] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.165942929] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.165985231] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.166022616] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98211, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.953714 ] }
+[0:06:56.166038655] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.166046870] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.166053424] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.184772086] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 21
+[0:06:56.184824164] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 49 at index 21
+[0:06:56.184877688] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:56.185040943] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.185092104] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.185103675] [4714] DEBUG Request request.cpp:137 Request(23:C:0/1:0)
+[0:06:56.185187429] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 53 at index 25
+[0:06:56.185204433] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 25
+[0:06:56.228900958] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:56.229036606] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 25 started
+[0:06:56.229061465] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 24
+[0:06:56.229076974] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 53 at index 25
+[0:06:56.229129380] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.233762053] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.233817354] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.233857109] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98211, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.953714 ] }
+[0:06:56.233895009] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.233912308] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.233937283] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.251893632] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 22
+[0:06:56.251950478] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 53 at index 22
+[0:06:56.252111747] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.925818, 1, 1.01644  }; temperature: 7678
+[0:06:56.252165958] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:56.252174860] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:56.252179958] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:56.252186335] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:56.252191311] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:56.252197338] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 58 again 1
+[0:06:56.252230037] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.252247386] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.252320311] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 58 at index 26
+[0:06:56.252343089] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 26
+[0:06:56.252485883] [4714] DEBUG Request request.cpp:137 Request(24:C:0/1:0)
+[0:06:56.252548377] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:56.295551979] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:56.295667327] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 26 started
+[0:06:56.295720418] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 25
+[0:06:56.295738656] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 58 at index 26
+[0:06:56.295778083] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.299889395] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.299929996] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.299953362] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.98211, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.953714 ] }
+[0:06:56.299969693] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.299977845] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.299984339] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.319341858] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 23
+[0:06:56.319396178] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 53 at index 23
+[0:06:56.319462595] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:56.319529437] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.319563767] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.319618437] [4714] DEBUG Request request.cpp:137 Request(25:C:0/1:0)
+[0:06:56.319674824] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 58 at index 27
+[0:06:56.319688503] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 27
+[0:06:56.362047324] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:56.362140217] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 27 started
+[0:06:56.362157676] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 26
+[0:06:56.362172192] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 58 at index 27
+[0:06:56.362193006] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.365995976] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.366042691] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.366068607] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.925818, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01644 ] }
+[0:06:56.366084670] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.366092871] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.366101770] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.383794336] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 24
+[0:06:56.383861627] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 53 at index 24
+[0:06:56.383929007] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:56.384064905] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.384101209] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.384106834] [4714] DEBUG Request request.cpp:137 Request(26:C:0/1:0)
+[0:06:56.384166988] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 58 at index 28
+[0:06:56.384182450] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 28
+[0:06:56.429044270] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:56.429140965] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 28 started
+[0:06:56.429162817] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 27
+[0:06:56.429180499] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 58 at index 28
+[0:06:56.429255028] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.433219942] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.433261692] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.433284974] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.925818, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01644 ] }
+[0:06:56.433302561] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.433310632] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.433317352] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.451280426] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 25
+[0:06:56.451335012] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 53 at index 25
+[0:06:56.451399485] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:56.451503276] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.451538374] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.451548275] [4714] DEBUG Request request.cpp:137 Request(27:C:0/1:0)
+[0:06:56.451607230] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 58 at index 29
+[0:06:56.451622468] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 29
+[0:06:56.495753291] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:56.495858972] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 29 started
+[0:06:56.495882654] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 28
+[0:06:56.495901204] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 58 at index 29
+[0:06:56.495993000] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.500069349] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.500111031] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.500136151] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.925818, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01644 ] }
+[0:06:56.500152133] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.500160098] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.500166689] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.523047672] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 26
+[0:06:56.523108971] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 58 at index 26
+[0:06:56.523234905] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.982891, 1, 0.959594  }; temperature: 10505
+[0:06:56.523290970] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:56.523304056] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:56.523313155] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:56.523322214] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:56.523331058] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:56.523342629] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 63 again 1
+[0:06:56.523385494] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.523420042] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.523465141] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 63 at index 30
+[0:06:56.523486812] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 30
+[0:06:56.523615775] [4714] DEBUG Request request.cpp:137 Request(28:C:0/1:0)
+[0:06:56.523657578] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:56.562089004] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:56.562182375] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 30 started
+[0:06:56.562199483] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 29
+[0:06:56.562213947] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 63 at index 30
+[0:06:56.562305176] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.566191154] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.566226623] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.566251030] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.925818, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1.01644 ] }
+[0:06:56.566267103] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.566275192] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.566281759] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.586189780] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 27
+[0:06:56.586237212] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 58 at index 27
+[0:06:56.586300943] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:56.586369416] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.586417604] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.586450975] [4714] DEBUG Request request.cpp:137 Request(29:C:0/1:0)
+[0:06:56.586510473] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 63 at index 31
+[0:06:56.586524770] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 31
+[0:06:56.628816392] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:56.628909970] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 31 started
+[0:06:56.628927751] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 30
+[0:06:56.628942872] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 63 at index 31
+[0:06:56.629034578] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.632898796] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.632937561] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.632961236] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.982891, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.959594 ] }
+[0:06:56.632978171] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.632986295] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.632992885] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.652506861] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 28
+[0:06:56.652561145] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 58 at index 28
+[0:06:56.652624582] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:56.652700959] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.652746186] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.652773862] [4714] DEBUG Request request.cpp:137 Request(30:C:0/1:0)
+[0:06:56.652832084] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 63 at index 32
+[0:06:56.652846931] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 32
+[0:06:56.695542359] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 3
+[0:06:56.695637173] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 32 started
+[0:06:56.695655578] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 31
+[0:06:56.695670637] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 63 at index 32
+[0:06:56.695755442] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.699519031] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.699557217] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.699582045] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.982891, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.959594 ] }
+[0:06:56.699597828] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.699606218] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.699612794] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.718524571] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 29
+[0:06:56.718579255] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 58 at index 29
+[0:06:56.718641418] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 3
+[0:06:56.718724905] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.718772081] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.718796498] [4714] DEBUG Request request.cpp:137 Request(31:C:0/1:0)
+[0:06:56.718856030] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 63 at index 33
+[0:06:56.718871153] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 33
+[0:06:56.762407336] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 0
+[0:06:56.762540946] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 33 started
+[0:06:56.762577925] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 32
+[0:06:56.762597694] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 63 at index 33
+[0:06:56.762684539] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.766836506] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.766876704] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.766902139] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.982891, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.959594 ] }
+[0:06:56.766920409] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.766930376] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.766938479] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.789841522] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 30
+[0:06:56.789889506] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 63 at index 30
+[0:06:56.790116063] [4715] DEBUG IPASoftAwb awb.cpp:101 gain R/B: Vector { 0.92731, 1, 0.963205  }; temperature: 9700
+[0:06:56.790160159] [4715] DEBUG IPASoftExposure agc.cpp:161 0: 498168
+[0:06:56.790181811] [4715] DEBUG IPASoftExposure agc.cpp:161 1: 0
+[0:06:56.790192993] [4715] DEBUG IPASoftExposure agc.cpp:161 2: 0
+[0:06:56.790201853] [4715] DEBUG IPASoftExposure agc.cpp:161 3: 0
+[0:06:56.790212456] [4715] DEBUG IPASoftExposure agc.cpp:161 4: 0
+[0:06:56.790222655] [4715] DEBUG IPASoftExposure agc.cpp:97 exposureMSV 1 exp 69 again 1
+[0:06:56.790265930] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.790292832] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.790356584] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 69 at index 34
+[0:06:56.790385046] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 34
+[0:06:56.790409390] [4714] DEBUG Request request.cpp:137 Request(32:C:0/1:0)
+[0:06:56.790445222] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 0
+[0:06:56.829101847] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 1
+[0:06:56.829203383] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 34 started
+[0:06:56.829235112] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 33
+[0:06:56.829253575] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 69 at index 34
+[0:06:56.829293456] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.833475521] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.833515826] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.833548183] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.982891, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.959594 ] }
+[0:06:56.833564451] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.833577436] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.833585587] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.850982780] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 31
+[0:06:56.851055477] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 63 at index 31
+[0:06:56.851130870] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 1
+[0:06:56.851197858] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.851233292] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.851288326] [4714] DEBUG Request request.cpp:137 Request(33:C:0/1:0)
+[0:06:56.851357437] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 69 at index 35
+[0:06:56.851379723] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 35
+[0:06:56.895791659] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1855 /dev/video0[30:cap]: Dequeuing buffer 2
+[0:06:56.895924175] [4714] DEBUG DelayedControls delayed_controls.cpp:234 frame 35 started
+[0:06:56.895956190] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Analogue Gain to 128 at index 34
+[0:06:56.895985274] [4714] DEBUG DelayedControls delayed_controls.cpp:264 Setting Exposure to 69 at index 35
+[0:06:56.896044700] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:384 setIspParams done
+[0:06:56.899902123] [4729] DEBUG Debayer debayer_egl.cpp:446 vertexIn 0 textureIn 1 tex_y 5 tex_step 2 tex_size 1 stride_factor 4 tex_bayer_first_red 3
+[0:06:56.899942888] [4729] DEBUG Debayer debayer_egl.cpp:453 textureUniformY_ = 0  firstRed.x 1 firstRed.y 1 textureUniformSize_.width 3264 textureUniformSize_.height 2448 textureUniformStep_.x 0.000306419 textureUniformStep_.y 0.000408664 textureUniformStrideFactor_ 1 textureUniformProjMatrix_ 0
+[0:06:56.899968732] [4729] DEBUG Debayer debayer_egl.cpp:475  ccmUniformDataIn_ 6 data Matrix { [ 0.92731, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0.963205 ] }
+[0:06:56.899984831] [4729] DEBUG Debayer debayer_egl.cpp:481  blackLevelUniformDataIn_ 7 data Vector { 0, 0, 0  }
+[0:06:56.899992953] [4729] DEBUG Debayer debayer_egl.cpp:487  gammaUniformDataIn_ 8 data 0.454545
+[0:06:56.899999575] [4729] DEBUG Debayer debayer_egl.cpp:493  contrastExpUniformDataIn_ 9 data 1
+[0:06:56.919398821] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Analogue Gain to 128 at index 32
+[0:06:56.919454225] [4714] DEBUG DelayedControls delayed_controls.cpp:214 Reading Exposure to 63 at index 32
+[0:06:56.919515788] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1783 /dev/video0[30:cap]: Queueing buffer 2
+[0:06:56.919582445] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:414 metadataReady done
+[0:06:56.919617248] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:366 setSensorControls done
+[0:06:56.919675208] [4714] DEBUG Request request.cpp:137 Request(34:C:0/1:0)
+[0:06:56.919736458] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Exposure to 69 at index 36
+[0:06:56.919750452] [4714] DEBUG DelayedControls delayed_controls.cpp:177 Queuing Analogue Gain to 128 at index 36
+[0:06:56.942798455] [4701] DEBUG Camera camera.cpp:1460 Stopping capture
+[0:06:56.943169203] [4714] DEBUG Timer timer.cpp:93 Starting timer 0x7f0c7affa3c0: deadline 0:06:58.943165689
+[0:06:56.943199872] [4715] DEBUG IPAProxySoftWorker soft_ipa_proxy_worker.cpp:194 Done replying to stop()
+[0:06:56.943211547] [4714] DEBUG Event event_dispatcher_poll.cpp:215 next timer 0x7f0c7affa3c0 expires in 1.999954826
+[0:07:01.046897706] [4714] DEBUG Request request.cpp:137 Request(35:C:0/1:0)
+[0:07:01.046966258] [4714] DEBUG Request request.cpp:137 Request(36:C:0/1:0)
+[0:07:01.046980957] [4714] DEBUG Request request.cpp:137 Request(37:C:0/1:0)
+[0:07:01.046998548] [4714] DEBUG Request request.cpp:137 Request(38:C:0/1:0)
+[0:07:01.047039465] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1621 /dev/video0[30:cap]: Releasing buffers
+[0:07:01.047200122] [4714] DEBUG V4L2 v4l2_videodevice.cpp:1336 /dev/video0[30:cap]: 0 buffers requested.

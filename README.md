@@ -205,8 +205,15 @@ sudo dnf --setopt=install_weak_deps=FALSE install \
     v4l-utils graphviz
 
 media-ctl -p
+```
+
+[`media-ctl -p` output](assets/media-ctl-p.txt)
+
+```bash
 media-ctl -d /dev/media0 --print-dot | dot -Tpng > media0-graph.png
 ```
+
+![image](assets/media0-graph.png)
 
 For libcamera testing:
 
@@ -230,6 +237,17 @@ In a separate terminal:
 journalctl -f
 ```
 
+[ov5693 journalctl log](assets/journalctl-ov5693.txt)
+[ov8865 journalctl log](assets/journalctl-ov8865.txt)
+
+Copy Libcamera tuning files:
+
+```bash
+cp ../ipu4-drivers/configs/usr/share/libcamera/ipa/simple/ov5693.yaml /usr/share/libcamera/ipa/simple/ov5693.yaml
+
+cp ../ipu4-drivers/configs/usr/share/libcamera/ipa/simple/ov8865.yaml /usr/share/libcamera/ipa/simple/ov8865.yaml
+```
+
 Capture a test frame:
 
 ```bash
@@ -238,6 +256,9 @@ LIBCAMERA_LOG_LEVELS=*:DEBUG \
 
 ls -lh /tmp/ipu4p-*
 ```
+
+[ov5693 libcamera log](assets/libcamera-ov5693.txt)
+[ov8865 libcamera log](assets/libcamera-ov8865.txt)
 
 Disable the additional IPU6 ISYS debug output when finished:
 
