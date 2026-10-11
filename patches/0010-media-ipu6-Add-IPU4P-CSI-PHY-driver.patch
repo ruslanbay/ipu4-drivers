@@ -1,5 +1,5 @@
 From 789ee9a1faec9bfce8d365fdc40d2ba1a7f544bc Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Sat, 10 Oct 2026 13:06:43 +0200
 Subject: [PATCH 10/13] media: ipu6: Add IPU4P CSI PHY driver
 
