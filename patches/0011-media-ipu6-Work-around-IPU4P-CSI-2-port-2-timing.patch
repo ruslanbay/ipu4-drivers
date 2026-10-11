@@ -10,6 +10,11 @@ timings and the existing initialization order for other configurations.
 
 Tested on the Surface Pro 7 front camera; other IPU4P systems need testing.
 
+Co-developed-by: supermepsipax <supermepsipax@github>
+Co-developed-by: thisiscamk <thisiscamk@github>
+Co-developed-by: ConsultingFuture4200 <ConsultingFuture4200@github>
+Co-developed-by: georgemihaila <georgemihaila@github>
+
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 50 ++++++++++++++++---
