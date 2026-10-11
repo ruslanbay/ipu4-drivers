@@ -156,6 +156,21 @@ Check the kernel log:
 ```bash
 journalctl -b | grep -Ei \
     'ipu|ov5693|INT33BE|ov8865|dw9719|INT347'
+
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: enabling device (0000 -> 0002)
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Found supported sensor INT33BE:00
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Found supported sensor INT347A:00
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Connected 2 cameras
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Sending BOOT_LOAD to CSE
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Sending AUTHENTICATE_RUN to CSE
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: CSE authenticate_run done
+Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: IPU0-v0[8a19] hardware version 64
+Oct 11 12:12:41 mac kernel: ov5693 i2c-INT33BE:00: supply dovdd not found, using dummy regulator
+Oct 11 12:12:41 mac kernel: ov5693 i2c-INT33BE:00: supply dvdd not found, using dummy regulator
+Oct 11 12:12:41 mac kernel: ov8865 i2c-INT347A:00: supply dvdd not found, using dummy regulator
+Oct 11 12:12:41 mac kernel: ov8865 i2c-INT347A:00: supply dovdd not found, using dummy regulator
+Oct 11 12:12:42 mac kernel: ov8865 i2c-INT347A:00: Instantiated dw9719 VCM
+Oct 11 12:12:42 mac kernel: dw9719 i2c-INT347A:00-VCM: supply vdd not found, using dummy regulator
 ```
 
 Check loaded modules:
@@ -163,6 +178,24 @@ Check loaded modules:
 ```bash
 lsmod | grep -Ei \
     'ipu|ov5693|ov8865|dw9719|INT347'
+
+dw9719                 12288  1
+intel_ipu6_isys       233472  0
+videobuf2_dma_sg       24576  1 intel_ipu6_isys
+videobuf2_v4l2         45056  1 intel_ipu6_isys
+videobuf2_common      106496  4 videobuf2_v4l2,intel_ipu6_isys,videobuf2_dma_sg,videobuf2_memops
+intel_skl_int3472_tps68470    24576  0
+ov5693                 24576  1
+ov8865                 40960  1
+v4l2_cci               12288  2 ov5693,dw9719
+v4l2_fwnode            40960  3 ov5693,intel_ipu6_isys,ov8865
+v4l2_async             36864  5 v4l2_fwnode,ov5693,intel_ipu6_isys,dw9719,ov8865
+intel_skl_int3472_discrete    28672  4
+videodev              450560  7 v4l2_async,v4l2_fwnode,videobuf2_v4l2,ov5693,intel_ipu6_isys,dw9719,ov8865
+intel_skl_int3472_common    16384  2 intel_skl_int3472_tps68470,intel_skl_int3472_discrete
+mc                     98304  8 v4l2_async,videodev,videobuf2_v4l2,ov5693,intel_ipu6_isys,videobuf2_common,dw9719,ov8865
+intel_ipu6            143360  1 intel_ipu6_isys
+ipu_bridge             28672  2 intel_ipu6,intel_ipu6_isys
 ```
 
 Inspect the media graph:
