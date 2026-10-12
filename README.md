@@ -123,7 +123,7 @@ sudo dnf install rpmbuild/RPMS/x86_64/*.rpm
 
 Download the Intel camera driver package for:
 
-https://www.catalog.update.microsoft.com/Search.aspx?q=42.17134.3.10471
+https://www.catalog.update.microsoft.com/Search.aspx?q=42.18362.3.16827
 
 Extract the CAB file with an archive tool of your choice.
 
@@ -144,7 +144,7 @@ sha256sum /usr/lib/firmware/intel/ipu/ipu4p_fw.bin
 Expected SHA-256:
 
 ```text
-ee534f37f979dfc20e1cb4681bae47c9ec57639f3a2d032b79d77b3097b74d97
+ff2c36cc81a5c726508b22970c2e2538ff06107dc5a72c93401403c227e5157f
 ```
 
 Reboot into the new kernel.
