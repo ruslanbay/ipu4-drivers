@@ -1,7 +1,8 @@
 From 87db58ce726fb9b3ba0c9278731525cd8d124c1d Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:48 +0100
-Subject: [RFC PATCH v2 08/12] media: ipu6: Add IPU4P CSI-2 register definitions
+Subject: [RFC PATCH v2 08/12] media: ipu6: Add IPU4P CSI-2 register
+ definitions
 
 Define register offsets and control bits for the IPU4P CSI-2 receiver
 and its GPREG port configuration register.

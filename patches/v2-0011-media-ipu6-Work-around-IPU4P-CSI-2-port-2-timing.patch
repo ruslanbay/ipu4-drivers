@@ -1,7 +1,8 @@
 From 920905d683252c0ddfcfa769630ee4060d5ac358 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:59 +0100
-Subject: [RFC PATCH v2 11/12] media: ipu6: Work around IPU4P CSI-2 port 2 timing
+Subject: [RFC PATCH v2 11/12] media: ipu6: Work around IPU4P CSI-2 port 2
+ timing
 
 Use timing values observed in Windows for the Surface Pro 7 front
 camera (CSI-2 port 2, firmware source 7, two-lane D-PHY), including

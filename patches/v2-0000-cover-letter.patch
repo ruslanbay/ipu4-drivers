@@ -1,0 +1,76 @@
+From c62084abd5e427ca08290ac093aef0994aafea19 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <ruslanbey@proton.me>
+Date: Thu, 29 Oct 2026 10:39:40 +0000
+Subject: [RFC PATCH v2 00/12] media: ipu6: Add support for IPU4P hardware
+
+This series adds IPU4P support to the upstream IPU6/IPU7 driver.
+
+Most of the groundwork was done by Antti Laakso in the IPU7 support
+series [1]. I added the IPU4P-specific parts, using Intel's downstream
+driver as a reference [2]. Development was assisted by GPT-5.6 Luna.
+
+Image capture works with front and rear cameras, but a
+rear-camera stream-off timeout remains under investigation [3].
+
+Tested on a Surface Pro 7 (Ice Lake, i5-1035G4).
+
+Review and feedback are welcome.
+
+Thanks to the linux-surface community and the libcamera developers for
+testing the downstream driver and sharing their findings.
+
+Links:
+[1] https://lore.kernel.org/all/20260907113004.2489993-1-sakari.ailus@linux.intel.com/
+[2] https://github.com/intel/linux-intel-lts/tree/lts-v5.15.195-android_t-251103T063840Z/drivers/media/pci/intel
+[3] https://github.com/ruslanbay/ipu4-drivers/tree/3b01f27ff51d3fe7ee3f7f10707e23f7ac4db668/assets
+
+Ruslan Bay (12):
+  media: ipu6: Add IPU4P hardware identification
+  media: ipu6: Add IPU4P MMU support
+  media: ipu6: Add IPU4P buttress support
+  media: ipu6: Add IPU4P ISYS firmware ABI definitions
+  media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
+  media: ipu6: Add firmware-specific ISYS response dispatch
+  media: ipu6: Add IPU4P ISYS firmware operations
+  media: ipu6: Add IPU4P CSI-2 register definitions
+  media: ipu6: Add IPU4P ISYS ISR handling
+  media: ipu6: Add IPU4P CSI PHY driver
+  media: ipu6: Work around IPU4P CSI-2 port 2 timing
+  media: ipu6: Enable IPU4P PCI device
+
+ drivers/media/pci/intel/ipu6/Makefile         |   2 +
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 985 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  | 406 ++++++++
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 207 ++++
+ .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |  64 ++
+ drivers/media/pci/intel/ipu6/ipu6-bus.h       |   1 +
+ drivers/media/pci/intel/ipu6/ipu6-buttress.c  |  59 +-
+ drivers/media/pci/intel/ipu6/ipu6-fw-com.c    |  48 +-
+ drivers/media/pci/intel/ipu6/ipu6-fw-com.h    |   3 +
+ drivers/media/pci/intel/ipu6/ipu6-fw-isys.c   |  64 +-
+ drivers/media/pci/intel/ipu6/ipu6-fw-isys.h   |   4 +-
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 103 +-
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.h |   2 +
+ .../media/pci/intel/ipu6/ipu6-isys-queue.c    |  36 +-
+ .../media/pci/intel/ipu6/ipu6-isys-video.c    |  12 +-
+ drivers/media/pci/intel/ipu6/ipu6-isys.c      | 136 ++-
+ drivers/media/pci/intel/ipu6/ipu6-isys.h      |  36 +
+ drivers/media/pci/intel/ipu6/ipu6-mmu-hw.c    | 114 +-
+ drivers/media/pci/intel/ipu6/ipu6-mmu.c       |   7 +-
+ drivers/media/pci/intel/ipu6/ipu6-mmu.h       |   1 +
+ .../intel/ipu6/ipu6-platform-buttress-regs.h  |  30 +
+ .../media/pci/intel/ipu6/ipu6-platform-regs.h |  14 +
+ drivers/media/pci/intel/ipu6/ipu6.c           |  49 +
+ drivers/media/pci/intel/ipu6/ipu6.h           |  20 +-
+ include/media/ipu6-pci-table.h                |   2 +
+ 25 files changed, 2320 insertions(+), 85 deletions(-)
+ create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
+ create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
+ create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+ create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
+
+
+base-commit: 27285b099fbc5cb2ae3aef20f3bbd7b3c88b3005
+-- 
+2.56.0
+
