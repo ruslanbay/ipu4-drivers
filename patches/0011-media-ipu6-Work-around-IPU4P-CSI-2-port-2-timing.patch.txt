@@ -1,5 +1,5 @@
 From 920905d683252c0ddfcfa769630ee4060d5ac358 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:59 +0100
 Subject: [PATCH 11/12] media: ipu6: Work around IPU4P CSI-2 port 2 timing
 
@@ -11,6 +11,14 @@ Keep the calculated timing path for all other configurations.
 
 Tested on the Surface Pro 7 front camera; other IPU4P systems need
 testing.
+
+The Co-developed-by tags will be updated with the contributors' actual
+names and email addresses in the final patchset.
+
+Co-developed-by: supermepsipax <supermepsipax@github>
+Co-developed-by: thisiscamk <thisiscamk@github>
+Co-developed-by: ConsultingFuture4200 <ConsultingFuture4200@github>
+Co-developed-by: georgemihaila <georgemihaila@github>
 
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---

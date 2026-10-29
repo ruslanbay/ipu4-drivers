@@ -1,5 +1,5 @@
 From 31c0379d9fe033b4ac1d9471ab81dedd6bdb08d9 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:17 +0100
 Subject: [PATCH 01/12] media: ipu6: Add IPU4P hardware identification
 

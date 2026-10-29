@@ -1,5 +1,5 @@
 From 07aeb5071e664f512e07b20fe837574c3506d969 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:30 +0100
 Subject: [PATCH 04/12] media: ipu6: Add IPU4P ISYS firmware ABI definitions
 

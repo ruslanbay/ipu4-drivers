@@ -1,5 +1,5 @@
 From c62084abd5e427ca08290ac093aef0994aafea19 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:01:02 +0100
 Subject: [PATCH 12/12] media: ipu6: Enable IPU4P PCI device
 

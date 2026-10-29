@@ -1,5 +1,5 @@
 From 6742506cb43d0e6ff8e5a599911781334a2bafb6 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:44 +0100
 Subject: [PATCH 07/12] media: ipu6: Add IPU4P ISYS firmware operations
 
