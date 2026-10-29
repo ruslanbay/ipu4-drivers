@@ -1,7 +1,7 @@
 From 90f564f2d5da7e592eb746ac6bb54cc8ddc7c5c7 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:32 +0100
-Subject: [PATCH 05/12] media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
+Subject: [RFC PATCH v2 05/12] media: ipu6: Support DMEM-based SysCom in ipu6-fw-com
 
 IPU4P uses DMEM for SysCom control registers instead of the buttress
 boot-parameter area used by IPU6.

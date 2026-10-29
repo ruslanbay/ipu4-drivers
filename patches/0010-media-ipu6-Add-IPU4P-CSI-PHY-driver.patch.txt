@@ -1,7 +1,7 @@
 From c6b8ee9010c07916c49b7e5f7f8dbcfdcec0b182 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:55 +0100
-Subject: [PATCH 10/12] media: ipu6: Add IPU4P CSI PHY driver
+Subject: [RFC PATCH v2 10/12] media: ipu6: Add IPU4P CSI PHY driver
 
 Add IPU4P-specific CSI PHY initialization and power management.
 

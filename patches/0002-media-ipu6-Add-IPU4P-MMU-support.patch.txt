@@ -1,7 +1,7 @@
 From d66774752cb7a75f0db114b815ceb2f0ab20927f Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:21 +0100
-Subject: [PATCH 02/12] media: ipu6: Add IPU4P MMU support
+Subject: [RFC PATCH v2 02/12] media: ipu6: Add IPU4P MMU support
 
 IPU4P uses the same MMUv2 programming model as IPU6, but has different
 MMU register offsets, instances and stream allocations.

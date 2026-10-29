@@ -1,7 +1,7 @@
 From cc3bab43892e99464551c445fb5fda6c9ea182ec Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:26 +0100
-Subject: [PATCH 03/12] media: ipu6: Add IPU4P buttress support
+Subject: [RFC PATCH v2 03/12] media: ipu6: Add IPU4P buttress support
 
 IPU4P uses different power-state fields and frequency-control layouts
 from IPU6, and has a different bootloader status register.
