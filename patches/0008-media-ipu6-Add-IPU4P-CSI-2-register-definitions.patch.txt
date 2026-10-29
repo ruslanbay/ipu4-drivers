@@ -1,10 +1,10 @@
-From aa2ce30b98a4e3946d5cb46e6dff8b523562219d Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Sat, 10 Oct 2026 13:06:36 +0200
-Subject: [PATCH 08/13] media: ipu6: Add IPU4P CSI-2 register definitions
+From 87db58ce726fb9b3ba0c9278731525cd8d124c1d Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 00:00:48 +0100
+Subject: [PATCH 08/12] media: ipu6: Add IPU4P CSI-2 register definitions
 
-Define the IPU4P CSI-2 receiver, interrupt, and PHY sideband registers
-needed by the ISYS driver.
+Define register offsets and control bits for the IPU4P CSI-2 receiver
+and its GPREG port configuration register.
 
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
@@ -14,7 +14,7 @@ Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
 new file mode 100644
-index 000000000000..7f41bdb4150a
+index 00000000000..7f41bdb4150
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
 @@ -0,0 +1,22 @@
@@ -41,5 +41,5 @@ index 000000000000..7f41bdb4150a
 +
 +#endif /* IPU4P_ISYS_CSI2_REGS_H */
 -- 
-2.55.0
+2.56.0
 

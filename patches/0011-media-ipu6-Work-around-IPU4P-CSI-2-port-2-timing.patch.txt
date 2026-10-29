@@ -1,36 +1,33 @@
-From bb7b4f7e33a745c92eaad65b3006a2ffaa0ad215 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Sat, 10 Oct 2026 13:06:47 +0200
-Subject: [PATCH 11/13] media: ipu6: Work around IPU4P CSI-2 port 2 timing
+From 920905d683252c0ddfcfa769630ee4060d5ac358 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Thu, 29 Oct 2026 00:00:59 +0100
+Subject: [PATCH 11/12] media: ipu6: Work around IPU4P CSI-2 port 2 timing
 
-Use fixed timing values for the verified Surface Pro 7 front-camera
-configuration (CSI-2 port 2, firmware source 7, two lanes), including
-the lane-count programming order observed in Windows. Retain calculated
-timings and the existing initialization order for other configurations.
+Use timing values observed in Windows for the Surface Pro 7 front
+camera (CSI-2 port 2, firmware source 7, two-lane D-PHY), including
+the lane-count programming order.
 
-Tested on the Surface Pro 7 front camera; other IPU4P systems need testing.
+Keep the calculated timing path for all other configurations.
 
-Co-developed-by: supermepsipax <supermepsipax@github>
-Co-developed-by: thisiscamk <thisiscamk@github>
-Co-developed-by: ConsultingFuture4200 <ConsultingFuture4200@github>
-Co-developed-by: georgemihaila <georgemihaila@github>
+Tested on the Surface Pro 7 front camera; other IPU4P systems need
+testing.
 
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
- .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 50 ++++++++++++++++---
- 1 file changed, 42 insertions(+), 8 deletions(-)
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 48 +++++++++++++++----
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
-index ec0a36069b01..ffa7d80cd5f2 100644
+index 3f7ff4ab1ae..3f3c1c93735 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
-@@ -69,6 +69,22 @@ void ipu4p_isys_phy_setup(struct ipu6_isys *isys)
- 		ipu4p_isys_configure_phy_bb(isp, &ipu4p_phy_bb_configs[i]);
+@@ -53,6 +53,22 @@ static void ipu4p_isys_configure_phy_bb(struct ipu6_device *isp,
+ 	writel(value, base + IPU4P_BUTTRESS_REG_BBX_AFE_CONFIG(config->bb));
  }
  
 +/*
-+ * Use fixed timing observed in Windows for the SP7 front camera:
-+ * IPU4P CSI-2 port 2, firmware source 7, two-lane D-PHY.
++ * Use fixed timing observed in Windows for IPU4P CSI-2 port 2,
++ * firmware source 7, two-lane D-PHY configuration.
 + */
 +static void ipu4p_isys_apply_fixed_2lane_timing(struct ipu6_isys_csi2 *csi2)
 +{
@@ -44,10 +41,10 @@ index ec0a36069b01..ffa7d80cd5f2 100644
 +	}
 +}
 +
- static void ipu4p_isys_csi_irq_enable(struct ipu6_isys *isys,
- 				      unsigned int port)
+ void ipu4p_isys_phy_setup(struct ipu6_isys *isys)
  {
-@@ -118,6 +134,7 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+ 	struct ipu6_device *isp = isys->adev->isp;
+@@ -120,6 +136,7 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
  	struct ipu6_isys_csi2 *csi2;
  	void __iomem *base;
  	u32 value;
@@ -55,7 +52,7 @@ index ec0a36069b01..ffa7d80cd5f2 100644
  
  	if (!cfg || cfg->port >= isys->pdata->ipdata->csi2.nports)
  		return -EINVAL;
-@@ -146,14 +163,30 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+@@ -148,14 +165,29 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
  	if (!timing)
  		return -EINVAL;
  
@@ -71,15 +68,14 @@ index ec0a36069b01..ffa7d80cd5f2 100644
 +	       base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_CLANE);
 +
 +	fixed_timing = csi2->port == 2 && cfg->nlanes == 2 &&
-+		       csi2->asd.source ==
-+		       IPU6_FW_ISYS_STREAM_SRC_CSI2_PORT0 + 7;
++		       csi2->asd.source == IPU4P_FW_ISYS_STREAM_SRC_PORT_7;
 +	if (fixed_timing) {
 +		ipu4p_isys_apply_fixed_2lane_timing(csi2);
 +		dev_dbg(&isys->adev->auxdev.dev,
-+			"using fixed SP7 timing for CSI-2 port %u, source 7, two lanes\n",
++			"using fixed timing for CSI-2 port %u, source 7, two lanes\n",
 +			csi2->port);
 +
-+		/* Windows configures the lane count before RX_CONFIG. */
++		/* Set the lane count before RX_CONFIG for this workaround. */
 +		writel(cfg->nlanes, base + IPU4P_CSI2_RX_NOF_ENABLED_LANES);
 +	} else {
 +		writel(timing->csettle,
@@ -94,14 +90,6 @@ index ec0a36069b01..ffa7d80cd5f2 100644
  	}
  
  	value = readl(base + IPU4P_CSI2_RX_CONFIG);
-@@ -162,6 +195,7 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
- 	writel(value, base + IPU4P_CSI2_RX_CONFIG);
- 
- 	writel(cfg->nlanes, base + IPU4P_CSI2_RX_NOF_ENABLED_LANES);
-+
- 	writel(0, base + IPU4P_CSI2_RX_ENABLE);
- 
- 	ipu4p_isys_csi_irq_enable(isys, cfg->port);
 -- 
-2.55.0
+2.56.0
 
