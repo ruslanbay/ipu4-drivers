@@ -14,7 +14,7 @@ Device topology
             type Node subtype V4L flags 0
             device node name /dev/video0
 	pad0: SINK,MUST_CONNECT
-		<- "Intel IPU6 CSI2 0":1 []
+		<- "Intel IPU6 CSI2 0":1 [ENABLED]
 
 - entity 5: Intel IPU6 ISYS Capture 1 (1 pad, 1 link)
             type Node subtype V4L flags 0
@@ -110,7 +110,7 @@ Device topology
              type Node subtype V4L flags 0
              device node name /dev/video16
 	pad0: SINK,MUST_CONNECT
-		<- "Intel IPU6 CSI2 2":1 []
+		<- "Intel IPU6 CSI2 2":1 [ENABLED]
 
 - entity 69: Intel IPU6 ISYS Capture 17 (1 pad, 1 link)
              type Node subtype V4L flags 0
@@ -404,7 +404,7 @@ Device topology
 		[stream:0 fmt:SGRBG10_1X10/4096x3072 field:none
 		 crop.bounds:(0,0)/4096x3072
 		 crop:(0,0)/0x0]
-		-> "Intel IPU6 ISYS Capture 0":0 []
+		-> "Intel IPU6 ISYS Capture 0":0 [ENABLED]
 	pad2: SOURCE
 		-> "Intel IPU6 ISYS Capture 1":0 []
 	pad3: SOURCE
@@ -449,13 +449,13 @@ Device topology
               type V4L2 subdev subtype Unknown flags 0
               device node name /dev/v4l-subdev2
 	pad0: SINK,MUST_CONNECT
-		[stream:0 fmt:SGRBG10_1X10/4096x3072 field:none]
+		[stream:0 fmt:SBGGR10_1X10/2592x1944 field:none]
 		<- "ov5693 1-0036":0 [ENABLED,IMMUTABLE]
 	pad1: SOURCE
-		[stream:0 fmt:SGRBG10_1X10/4096x3072 field:none
-		 crop.bounds:(0,0)/4096x3072
-		 crop:(0,0)/0x0]
-		-> "Intel IPU6 ISYS Capture 16":0 []
+		[stream:0 fmt:SBGGR10_1X10/2592x1944 field:none
+		 crop.bounds:(0,0)/2592x1944
+		 crop:(0,0)/2592x1944]
+		-> "Intel IPU6 ISYS Capture 16":0 [ENABLED]
 	pad2: SOURCE
 		-> "Intel IPU6 ISYS Capture 17":0 []
 	pad3: SOURCE
@@ -596,25 +596,21 @@ Device topology
 	pad8: SOURCE
 		-> "Intel IPU6 ISYS Capture 63":0 []
 
-- entity 465: ov5693 1-0036 (1 pad, 1 link, 0 routes)
+- entity 465: ov8865 2-0010 (1 pad, 1 link, 0 routes)
               type V4L2 subdev subtype Sensor flags 0
               device node name /dev/v4l-subdev8
-	pad0: SOURCE
-		[stream:0 fmt:SBGGR10_1X10/2592x1944@1/30
-		 crop.bounds:(16,6)/2592x1944
-		 crop:(16,6)/2592x1944]
-		-> "Intel IPU6 CSI2 2":0 [ENABLED,IMMUTABLE]
-
-- entity 487: ov8865 2-0010 (1 pad, 1 link, 0 routes)
-              type V4L2 subdev subtype Sensor flags 0
-              device node name /dev/v4l-subdev9
 	pad0: SOURCE
 		[stream:0 fmt:SBGGR10_1X10/3264x2448@1/0 field:none colorspace:raw xfer:none ycbcr:601 quantization:full-range
 		 crop.bounds:(16,40)/3264x2448
 		 crop:(16,40)/3264x2448]
 		-> "Intel IPU6 CSI2 0":0 [ENABLED,IMMUTABLE]
 
-- entity 493: dw9719 2-000c (0 pad, 0 link, 0 routes)
-              type V4L2 subdev subtype Lens flags 0
-              device node name /dev/v4l-subdev10
+- entity 487: ov5693 1-0036 (1 pad, 1 link, 0 routes)
+              type V4L2 subdev subtype Sensor flags 0
+              device node name /dev/v4l-subdev9
+	pad0: SOURCE
+		[stream:0 fmt:SBGGR10_1X10/2592x1944@1/30
+		 crop.bounds:(16,6)/2592x1944
+		 crop:(16,6)/2592x1944]
+		-> "Intel IPU6 CSI2 2":0 [ENABLED,IMMUTABLE]
 

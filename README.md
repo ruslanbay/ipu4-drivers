@@ -4,7 +4,7 @@
 
 # Intel IPU4P
 
-Build Linux `v7.3-rc6` with IPU4P support on top of the upstream IPU6/IPU7 driver.
+Build Linux kernel with IPU4P support on top of the upstream IPU6/IPU7 driver.
 
 https://docs.kernel.org/admin-guide/quickly-build-trimmed-linux.html
 
@@ -31,18 +31,14 @@ sudo dnf --setopt=install_weak_deps=FALSE install \
 ## Kernel source and patches
 
 ```bash
-git clone --depth=1 --single-branch -b v7.3-rc6 \
-    https://github.com/torvalds/linux
+git clone --depth=1 --single-branch -b next \
+    https://gitlab.freedesktop.org/linux-media/media-committers linux
 
 git clone -b upstream https://github.com/ruslanbay/ipu4-drivers
 
 cd linux
 
-git config --local user.name "Your Name"
-git config --local user.email "you@example.com"
-
-b4 shazam \
-    https://lore.kernel.org/all/20260907113004.2489993-1-sakari.ailus@linux.intel.com/
+git checkout 27285b099fbc5cb2ae3aef20f3bbd7b3c88b3005
 
 git am ../ipu4-drivers/patches/00*.patch
 ```
@@ -157,20 +153,19 @@ Check the kernel log:
 journalctl -b | grep -Ei \
     'ipu|ov5693|INT33BE|ov8865|dw9719|INT347'
 
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: enabling device (0000 -> 0002)
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Found supported sensor INT33BE:00
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Found supported sensor INT347A:00
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Connected 2 cameras
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Sending BOOT_LOAD to CSE
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: Sending AUTHENTICATE_RUN to CSE
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: CSE authenticate_run done
-Oct 11 12:12:41 mac kernel: intel-ipu6 0000:00:05.0: IPU0-v0[8a19] hardware version 64
-Oct 11 12:12:41 mac kernel: ov5693 i2c-INT33BE:00: supply dovdd not found, using dummy regulator
-Oct 11 12:12:41 mac kernel: ov5693 i2c-INT33BE:00: supply dvdd not found, using dummy regulator
-Oct 11 12:12:41 mac kernel: ov8865 i2c-INT347A:00: supply dvdd not found, using dummy regulator
-Oct 11 12:12:41 mac kernel: ov8865 i2c-INT347A:00: supply dovdd not found, using dummy regulator
-Oct 11 12:12:42 mac kernel: ov8865 i2c-INT347A:00: Instantiated dw9719 VCM
-Oct 11 12:12:42 mac kernel: dw9719 i2c-INT347A:00-VCM: supply vdd not found, using dummy regulator
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: enabling device (0000 -> 0002)
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: Found supported sensor INT33BE:00 (\_SB.PCI0.I2C2.CAMF)
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: Found supported sensor INT347A:00 (\_SB.PCI0.I2C3.CAMR)
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: Connected 2 cameras
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: Sending BOOT_LOAD to CSE
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: Sending AUTHENTICATE_RUN to CSE
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: CSE authenticate_run done
+Oct 29 09:14:37 mac kernel: intel-ipu6 0000:00:05.0: IPU0-v0[8a19] hardware version 1
+Oct 29 09:14:37 mac kernel: ov5693 i2c-INT33BE:00: supply dovdd not found, using dummy regulator
+Oct 29 09:14:37 mac kernel: ov5693 i2c-INT33BE:00: supply dvdd not found, using dummy regulator
+Oct 29 09:14:37 mac kernel: ov8865 i2c-INT347A:00: supply dvdd not found, using dummy regulator
+Oct 29 09:14:37 mac kernel: ov8865 i2c-INT347A:00: supply dovdd not found, using dummy regulator
+Oct 29 09:14:37 mac kernel: ov8865 i2c-INT347A:00: Instantiated dw9719 VCM
 ```
 
 Check loaded modules:
@@ -179,23 +174,19 @@ Check loaded modules:
 lsmod | grep -Ei \
     'ipu|ov5693|ov8865|dw9719|INT347'
 
-dw9719                 12288  1
-intel_ipu6_isys       233472  0
+lsmod | grep -Ei 'ipu|ov5693|ov8865|dw9719|INT347'
+intel_ipu6_isys       241664  0
 videobuf2_dma_sg       24576  1 intel_ipu6_isys
 videobuf2_v4l2         45056  1 intel_ipu6_isys
 videobuf2_common      106496  4 videobuf2_v4l2,intel_ipu6_isys,videobuf2_dma_sg,videobuf2_memops
-intel_skl_int3472_tps68470    24576  0
+intel_skl_int3472_tps68470    32768  0
 ov5693                 24576  1
-ov8865                 40960  1
-v4l2_cci               12288  2 ov5693,dw9719
-v4l2_fwnode            40960  3 ov5693,intel_ipu6_isys,ov8865
-v4l2_async             36864  5 v4l2_fwnode,ov5693,intel_ipu6_isys,dw9719,ov8865
 intel_skl_int3472_discrete    28672  4
-videodev              450560  7 v4l2_async,v4l2_fwnode,videobuf2_v4l2,ov5693,intel_ipu6_isys,dw9719,ov8865
+ov8865                 40960  1
+v4l2_cci               12288  1 ov5693
 intel_skl_int3472_common    16384  2 intel_skl_int3472_tps68470,intel_skl_int3472_discrete
-mc                     98304  8 v4l2_async,videodev,videobuf2_v4l2,ov5693,intel_ipu6_isys,videobuf2_common,dw9719,ov8865
-intel_ipu6            143360  1 intel_ipu6_isys
-ipu_bridge             28672  2 intel_ipu6,intel_ipu6_isys
+intel_ipu6            155648  1 intel_ipu6_isys
+ipu_bridge             40960  2 intel_ipu6,intel_ipu6_isys
 ```
 
 Inspect the media graph:
@@ -282,3 +273,64 @@ sudo dnf history undo <ID>
 ```
 
 `history undo` reverses the package operations performed by that specific transaction.
+
+## (Optional) Checks
+
+### Check Patches
+
+```bash
+git format-patch -12
+0001-media-ipu6-Add-IPU4P-hardware-identification.patch
+0002-media-ipu6-Add-IPU4P-MMU-support.patch
+0003-media-ipu6-Add-IPU4P-buttress-support.patch
+0004-media-ipu6-Add-IPU4P-ISYS-firmware-ABI-definitions.patch
+0005-media-ipu6-Support-DMEM-based-SysCom-in-ipu6-fw-com.patch
+0006-media-ipu6-Add-firmware-specific-ISYS-response-dispa.patch
+0007-media-ipu6-Add-IPU4P-ISYS-firmware-operations.patch
+0008-media-ipu6-Add-IPU4P-CSI-2-register-definitions.patch
+0009-media-ipu6-Add-IPU4P-ISYS-ISR-handling.patch
+0010-media-ipu6-Add-IPU4P-CSI-PHY-driver.patch
+0011-media-ipu6-Work-around-IPU4P-CSI-2-port-2-timing.patch
+0012-media-ipu6-Enable-IPU4P-PCI-device.patch
+```
+
+```bash
+pip install gitpython
+
+./scripts/checkpatch.pl --strict --no-signoff --terse 0*.patch
+```
+
+`--no-signoff` skips sign-off checks. Remove this option when validating patches intended for upstream submission.
+
+```bash
+0004-media-ipu6-Add-IPU4P-ISYS-firmware-ABI-definitions.patch:16: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+total: 0 errors, 1 warnings, 0 checks, 398 lines checked
+0007-media-ipu6-Add-IPU4P-ISYS-firmware-operations.patch:41: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+total: 0 errors, 1 warnings, 0 checks, 1370 lines checked
+0008-media-ipu6-Add-IPU4P-CSI-2-register-definitions.patch:16: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+total: 0 errors, 1 warnings, 0 checks, 22 lines checked
+0010-media-ipu6-Add-IPU4P-CSI-PHY-driver.patch:36: WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+total: 0 errors, 1 warnings, 0 checks, 266 lines checked
+```
+
+### Compare two builds to make sure there are no new warnings introduced
+
+Baseline
+
+```bash
+git reset --hard d7e7bca7169873b46e857c025c10f3336c1258d8
+
+make clean && make W=12 -j1 drivers/media/pci/intel/ipu6/ 2>&1 | tee /tmp/ipu-d7e7bca7169873b46e857c025c10f3336c1258d8.log
+
+Candidate
+
+git reset --hard c62084abd5e427ca08290ac093aef0994aafea19
+
+make clean &&  make W=12 -j1 drivers/media/pci/intel/ipu6/ 2>&1 | tee /tmp/ipu-c62084abd5e427ca08290ac093aef0994aafea19.log
+
+Compare Baseline vs Candidate
+
+diff -y --suppress-common-lines \
+        /tmp/ipu-d7e7bca7169873b46e857c025c10f3336c1258d8.log \
+        /tmp/ipu-c62084abd5e427ca08290ac093aef0994aafea19.log
+```
