@@ -321,15 +321,19 @@ Baseline
 git reset --hard d7e7bca7169873b46e857c025c10f3336c1258d8
 
 make clean && make W=12 -j1 drivers/media/pci/intel/ipu6/ 2>&1 | tee /tmp/ipu-d7e7bca7169873b46e857c025c10f3336c1258d8.log
+```
 
 Candidate
 
+```bash
 git reset --hard c62084abd5e427ca08290ac093aef0994aafea19
 
 make clean &&  make W=12 -j1 drivers/media/pci/intel/ipu6/ 2>&1 | tee /tmp/ipu-c62084abd5e427ca08290ac093aef0994aafea19.log
+```
 
 Compare Baseline vs Candidate
 
+```bash
 diff -y --suppress-common-lines \
         /tmp/ipu-d7e7bca7169873b46e857c025c10f3336c1258d8.log \
         /tmp/ipu-c62084abd5e427ca08290ac093aef0994aafea19.log
