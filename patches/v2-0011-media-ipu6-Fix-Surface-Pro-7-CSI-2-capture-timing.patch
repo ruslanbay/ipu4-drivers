@@ -1,5 +1,5 @@
 From 449e123e2950ac8f4cb2dd0a2297a854995d1f3f Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Fri, 30 Oct 2026 20:55:27 +0100
 Subject: [RFC PATCH v2 11/12] media: ipu6: Fix Surface Pro 7 CSI-2 capture
  timing
@@ -15,7 +15,13 @@ Keep the existing timing path for other configurations.
 
 Tested on Microsoft Surface Pro 7 with the OV5693 front camera.
 
-Link: https://github.com/linux-surface/linux-surface/discussions/1353
+The Co-developed-by tags will be updated with the contributors' actual
+names and email addresses in the final patchset.
+
+Co-developed-by: supermepsipax <supermepsipax@github>
+Co-developed-by: thisiscamk <thisiscamk@github>
+Co-developed-by: ConsultingFuture4200 <ConsultingFuture4200@github>
+Co-developed-by: georgemihaila <georgemihaila@github>
 
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---

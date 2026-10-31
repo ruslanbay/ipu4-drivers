@@ -1,5 +1,5 @@
 From a98b6751c104e46754ac147a68b32b58b0f61072 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Fri, 30 Oct 2026 20:54:41 +0100
 Subject: [RFC PATCH v2 07/12] media: ipu6: Add IPU4P ISYS firmware operations
 

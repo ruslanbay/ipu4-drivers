@@ -1,5 +1,5 @@
 From 00ba45c6d4bca358dd7e931437b3a9a3a4c6ff34 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Fri, 30 Oct 2026 20:55:32 +0100
 Subject: [RFC PATCH v2 12/12] media: ipu6: Enable IPU4P PCI device
 

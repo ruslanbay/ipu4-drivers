@@ -1,5 +1,5 @@
 From 90f564f2d5da7e592eb746ac6bb54cc8ddc7c5c7 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:32 +0100
 Subject: [RFC PATCH v2 05/12] media: ipu6: Support DMEM-based SysCom in
  ipu6-fw-com

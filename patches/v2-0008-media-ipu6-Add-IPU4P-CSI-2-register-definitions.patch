@@ -1,5 +1,5 @@
 From 4689f4a5019036a860c18354ffc12cb41e498204 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Fri, 30 Oct 2026 20:54:51 +0100
 Subject: [RFC PATCH v2 08/12] media: ipu6: Add IPU4P CSI-2 register
  definitions

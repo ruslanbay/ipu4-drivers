@@ -1,5 +1,5 @@
 From cc3bab43892e99464551c445fb5fda6c9ea182ec Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Thu, 29 Oct 2026 00:00:26 +0100
 Subject: [RFC PATCH v2 03/12] media: ipu6: Add IPU4P buttress support
 

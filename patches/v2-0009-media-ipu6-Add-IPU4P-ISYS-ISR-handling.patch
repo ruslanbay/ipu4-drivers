@@ -1,5 +1,5 @@
 From 3989e7fe9f1fdb185d5dcd35c98e1b0b36bd8eec Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+From: Ruslan Bay <ruslanbey@proton.me>
 Date: Fri, 30 Oct 2026 20:55:05 +0100
 Subject: [RFC PATCH v2 09/12] media: ipu6: Add IPU4P ISYS ISR handling
 
