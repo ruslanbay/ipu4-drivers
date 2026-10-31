@@ -1,5 +1,5 @@
 From 4fe035e4313490def73920e92256b5b65439ae19 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
 Date: Thu, 29 Oct 2026 00:00:40 +0100
 Subject: [RFC PATCH v2 06/12] media: ipu6: Add firmware-specific ISYS response
  dispatch

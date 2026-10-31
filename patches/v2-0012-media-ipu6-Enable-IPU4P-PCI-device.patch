@@ -1,6 +1,6 @@
-From c62084abd5e427ca08290ac093aef0994aafea19 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Thu, 29 Oct 2026 00:01:02 +0100
+From 00ba45c6d4bca358dd7e931437b3a9a3a4c6ff34 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 20:55:32 +0100
 Subject: [RFC PATCH v2 12/12] media: ipu6: Enable IPU4P PCI device
 
 Add IPU4P to the PCI device ID table now that the required MMU,
@@ -8,9 +8,34 @@ buttress, firmware, ISYS and CSI PHY support is in place.
 
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
- include/media/ipu6-pci-table.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/pci/intel/ipu6/Kconfig | 8 ++++----
+ include/media/ipu6-pci-table.h       | 1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
+index 3d3c7778be3..e901cce5cde 100644
+--- a/drivers/media/pci/intel/ipu6/Kconfig
++++ b/drivers/media/pci/intel/ipu6/Kconfig
+@@ -1,5 +1,5 @@
+ config VIDEO_INTEL_IPU6
+-	tristate "Intel IPU 6/7/8 driver"
++	tristate "Intel IPU 4P/6/7/8 driver"
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on VIDEO_DEV
+ 	depends on X86 && HAS_DMA
+@@ -11,9 +11,9 @@ config VIDEO_INTEL_IPU6
+ 	select VIDEOBUF2_DMA_SG
+ 	select V4L2_FWNODE
+ 	help
+-	  This is the driver for 6th, 7th and 8th Gen Intel Image
+-	  Processing Units, found in Intel SoCs since Tiger lake and used
+-	  for capturing images and video from camera sensors.
++	  This is the driver for Intel IPU4P, IPU6, IPU7 and IPU8 image
++	  processing units, used for capturing images and video from camera
++	  sensors.
+ 
+ 	  To compile this driver, say Y here! The two modules will be
+ 	  called intel_ipu6 and intel_ipu6_isys.
 diff --git a/include/media/ipu6-pci-table.h b/include/media/ipu6-pci-table.h
 index e04ff2a8b2a..233365f2172 100644
 --- a/include/media/ipu6-pci-table.h

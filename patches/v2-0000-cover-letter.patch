@@ -1,6 +1,6 @@
-From c62084abd5e427ca08290ac093aef0994aafea19 Mon Sep 17 00:00:00 2001
+From 00ba45c6d4bca358dd7e931437b3a9a3a4c6ff34 Mon Sep 17 00:00:00 2001
 From: Ruslan Bay <ruslanbey@proton.me>
-Date: Thu, 29 Oct 2026 10:39:40 +0000
+Date: Sat, 31 Oct 2026 06:57:24 +0000
 Subject: [RFC PATCH v2 00/12] media: ipu6: Add support for IPU4P hardware
 
 This series adds IPU4P support to the upstream IPU6/IPU7 driver.
@@ -35,14 +35,15 @@ Ruslan Bay (12):
   media: ipu6: Add IPU4P CSI-2 register definitions
   media: ipu6: Add IPU4P ISYS ISR handling
   media: ipu6: Add IPU4P CSI PHY driver
-  media: ipu6: Work around IPU4P CSI-2 port 2 timing
+  media: ipu6: Fix Surface Pro 7 CSI-2 capture timing
   media: ipu6: Enable IPU4P PCI device
 
+ drivers/media/pci/intel/ipu6/Kconfig          |   8 +-
  drivers/media/pci/intel/ipu6/Makefile         |   2 +
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 985 ++++++++++++++++++
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  | 406 ++++++++
- .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 207 ++++
- .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |  64 ++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 996 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  | 406 +++++++
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 225 ++++
+ .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |  72 ++
  drivers/media/pci/intel/ipu6/ipu6-bus.h       |   1 +
  drivers/media/pci/intel/ipu6/ipu6-buttress.c  |  59 +-
  drivers/media/pci/intel/ipu6/ipu6-fw-com.c    |  48 +-
@@ -63,7 +64,7 @@ Ruslan Bay (12):
  drivers/media/pci/intel/ipu6/ipu6.c           |  49 +
  drivers/media/pci/intel/ipu6/ipu6.h           |  20 +-
  include/media/ipu6-pci-table.h                |   2 +
- 25 files changed, 2320 insertions(+), 85 deletions(-)
+ 26 files changed, 2361 insertions(+), 89 deletions(-)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c

@@ -1,6 +1,6 @@
-From 6742506cb43d0e6ff8e5a599911781334a2bafb6 Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Thu, 29 Oct 2026 00:00:44 +0100
+From a98b6751c104e46754ac147a68b32b58b0f61072 Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 20:54:41 +0100
 Subject: [RFC PATCH v2 07/12] media: ipu6: Add IPU4P ISYS firmware operations
 
 Add IPU4P-specific ISYS operations for queue setup, stream
@@ -12,7 +12,7 @@ and IWAKE proxy controls.
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
  drivers/media/pci/intel/ipu6/Makefile         |   1 +
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 883 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 880 ++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |   7 +
  drivers/media/pci/intel/ipu6/ipu6-bus.h       |   1 +
  drivers/media/pci/intel/ipu6/ipu6-fw-isys.c   |   9 +
@@ -22,7 +22,7 @@ Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
  drivers/media/pci/intel/ipu6/ipu6-isys.c      | 126 ++-
  drivers/media/pci/intel/ipu6/ipu6-isys.h      |  27 +
  drivers/media/pci/intel/ipu6/ipu6.c           |   8 +
- 11 files changed, 1093 insertions(+), 38 deletions(-)
+ 11 files changed, 1090 insertions(+), 38 deletions(-)
  create mode 100644 drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 
 diff --git a/drivers/media/pci/intel/ipu6/Makefile b/drivers/media/pci/intel/ipu6/Makefile
@@ -39,10 +39,10 @@ index 676bc978b97..54fca25785a 100644
  				ipu6-isys-video.o \
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 new file mode 100644
-index 00000000000..065df3ec93e
+index 00000000000..2c0b08ecaf8
 --- /dev/null
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
-@@ -0,0 +1,883 @@
+@@ -0,0 +1,880 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (C) 2026 Intel Corporation
@@ -904,9 +904,6 @@ index 00000000000..065df3ec93e
 +		else
 +			msg->ipu4p_addr_error = true;
 +	}
-+
-+	ipu4p_fw_isys_dump_frame_buf_set(&stream->isys->adev->auxdev.dev,
-+					 msg, stream->nr_output_pins);
 +}
 +
 +const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops = {

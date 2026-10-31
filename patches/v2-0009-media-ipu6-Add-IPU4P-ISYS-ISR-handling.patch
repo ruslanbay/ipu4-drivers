@@ -1,6 +1,6 @@
-From 2e8b419f790d147148136147adcf046a076ed3ac Mon Sep 17 00:00:00 2001
-From: Ruslan Bay <ruslanbey@proton.me>
-Date: Thu, 29 Oct 2026 00:00:52 +0100
+From 3989e7fe9f1fdb185d5dcd35c98e1b0b36bd8eec Mon Sep 17 00:00:00 2001
+From: Ruslan Bay <67730802+ruslanbay@users.noreply.github.com>
+Date: Fri, 30 Oct 2026 20:55:05 +0100
 Subject: [RFC PATCH v2 09/12] media: ipu6: Add IPU4P ISYS ISR handling
 
 Handle IPU4P ISYS software and CSI interrupts, dispatch firmware
@@ -8,18 +8,18 @@ responses, and report CSI receiver errors through the common ISYS code.
 
 Signed-off-by: Ruslan Bay <ruslanbey@proton.me>
 ---
- drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 102 ++++++++++++++++++
+ drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c  | 116 ++++++++++++++++++
  drivers/media/pci/intel/ipu6/ipu4p-fw-isys.h  |   1 +
- .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |  38 +++++++
- drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |  74 +++++++++++++
+ .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |  43 +++++++
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c |  74 +++++++++++
  drivers/media/pci/intel/ipu6/ipu6-isys-csi2.h |   2 +
  drivers/media/pci/intel/ipu6/ipu6-isys.c      |  14 ++-
  drivers/media/pci/intel/ipu6/ipu6-isys.h      |   3 +
  drivers/media/pci/intel/ipu6/ipu6.c           |   1 +
- 8 files changed, 233 insertions(+), 2 deletions(-)
+ 8 files changed, 252 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
-index 065df3ec93e..fcd0bdd78b3 100644
+index 2c0b08ecaf8..b82053f1545 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-fw-isys.c
 @@ -14,6 +14,7 @@
@@ -38,44 +38,58 @@ index 065df3ec93e..fcd0bdd78b3 100644
  #include "ipu6-platform-regs.h"
  
  static const char send_msg_types[N_IPU4P_FW_ISYS_SEND_TYPE][32] = {
-@@ -881,3 +883,103 @@ const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops = {
+@@ -878,3 +880,117 @@ const struct ipu6_fw_isys_ops ipu4p_fw_isys_ops = {
  	.dump_stream_cfg = ipu4p_fw_isys_dump_stream_cfg,
  	.dump_frame_buf_set = ipu4p_fw_isys_dump_frame_buf_set,
  };
 +
 +void ipu4p_isys_irq_setup(struct ipu6_isys *isys)
 +{
-+	static const u32 irq_offsets[] = {
-+		0x00, IPU4P_ISYS_IRQ_MASK_OFFSET,
-+		IPU4P_ISYS_IRQ_ENABLE_OFFSET,
-+		IPU4P_ISYS_IRQ_LEVEL_NOT_PULSE_OFFSET,
-+	};
-+	const u32 isys_irq_mask = IPU4P_ISYS_UNISPART_IRQ_SW |
-+		IPU4P_ISYS_UNISPART_IRQ_CSI2(0) |
-+		IPU4P_ISYS_UNISPART_IRQ_CSI2(1);
-+	const struct {
++	static const struct {
 +		u32 base;
 +		u32 mask;
 +	} irq_config[] = {
-+		{ IPU4P_ISYS_UNISPART_IRQ_EDGE, isys_irq_mask },
++		{ IPU4P_ISYS_UNISPART_IRQ_EDGE,
++		  IPU4P_ISYS_UNISPART_IRQ_SW |
++		  IPU4P_ISYS_UNISPART_IRQ_CSI2(0) |
++		  IPU4P_ISYS_UNISPART_IRQ_CSI2(1) },
 +		{ IPU4P_ISYS_ISA_ACC_IRQ_CTRL_BASE, 0 },
 +		{ IPU4P_ISYS_A_IRQ_CTRL_BASE, 0 },
 +		{ IPU4P_ISYS_SIP0_IRQ_CTRL_BASE, IPU4P_ISYS_SIP0_CSI2_IRQ },
 +		{ IPU4P_ISYS_SIP1_IRQ_CTRL_BASE, IPU4P_ISYS_SIP1_CSI2_IRQ_MASK },
 +	};
 +	void __iomem *base = isys->pdata->base;
++	unsigned int i;
 +
-+	for (unsigned int i = 0; i < ARRAY_SIZE(irq_config); i++) {
-+		for (unsigned int j = 0; j < ARRAY_SIZE(irq_offsets); j++)
-+			writel(irq_config[i].mask,
-+			       base + irq_config[i].base + irq_offsets[j]);
++	for (i = 0; i < ARRAY_SIZE(irq_config); i++) {
++		const u32 irq_base = irq_config[i].base;
 +
++		writel(0, base + irq_base + IPU4P_ISYS_IRQ_ENABLE_OFFSET);
++		writel(0, base + irq_base + IPU4P_ISYS_IRQ_MASK_OFFSET);
++	}
++
++	for (i = 0; i < ARRAY_SIZE(irq_config); i++) {
++		const u32 irq_base = irq_config[i].base;
++		const u32 mask = irq_config[i].mask;
++
++		writel(mask, base + irq_base);
++		writel(mask, base + irq_base +
++		       IPU4P_ISYS_IRQ_LEVEL_NOT_PULSE_OFFSET);
 +		writel(0xffffffff,
-+		       base + irq_config[i].base + IPU4P_ISYS_IRQ_CLEAR_OFFSET);
++		       base + irq_base + IPU4P_ISYS_IRQ_CLEAR_OFFSET);
 +	}
 +
 +	writel(0, base + IPU4P_ISYS_UNISPART_SW_IRQ_REG);
 +	writel(0, base + IPU4P_ISYS_UNISPART_SW_IRQ_MUX_REG);
++
++	/* Keep the top-level source disabled until its child controllers are ready. */
++	for (i = ARRAY_SIZE(irq_config); i > 0; i--) {
++		const u32 irq_base = irq_config[i - 1].base;
++		const u32 mask = irq_config[i - 1].mask;
++
++		writel(mask, base + irq_base + IPU4P_ISYS_IRQ_MASK_OFFSET);
++		writel(mask, base + irq_base + IPU4P_ISYS_IRQ_ENABLE_OFFSET);
++	}
 +}
 +
 +irqreturn_t ipu4p_isys_isr(struct ipu6_bus_device *adev)
@@ -155,13 +169,15 @@ index 15a5dc7c938..416a877a1c8 100644
  #define IPU4P_MAX_OPINS				6U
  #define IPU4P_NOF_SRAM_BLOCKS_MAX		8U
 diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
-index 7f41bdb4150..1e1423869e2 100644
+index 7f41bdb4150..4e2f31048ff 100644
 --- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
 +++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
-@@ -4,6 +4,44 @@
+@@ -3,6 +3,49 @@
+ #define IPU4P_ISYS_CSI2_REGS_H
  
  #include <linux/bits.h>
- 
++#include <linux/types.h>
++
 +/* ISYS UNISPART and SIP interrupt registers */
 +#define IPU4P_ISYS_UNISPART_IRQ_EDGE			0x7c000
 +#define IPU4P_ISYS_UNISPART_IRQ_STATUS			0x7c008
@@ -187,24 +203,27 @@ index 7f41bdb4150..1e1423869e2 100644
 +#define IPU4P_ISYS_SIP1_CSI2_IRQ_MASK			GENMASK(6, 0)
 +
 +/* ISYS per-port CSI interrupt controls */
-+#define IPU4P_ISYS_CSI_IRQ_CTRL_BASE(port)		\
-+	({ typeof(port) __port = (port); \
-+	   __port ? (0x6cb00 + 0x800 * (__port - 1)) : 0x66300; })
-+#define IPU4P_ISYS_CSI_IRQ_CTRL0_BASE(port)		\
-+	({ typeof(port) __port = (port); \
-+	   __port ? (0x6cc00 + 0x800 * (__port - 1)) : 0x66400; })
++static inline u32 ipu4p_isys_csi_irq_ctrl_base(unsigned int port)
++{
++	return port ? (0x6cb00 + 0x800 * (port - 1)) : 0x66300;
++}
++
++static inline u32 ipu4p_isys_csi_irq_ctrl0_base(unsigned int port)
++{
++	return port ? (0x6cc00 + 0x800 * (port - 1)) : 0x66400;
++}
++
 +#define IPU4P_ISYS_CSI_IRQ_STATUS_OFFSET		0x08
 +#define IPU4P_ISYS_CSI_IRQ_CLEAR_OFFSET		0x0c
 +#define IPU4P_ISYS_CSI_IRQ_ACTIVE			BIT(0)
 +/* CSI-2 frame events occupy bits 16-31 in the shared ctrl0 status. */
 +#define IPU4P_ISYS_CSI_ERROR_MASK			GENMASK(15, 0)
 +#define IPU4P_ISYS_CSI_ERROR_BITS			16U
-+
+ 
  /* CSI receiver registers */
  #define IPU4P_CSI2_RX_ENABLE				0x00
- #define IPU4P_CSI2_RX_ENABLE_ENABLE			BIT(0)
 diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
-index ea21ce9b814..1fdc2850cec 100644
+index ea21ce9b814..b78e4b6af26 100644
 --- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
 @@ -26,6 +26,7 @@
@@ -248,7 +267,7 @@ index ea21ce9b814..1fdc2850cec 100644
 +void ipu4p_isys_register_errors(struct ipu6_isys_csi2 *csi2)
 +{
 +	void __iomem *base = csi2->isys->pdata->base;
-+	u32 offset = IPU4P_ISYS_CSI_IRQ_CTRL0_BASE(csi2->port);
++	u32 offset = ipu4p_isys_csi_irq_ctrl0_base(csi2->port);
 +	u32 status;
 +
 +	status = readl(base + offset + IPU4P_ISYS_CSI_IRQ_STATUS_OFFSET);
@@ -259,7 +278,7 @@ index ea21ce9b814..1fdc2850cec 100644
 +void ipu4p_isys_csi2_isr(struct ipu6_isys_csi2 *csi2)
 +{
 +	void __iomem *base = csi2->isys->pdata->base;
-+	u32 offset = IPU4P_ISYS_CSI_IRQ_CTRL_BASE(csi2->port);
++	u32 offset = ipu4p_isys_csi_irq_ctrl_base(csi2->port);
 +	u32 status;
 +
 +	status = readl(base + offset + IPU4P_ISYS_CSI_IRQ_STATUS_OFFSET);
