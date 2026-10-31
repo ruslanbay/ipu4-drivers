@@ -4,25 +4,33 @@ Date: Sat, 31 Oct 2026 06:57:24 +0000
 Subject: [RFC PATCH v2 00/12] media: ipu6: Add support for IPU4P hardware
 
 This series adds IPU4P support to the upstream IPU6/IPU7 driver.
+The IPU4 family includes IPU4 (Apollo Lake) and IPU4P (Ice Lake);
+this series supports IPU4P only.
 
 Most of the groundwork was done by Antti Laakso in the IPU7 support
 series [1]. I added the IPU4P-specific parts, using Intel's downstream
-driver as a reference [2]. Development was assisted by GPT-5.6 Luna.
+driver as a reference [2]. The code mostly generated using AI.
 
-Image capture works with front and rear cameras, but a
-rear-camera stream-off timeout remains under investigation [3].
-
-Tested on a Surface Pro 7 (Ice Lake, i5-1035G4).
-
-Review and feedback are welcome.
+Image capture was tested on a Surface Pro 7 (i5-1035G4) with
+both the front OV5693 and rear OV8865 cameras. Test logs: [3]
 
 Thanks to the linux-surface community and the libcamera developers for
 testing the downstream driver and sharing their findings.
 
+Changes since v1:
+
+- Addressed review feedback on:
+  - IPU4P buttress handling and register definitions
+  - Firmware ABI declarations and structure layout
+  - ISYS interrupt setup and handling
+- Simplified the Surface Pro 7 CSI-2 timing workaround.
+- Further refactored the IPU4P implementation to better align with
+  the existing IPU6/7/8 driver codebase.
+
 Links:
 [1] https://lore.kernel.org/all/20260907113004.2489993-1-sakari.ailus@linux.intel.com/
 [2] https://github.com/intel/linux-intel-lts/tree/lts-v5.15.195-android_t-251103T063840Z/drivers/media/pci/intel
-[3] https://github.com/ruslanbay/ipu4-drivers/tree/3b01f27ff51d3fe7ee3f7f10707e23f7ac4db668/assets
+[3] https://github.com/ruslanbay/ipu4-drivers/tree/3c7c0b623f99a90b32c50691195612172be30822/assets
 
 Ruslan Bay (12):
   media: ipu6: Add IPU4P hardware identification
