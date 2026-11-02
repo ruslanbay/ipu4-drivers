@@ -5,6 +5,11 @@
 # Intel IPU4P
 
 Build Linux kernel with IPU4P support on top of the upstream IPU6/IPU7 driver.
+Supports Microsoft Surface Pro 7 and Surface Book 3 (Ice Lake).
+
+- **Front RGB**: OmniVision OV5693 (2584×1944 @ 30 fps)
+- **Rear RGB**: OmniVision OV8865 + DW9719 VCM (3256×2448 @ 15 fps)
+- **Front IR**: OmniVision OV7251 (640×480 @ 30 fps, Howdy / biometrics)
 
 https://docs.kernel.org/admin-guide/quickly-build-trimmed-linux.html
 
@@ -235,8 +240,18 @@ Copy Libcamera tuning files:
 
 ```bash
 cp ../ipu4-drivers/configs/usr/share/libcamera/ipa/simple/ov5693.yaml /usr/share/libcamera/ipa/simple/ov5693.yaml
-
 cp ../ipu4-drivers/configs/usr/share/libcamera/ipa/simple/ov8865.yaml /usr/share/libcamera/ipa/simple/ov8865.yaml
+cp ../ipu4-drivers/configs/usr/share/libcamera/ipa/simple/ov7251.yaml /usr/share/libcamera/ipa/simple/ov7251.yaml
+```
+
+WirePlumber configuration (desktop PipeWire integration):
+
+```bash
+sudo install -Dm644 \
+    ../ipu4-drivers/configs/etc/wireplumber/wireplumber.conf.d/52-surface-ipu4p.conf \
+    /etc/wireplumber/wireplumber.conf.d/52-surface-ipu4p.conf
+
+systemctl --user restart wireplumber
 ```
 
 Capture a test frame:

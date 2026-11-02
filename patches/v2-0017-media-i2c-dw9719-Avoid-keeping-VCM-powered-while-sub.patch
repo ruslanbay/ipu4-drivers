@@ -1,0 +1,91 @@
+From eccd96d27d70684afc2a7366737d01ba4a90e749 Mon Sep 17 00:00:00 2001
+From: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+Date: Sun, 1 Nov 2026 20:49:15 -0700
+Subject: [PATCH 17/17] media: i2c: dw9719: Avoid keeping VCM powered while
+ subdevice is idle
+
+Userspace camera managers such as libcamera and PipeWire WirePlumber open all
+video and subdevice nodes during device discovery and keep them open for the
+duration of the user session.
+
+Because the DW9719 driver held a runtime PM reference in its subdevice open/close
+callbacks, the voice-coil motor (VCM), its linked image sensor (OV8865), and the
+underlying INT3472:01-avdd power regulator remained powered 24/7 at ~1-2W idle
+drain, preventing the laptop from entering deep power saving states.
+
+Remove dw9719_internal_ops and move runtime PM acquisition directly into
+dw9719_set_ctrl(), powering the VCM only while a focus position is being actively
+commanded.
+
+Signed-off-by: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+---
+ drivers/media/i2c/dw9719.c | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/media/i2c/dw9719.c b/drivers/media/i2c/dw9719.c
+index 3b7ba88fd67c..b49ee25052c3 100644
+--- a/drivers/media/i2c/dw9719.c
++++ b/drivers/media/i2c/dw9719.c
+@@ -238,9 +238,9 @@ static int dw9719_set_ctrl(struct v4l2_ctrl *ctrl)
+ 						    ctrls.handler);
+ 	int ret;
+ 
+-	/* Only apply changes to the controls if the device is powered up */
+-	if (!pm_runtime_get_if_in_use(dw9719->dev))
+-		return 0;
++	ret = pm_runtime_resume_and_get(dw9719->dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	switch (ctrl->id) {
+ 	case V4L2_CID_FOCUS_ABSOLUTE:
+@@ -250,7 +250,7 @@ static int dw9719_set_ctrl(struct v4l2_ctrl *ctrl)
+ 		ret = -EINVAL;
+ 	}
+ 
+-	pm_runtime_put(dw9719->dev);
++	pm_runtime_put_autosuspend(dw9719->dev);
+ 
+ 	return ret;
+ }
+@@ -306,22 +306,13 @@ static int dw9719_resume(struct device *dev)
+ 	return ret;
+ }
+ 
+-static int dw9719_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+-{
+-	return pm_runtime_resume_and_get(sd->dev);
+-}
+-
+-static int dw9719_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+-{
+-	pm_runtime_put_autosuspend(sd->dev);
+-
+-	return 0;
+-}
+-
+-static const struct v4l2_subdev_internal_ops dw9719_internal_ops = {
+-	.open = dw9719_open,
+-	.close = dw9719_close,
+-};
++/*
++ * Surface IPU4P: libcamera keeps the lens subdev node open for the whole
++ * lifetime of the camera manager (e.g. inside the WirePlumber session).
++ * Holding a runtime-PM reference from open() therefore kept the VCM, the
++ * linked OV8865 sensor and INT3472:01-avdd powered 24/7. Power the lens only
++ * while a control is actually being written (see dw9719_set_ctrl()).
++ */
+ 
+ static int dw9719_init_controls(struct dw9719_device *dw9719)
+ {
+@@ -374,7 +365,6 @@ static int dw9719_probe(struct i2c_client *client)
+ 
+ 	v4l2_i2c_subdev_init(&dw9719->sd, client, &dw9719_ops);
+ 	dw9719->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
+-	dw9719->sd.internal_ops = &dw9719_internal_ops;
+ 
+ 	ret = dw9719_init_controls(dw9719);
+ 	if (ret)
+-- 
+2.56.0
+

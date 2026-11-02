@@ -1,29 +1,51 @@
 # SPDX-License-Identifier: CC0-1.0
 %YAML 1.1
 ---
-# SOURCE: https://github.com/ConsultingFuture4200/sp7-camera/tree/main/ipa/simple
-#
-# libcamera "simple" IPA tuning for the Surface Pro 7 rear ov8865.
-#
-# There is no real colour tuning to convert for this sensor: the Windows
-# package's OV8865_MSHW0191_ICL.cpf is a 240-byte stub and OV8865_XXX_CNL.cpf
-# is byte-identical to the TPG test-pattern tuning. So the CCM below is the
-# identity - it changes nothing by itself. It is here because the simple IPA's
-# Adjust algorithm only exposes the Saturation control when a Ccm is loaded
-# (adjust.cpp: "if (context.ccmEnabled && saturation)"), and saturation is the
-# one lever that counters the flat look of an uncalibrated sensor.
-# Black level is left to the BlackLevel algorithm's auto-detection (measured
-# floor on this driver is ~15 in 10-bit; the .cpf value would be wrong).
+# libcamera "simple" IPA tuning for Surface Book 3 rear OV8865 (MSHW0201 / INT347A).
+# Multi-illuminant traditional_matrix CCMs decoded directly from Surface Book 3's
+# OV8865_MSHW0201_ICL.aiqb (CPFF/AIQB database, 7 calibrated illuminants, sorted
+# ascending by McCamy CCT derived from each illuminant's CIE xy chromaticity).
 version: 1
 algorithms:
   - BlackLevel:
   - Awb:
   - Ccm:
       ccms:
-        - ct: 6500
-          ccm: [ 1, 0, 0,
-                 0, 1, 0,
-                 0, 0, 1 ]
+        # Intel light_source 1 (Incandescent / Tungsten A)
+        - ct: 2864
+          ccm: [  1.2458, -0.2129, -0.0329,
+                 -0.5055,  2.0094, -0.5039,
+                 -0.4645, -1.7785,  3.2430 ]
+        # Intel light_source 11 (Warm White LED / Horizon)
+        - ct: 3165
+          ccm: [  1.7367, -1.2927,  0.5559,
+                 -0.5757,  1.5474,  0.0283,
+                 -0.1988, -1.4135,  2.6123 ]
+        # Intel light_source 19 (Fluorescent F11 / TL84)
+        - ct: 3756
+          ccm: [  1.8770, -1.2259,  0.3489,
+                 -0.5237,  1.3174,  0.2063,
+                 -0.1490, -1.1762,  2.3252 ]
+        # Intel light_source 10 (Cool White Fluorescent CWF)
+        - ct: 3948
+          ccm: [  1.9972, -1.2808,  0.2836,
+                 -0.4699,  1.7381, -0.2682,
+                 -0.1262, -1.3631,  2.4893 ]
+        # Intel light_source 16 (Daylight D50)
+        - ct: 5041
+          ccm: [  1.6560, -0.5513, -0.1047,
+                 -0.3534,  1.7380, -0.3846,
+                 -0.1170, -0.9234,  2.0404 ]
+        # Intel light_source 5 (Studio Daylight)
+        - ct: 5068
+          ccm: [  1.6419, -0.2924, -0.3495,
+                 -0.4015,  1.9104, -0.5088,
+                 -0.1236, -1.1186,  2.2422 ]
+        # Intel light_source 6 (Daylight D65)
+        - ct: 6227
+          ccm: [  1.7471, -0.8646,  0.1174,
+                 -0.3477,  1.8560, -0.5083,
+                 -0.0878, -0.9813,  2.0691 ]
   - Adjust:
   - Agc:
 ...

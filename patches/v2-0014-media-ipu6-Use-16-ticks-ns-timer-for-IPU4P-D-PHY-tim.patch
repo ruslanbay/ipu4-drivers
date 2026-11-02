@@ -1,0 +1,42 @@
+From 2dd6fcd60b6644961bd1435b85170a64c854b3b6 Mon Sep 17 00:00:00 2001
+From: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+Date: Sun, 1 Nov 2026 20:49:14 -0700
+Subject: [PATCH 14/17] media: ipu6: Use 16-ticks/ns timer for IPU4P D-PHY
+ timing calculations
+
+IPU4P uses an internal D-PHY counter resolution of 16 ticks/ns (0.0625 ns
+accuracy) rather than IPU6's 8 ticks/ns. Define IPU4P_CSI2_ACCINV as 16 and
+pass it to ipu6_isys_csi2_calc_timing() when IS_IPU4P is true.
+
+Signed-off-by: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+---
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+index d9c3d3577dc7..7fe5e90eec29 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c
+@@ -183,6 +183,8 @@ static const struct v4l2_subdev_core_ops csi2_sd_core_ops = {
+ 
+ #define DIV_SHIFT	8
+ #define CSI2_ACCINV	8
++/* IPU4P CSI-2 D-PHY counter runs at 16 ticks/ns (0.0625 ns accuracy). */
++#define IPU4P_CSI2_ACCINV	16
+ 
+ static u32 calc_timing(s32 a, s32 b, s64 link_freq, s32 accinv)
+ {
+@@ -427,7 +429,9 @@ static int ipu6_isys_csi2_stream_enable(struct ipu6_isys_csi2 *csi2)
+ 	cfg.port = csi2->port;
+ 	cfg.nlanes = csi2->nlanes;
+ 
+-	ret = ipu6_isys_csi2_calc_timing(csi2, &timing, CSI2_ACCINV);
++	ret = ipu6_isys_csi2_calc_timing(csi2, &timing,
++					 IS_IPU4P(isys->adev->isp) ?
++					 IPU4P_CSI2_ACCINV : CSI2_ACCINV);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.56.0
+
