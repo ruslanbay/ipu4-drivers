@@ -1,0 +1,48 @@
+From c58ffd6650c7c2b2be941ef3a1ab66ec6a6dc918 Mon Sep 17 00:00:00 2001
+From: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+Date: Sun, 1 Nov 2026 20:49:14 -0700
+Subject: [PATCH 15/17] media: ipu6: Clamp Ice Lake CPU latency to 100 us while
+ IPU4P ISYS is active
+
+On Ice Lake platforms (Surface Book 3, Surface Pro 7), the CPU package entering
+deep C-states (C2 exit latency 253 us) during active camera streaming starves
+the IPU4P ISYS FIFO and results in frame stalls and D-PHY non-recoverable errors.
+Clamp CPU DMA latency to 100 us via PM QoS while ISYS is powered up, releasing
+to default latency when idle.
+
+Signed-off-by: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+---
+ drivers/media/pci/intel/ipu6/ipu6-isys.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.c b/drivers/media/pci/intel/ipu6/ipu6-isys.c
+index c00ae9eb6fc0..343ffcd50888 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys.c
+@@ -124,6 +124,12 @@ struct ltr_did {
+ };
+ 
+ #define ISYS_PM_QOS_VALUE	300
++/*
++ * IPU4P loses CSI-2 data when the Ice Lake CPU package sleeps deeper than C1
++ * (C2 exit latency is 253 us) while ISYS is actively streaming. Hold latency
++ * at 100 us while ISYS is powered; released to PM_QOS_DEFAULT_VALUE when idle.
++ */
++#define IPU4P_ISYS_PM_QOS_VALUE	100
+ 
+ static int
+ ipu6_isys_csi2_fw_port_to_index(struct ipu6_isys *isys,
+@@ -823,7 +829,9 @@ static int isys_runtime_pm_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	cpu_latency_qos_update_request(&isys->pm_qos, ISYS_PM_QOS_VALUE);
++	cpu_latency_qos_update_request(&isys->pm_qos,
++				       IS_IPU4P(isp) ? IPU4P_ISYS_PM_QOS_VALUE :
++						       ISYS_PM_QOS_VALUE);
+ 
+ 	ret = ipu6_buttress_start_tsc_sync(isp);
+ 	if (ret)
+-- 
+2.56.0
+

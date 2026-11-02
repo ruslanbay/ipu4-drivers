@@ -1,0 +1,153 @@
+From 2e4f822c3a90df332a90a5c31ae55b52d425ac2e Mon Sep 17 00:00:00 2001
+From: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+Date: Sun, 1 Nov 2026 20:49:14 -0700
+Subject: [PATCH 13/17] media: ipu6: Add building block 8 and architectural
+ register layout for IPU4P CSI-2
+
+Add building block 8 to ipu4p_phy_bb_configs (firmware port 6 -> CSI-2 port 1),
+which is required for the front infrared camera (OV7251) on Microsoft Surface
+Book 3 and Surface Pro 7. Building block parameters { 8, 13, 32, 0x15 } were
+verified against Windows iacamera64.sys.
+
+Additionally, replace the Surface Pro 7 DMI timing quirk with the architectural
+register layout. On IPU4P, 2-lane CSI-2 receiver blocks (ports 1 and 2) use
+shifted delay register offsets (+0x30/+0x34/+0x38/+0x3c) compared to 4-lane
+receiver blocks (+0x2c/+0x30/+0x34/+0x38). Programming the standard calculated
+settle counts to the correct shifted offsets eliminates the need for DMI quirks
+and brings native front and IR streaming to all IPU4P platforms.
+
+Signed-off-by: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+---
+ .../media/pci/intel/ipu6/ipu4p-isys-csi-phy.c | 71 +++++++------------
+ .../pci/intel/ipu6/ipu4p-isys-csi2-regs.h     |  7 +-
+ 2 files changed, 32 insertions(+), 46 deletions(-)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+index 43cd11cac03b..b8f2a76e3595 100644
+--- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
++++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi-phy.c
+@@ -5,7 +5,6 @@
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/dev_printk.h>
+-#include <linux/dmi.h>
+ #include <linux/errno.h>
+ #include <linux/io.h>
+ #include <linux/types.h>
+@@ -26,39 +25,18 @@ struct ipu4p_phy_bb_config {
+ #define IPU4P_CSI2_GPREG_CR_PORT_CONFIG_DEFAULT	0x3895
+ #define IPU4P_CSI_BSCAN_EXCLUDE			(BIT(9) | BIT(18) | BIT(27))
+ 
+-struct ipu4p_csi2_timing_quirk {
+-	unsigned int port;
+-	unsigned int nlanes;
+-	u32 data_ticks;
+-};
+-
+-/* The Surface Pro 7 front camera needs shifted CSI-2 data timing on IPU4P. */
+-static const struct ipu4p_csi2_timing_quirk ipu4p_surface_pro7_timing = {
+-	.port = 2,
+-	.nlanes = 2,
+-	/*
+-	 * Reverse-engineered from a Windows camera driver:
+-	 *     data_ticks = 1360 - 32000 / F_MHz
+-	 * At 350 MHz, integer division gives 1269.
+-	 */
+-	.data_ticks = 1269,
+-};
+-
+-static const struct dmi_system_id ipu4p_csi2_timing_quirks[] = {
+-	{
+-		.ident = "Microsoft Surface Pro 7",
+-		.matches = {
+-			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Microsoft Corporation"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Surface Pro 7"),
+-		},
+-		.driver_data = (void *)&ipu4p_surface_pro7_timing,
+-	},
+-	{}
+-};
+-
++/*
++ * IPU4P D-PHY building-block configurations verified against Windows
++ * iacamera64.sys (table at 0x140111020):
++ *  - BB 6:  fw_port 3 -> Linux CSI-2 port 0 (e.g. Surface rear OV8865)
++ *  - BB 8:  fw_port 6 -> Linux CSI-2 port 1 (e.g. Surface front IR OV7251)
++ *  - BB 10: fw_port 7 -> Linux CSI-2 port 2 (e.g. Surface front RGB OV5693)
++ *  - BB 14: fw_port 9 -> Linux CSI-2 port 4
++ */
+ static const struct ipu4p_phy_bb_config ipu4p_phy_bb_configs[] = {
+ 	{ 4, 13, 32, 0x0f },
+ 	{ 6, 13, 32, 0x15 },
++	{ 8, 13, 32, 0x15 },
+ 	{ 10, 13, 32, 0x15 },
+ 	{ 12, 13, 32, 0x0f },
+ 	{ 14, 13, 32, 0x15 },
+@@ -149,8 +127,6 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+ 			     bool on)
+ {
+ 	struct ipu6_isys_csi2 *csi2;
+-	const struct dmi_system_id *dmi_id;
+-	const struct ipu4p_csi2_timing_quirk *quirk;
+ 	void __iomem *base;
+ 	u32 value;
+ 
+@@ -181,19 +157,26 @@ int ipu4p_isys_phy_set_power(struct ipu6_isys *isys,
+ 	if (!timing)
+ 		return -EINVAL;
+ 
+-	dmi_id = dmi_first_match(ipu4p_csi2_timing_quirks);
+-	quirk = dmi_id ? dmi_id->driver_data : NULL;
++	/*
++	 * On IPU4P, 2-lane CSI-2 receiver blocks (fw_port 6 and 7 -> Linux
++	 * ports 1 and 2) place DLY_CNT registers at +0x30/+0x34/+0x38/+0x3c,
++	 * whereas 4-lane receiver blocks (fw_port 3, 8, 9 -> Linux ports 0
++	 * and 3+) place them at +0x2c/+0x30/+0x34/+0x38.
++	 */
++	if (cfg->port == 1 || cfg->port == 2) {
++		writel(timing->ctermen,
++		       base + IPU4P_CSI2_RX_DLY_CNT_SHIFTED_TERMEN_CLANE);
++		writel(timing->csettle,
++		       base + IPU4P_CSI2_RX_DLY_CNT_SHIFTED_SETTLE_CLANE);
+ 
+-	if (quirk && cfg->port == quirk->port &&
+-	    cfg->nlanes == quirk->nlanes) {
+-		for (unsigned int lane = 0; lane < cfg->nlanes; lane++)
+-			writel(quirk->data_ticks,
++		for (unsigned int lane = 0; lane < cfg->nlanes; lane++) {
++			writel(timing->dtermen,
+ 			       base +
+-			       IPU4P_CSI2_RX_DLY_CNT_SHIFTED_DATA_TICKS(lane));
+-
+-		dev_dbg(&isys->adev->auxdev.dev,
+-			"using Surface Pro 7 shifted timing for CSI-2 port %u, %u lanes\n",
+-			cfg->port, cfg->nlanes);
++			       IPU4P_CSI2_RX_DLY_CNT_SHIFTED_TERMEN_DLANE(lane));
++			writel(timing->dsettle,
++			       base +
++			       IPU4P_CSI2_RX_DLY_CNT_SHIFTED_SETTLE_DLANE(lane));
++		}
+ 	} else {
+ 		writel(timing->ctermen,
+ 		       base + IPU4P_CSI2_RX_DLY_CNT_TERMEN_CLANE);
+diff --git a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
+index 4b7510e05e18..eae67bc14ade 100644
+--- a/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
++++ b/drivers/media/pci/intel/ipu6/ipu4p-isys-csi2-regs.h
+@@ -63,8 +63,11 @@ static inline u32 ipu4p_isys_csi_irq_ctrl0_base(unsigned int port)
+ #define IPU4P_CSI2_RX_DLY_CNT_TERMEN_DLANE(lane)	(0x34 + (lane) * 8)
+ #define IPU4P_CSI2_RX_DLY_CNT_SETTLE_DLANE(lane)	(0x38 + (lane) * 8)
+ 
+-/* Shifted CSI-2 data-lane timing register offsets. */
+-#define IPU4P_CSI2_RX_DLY_CNT_SHIFTED_DATA_TICKS(lane)	(0x3c + (lane) * 8)
++/* Shifted CSI-2 timing register offsets on 2-lane RX blocks (ports 1 and 2). */
++#define IPU4P_CSI2_RX_DLY_CNT_SHIFTED_TERMEN_CLANE	0x30
++#define IPU4P_CSI2_RX_DLY_CNT_SHIFTED_SETTLE_CLANE	0x34
++#define IPU4P_CSI2_RX_DLY_CNT_SHIFTED_TERMEN_DLANE(lane)	(0x38 + (lane) * 8)
++#define IPU4P_CSI2_RX_DLY_CNT_SHIFTED_SETTLE_DLANE(lane)	(0x3c + (lane) * 8)
+ 
+ /* CSI receiver general-purpose registers */
+ #define IPU4P_CSI2_GPREG_CR_PORT_CONFIG			0x14
+-- 
+2.56.0
+

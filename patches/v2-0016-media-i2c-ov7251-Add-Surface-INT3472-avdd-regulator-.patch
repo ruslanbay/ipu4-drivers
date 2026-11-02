@@ -1,0 +1,175 @@
+From 6e0b7af76d0dec9cf9d47dab85ee6c51f413add4 Mon Sep 17 00:00:00 2001
+From: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+Date: Sun, 1 Nov 2026 20:49:15 -0700
+Subject: [PATCH 16/17] media: i2c: ov7251: Add Surface INT3472 avdd regulator
+ and ANALOGUE_GAIN control
+
+On Microsoft Surface devices (Surface Book 3, Surface Pro 7), the discrete
+INT3472 PMIC supplies the OV7251 sensor with a GPIO regulator named "avdd"
+rather than the standard "vdda". Request the optional "avdd" regulator and
+optional powerdown/reset GPIOs to allow the sensor to power up.
+
+Also expose V4L2_CID_ANALOGUE_GAIN (in addition to V4L2_CID_GAIN) so user-space
+camera stacks such as libcamera's simple IPA pipeline do not reject the
+sensor due to missing mandatory gain controls.
+
+Signed-off-by: Jairo Valdivia <valdiviaprado.ing@gmail.com>
+---
+ drivers/media/i2c/ov7251.c | 74 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 66 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/media/i2c/ov7251.c b/drivers/media/i2c/ov7251.c
+index fce6344b5120..a0234f8b76b9 100644
+--- a/drivers/media/i2c/ov7251.c
++++ b/drivers/media/i2c/ov7251.c
+@@ -135,6 +135,8 @@ struct ov7251 {
+ 	struct regulator *io_regulator;
+ 	struct regulator *core_regulator;
+ 	struct regulator *analog_regulator;
++	struct regulator *avdd_regulator;
++	struct gpio_desc *pwdn_gpio;
+ 
+ 	const struct ov7251_pll_cfgs *pll_cfgs;
+ 	enum supported_link_freqs link_freq_idx;
+@@ -688,9 +690,20 @@ static int ov7251_regulators_enable(struct ov7251 *ov7251)
+ 	 * to be enabled not earlier than io regulator
+ 	 */
+ 
++	/* Surface INT3472 gpio-regulator is named "avdd", not "vdda". */
++	if (ov7251->avdd_regulator) {
++		ret = regulator_enable(ov7251->avdd_regulator);
++		if (ret < 0) {
++			dev_err(ov7251->dev, "set avdd voltage failed\n");
++			return ret;
++		}
++	}
++
+ 	ret = regulator_enable(ov7251->io_regulator);
+ 	if (ret < 0) {
+ 		dev_err(ov7251->dev, "set io voltage failed\n");
++		if (ov7251->avdd_regulator)
++			regulator_disable(ov7251->avdd_regulator);
+ 		return ret;
+ 	}
+ 
+@@ -713,6 +726,8 @@ static int ov7251_regulators_enable(struct ov7251 *ov7251)
+ 
+ err_disable_io:
+ 	regulator_disable(ov7251->io_regulator);
++	if (ov7251->avdd_regulator)
++		regulator_disable(ov7251->avdd_regulator);
+ 
+ 	return ret;
+ }
+@@ -732,6 +747,12 @@ static void ov7251_regulators_disable(struct ov7251 *ov7251)
+ 	ret = regulator_disable(ov7251->io_regulator);
+ 	if (ret < 0)
+ 		dev_err(ov7251->dev, "io regulator disable failed\n");
++
++	if (ov7251->avdd_regulator) {
++		ret = regulator_disable(ov7251->avdd_regulator);
++		if (ret < 0)
++			dev_err(ov7251->dev, "avdd regulator disable failed\n");
++	}
+ }
+ 
+ static int ov7251_write_reg(struct ov7251 *ov7251, u16 reg, u8 val)
+@@ -923,7 +944,11 @@ static int ov7251_set_power_on(struct device *dev)
+ 
+ 	usleep_range(1000, 1100);
+ 
+-	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
++	if (ov7251->pwdn_gpio)
++		gpiod_set_value_cansleep(ov7251->pwdn_gpio, 0);
++
++	if (ov7251->enable_gpio)
++		gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
+ 
+ 	/* wait at least 65536 external clock cycles */
+ 	wait_us = DIV_ROUND_UP(65536 * 1000,
+@@ -935,7 +960,10 @@ static int ov7251_set_power_on(struct device *dev)
+ 					ARRAY_SIZE(ov7251_global_init_setting));
+ 	if (ret < 0) {
+ 		dev_err(ov7251->dev, "error during global init\n");
+-		gpiod_set_value_cansleep(ov7251->enable_gpio, 0);
++		if (ov7251->enable_gpio)
++			gpiod_set_value_cansleep(ov7251->enable_gpio, 0);
++		if (ov7251->pwdn_gpio)
++			gpiod_set_value_cansleep(ov7251->pwdn_gpio, 1);
+ 		clk_disable_unprepare(ov7251->xclk);
+ 		ov7251_regulators_disable(ov7251);
+ 		return ret;
+@@ -951,7 +979,10 @@ static int ov7251_set_power_off(struct device *dev)
+ 	struct ov7251 *ov7251 = to_ov7251(sd);
+ 
+ 	clk_disable_unprepare(ov7251->xclk);
+-	gpiod_set_value_cansleep(ov7251->enable_gpio, 0);
++	if (ov7251->enable_gpio)
++		gpiod_set_value_cansleep(ov7251->enable_gpio, 0);
++	if (ov7251->pwdn_gpio)
++		gpiod_set_value_cansleep(ov7251->pwdn_gpio, 1);
+ 	ov7251_regulators_disable(ov7251);
+ 
+ 	return 0;
+@@ -1052,7 +1083,7 @@ static int ov7251_s_ctrl(struct v4l2_ctrl *ctrl)
+ 	case V4L2_CID_EXPOSURE:
+ 		ret = ov7251_set_exposure(ov7251, ctrl->val);
+ 		break;
+-	case V4L2_CID_GAIN:
++	case V4L2_CID_ANALOGUE_GAIN:
+ 		ret = ov7251_set_gain(ov7251, ctrl->val);
+ 		break;
+ 	case V4L2_CID_TEST_PATTERN:
+@@ -1580,7 +1611,7 @@ static int ov7251_init_ctrls(struct ov7251 *ov7251)
+ 	ov7251->exposure = v4l2_ctrl_new_std(&ov7251->ctrls, &ov7251_ctrl_ops,
+ 					     V4L2_CID_EXPOSURE, 1, 32, 1, 32);
+ 	ov7251->gain = v4l2_ctrl_new_std(&ov7251->ctrls, &ov7251_ctrl_ops,
+-					 V4L2_CID_GAIN, 16, 1023, 1, 16);
++					 V4L2_CID_ANALOGUE_GAIN, 16, 1023, 1, 16);
+ 	v4l2_ctrl_new_std_menu_items(&ov7251->ctrls, &ov7251_ctrl_ops,
+ 				     V4L2_CID_TEST_PATTERN,
+ 				     ARRAY_SIZE(ov7251_test_pattern_menu) - 1,
+@@ -1682,10 +1713,37 @@ static int ov7251_probe(struct i2c_client *client)
+ 		return PTR_ERR(ov7251->analog_regulator);
+ 	}
+ 
+-	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
++	/* Surface INT3472 exposes a gpio-regulator named "avdd", not "vdda". */
++	ov7251->avdd_regulator = devm_regulator_get_optional(dev, "avdd");
++	if (IS_ERR(ov7251->avdd_regulator)) {
++		if (PTR_ERR(ov7251->avdd_regulator) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++		ov7251->avdd_regulator = NULL;
++	}
++
++	ov7251->pwdn_gpio = devm_gpiod_get_optional(dev, "powerdown",
++						    GPIOD_OUT_LOW);
++	if (IS_ERR(ov7251->pwdn_gpio)) {
++		if (PTR_ERR(ov7251->pwdn_gpio) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++		ov7251->pwdn_gpio = NULL;
++	}
++
++	ov7251->enable_gpio = devm_gpiod_get_optional(dev, "enable",
++						      GPIOD_OUT_LOW);
+ 	if (IS_ERR(ov7251->enable_gpio)) {
+-		dev_err(dev, "cannot get enable gpio\n");
+-		return PTR_ERR(ov7251->enable_gpio);
++		if (PTR_ERR(ov7251->enable_gpio) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++		ov7251->enable_gpio = NULL;
++	}
++	if (!ov7251->enable_gpio) {
++		ov7251->enable_gpio = devm_gpiod_get_optional(dev, "reset",
++							      GPIOD_OUT_LOW);
++		if (IS_ERR(ov7251->enable_gpio)) {
++			if (PTR_ERR(ov7251->enable_gpio) == -EPROBE_DEFER)
++				return -EPROBE_DEFER;
++			ov7251->enable_gpio = NULL;
++		}
+ 	}
+ 
+ 	mutex_init(&ov7251->lock);
+-- 
+2.56.0
+

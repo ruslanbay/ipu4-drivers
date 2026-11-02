@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: CC0-1.0
+%YAML 1.1
+---
+# libcamera "simple" IPA tuning for Surface Book 3 / Surface Pro 7 front IR OV7251.
+# OV7251 is a 10-bit monochrome IR sensor (MEDIA_BUS_FMT_Y10_1X10 / R10); omit
+# colour AWB/CCM stages and keep black-level + AGC only.
+version: 1
+algorithms:
+  - BlackLevel:
+      blackLevel: 1024
+  - Agc:
+...
